@@ -1,4 +1,4 @@
-package com.retar.go4lunch
+package com.retar.go4lunch.ui.map
 
 
 import android.location.Location
@@ -16,10 +16,17 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.retar.go4lunch.MainActivity
+import com.retar.go4lunch.R
+import com.retar.go4lunch.ui.map.model.UiMarkerModel
+import kotlinx.android.synthetic.main.fragment_map_view.*
 
 
-class MapView : Fragment(), OnMapReadyCallback {
+class MapFragment : Fragment(), MapView,
+    OnMapReadyCallback {
     private lateinit var googleMap: GoogleMap
+
+    val presenter = MapViewPresenterImpl(this)
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -28,53 +35,72 @@ class MapView : Fragment(), OnMapReadyCallback {
         return inflater.inflate(R.layout.fragment_map_view, container, false)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        val mapFragment =
-            childFragmentManager.findFragmentById(R.id.googleMap) as SupportMapFragment?
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
 
-        mapFragment?.getMapAsync(this)
+        fabGetLocation.setOnClickListener {
+            presenter.zoomToCurrentLocation()
+        }
+
+        presenter.onActivityCreated()
+
     }
-
 
     override fun onMapReady(map: GoogleMap?) {
         map?.let {
             googleMap = it
-            getLastLocation()
+
+            googleMap.setOnInfoWindowClickListener { marker ->
+                Toast.makeText(context, marker.tag.toString(), Toast.LENGTH_LONG).show()
+            }
+
+            presenter.onMapReady()
         }
     }
 
-    private fun getLastLocation() {
+    override fun getMapAsync() {
+        val mapFragment =
+            childFragmentManager.findFragmentById(R.id.googleMap) as SupportMapFragment?
+
+        mapFragment?.getMapAsync(this)
+
+    }
+
+    override fun getLastLocation() {
         activity?.let {
             val fusedLocationClient: FusedLocationProviderClient =
                 LocationServices.getFusedLocationProviderClient(it)
             fusedLocationClient.lastLocation
                 .addOnSuccessListener { location: Location? ->
                     location?.let {
-                        zoomToLocation(location)
+                        presenter.onGotLastLocation(location)
                     }
                 }
         }
 
-
     }
 
-    private fun zoomToLocation(location: Location) {
-        Toast.makeText(context, "bebe", Toast.LENGTH_LONG).show()
-        val currentLatLng = LatLng(location.latitude, location.longitude)
+    override fun zoomToLocation(latLng: LatLng) {
         googleMap.animateCamera(
             CameraUpdateFactory.newLatLngZoom(
-                currentLatLng,
+                latLng,
                 MainActivity.ZOOM_MODE
             )
         )
-        googleMap.addMarker(MarkerOptions().position(currentLatLng))
+        googleMap.addMarker(MarkerOptions().position(latLng))
+    }
+
+    override fun addMarker(marker: UiMarkerModel) {
+        googleMap.addMarker(MarkerOptions().position(marker.latLng).title(marker.title)).tag =
+            marker.id
+
     }
 
 
     companion object {
         @JvmStatic
-        fun newInstance() = MapView()
+        fun newInstance() = MapFragment()
     }
+
 }
 
