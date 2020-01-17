@@ -10,6 +10,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.retar.go4lunch.ui.map.MapFragment
 
 
 class MainActivity : AppCompatActivity() {
@@ -23,7 +24,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun loadMapFragment() {
-        supportFragmentManager.beginTransaction().add(R.id.fragmentContainer,MapView.newInstance()).commit()
+        supportFragmentManager.beginTransaction().add(R.id.fragmentContainer, MapFragment.newInstance()).commit()
     }
 
     private fun permissionsGranted(): Boolean {
@@ -38,7 +39,7 @@ class MainActivity : AppCompatActivity() {
                 Manifest.permission.ACCESS_FINE_LOCATION,
                 Manifest.permission.ACCESS_COARSE_LOCATION
             ),
-            LOCATION_REQUEST_CODE
+            LOCATION_PERMISSION_REQUEST_CODE
         )
     }
 
@@ -51,7 +52,7 @@ class MainActivity : AppCompatActivity() {
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         when (requestCode) {
-            LOCATION_REQUEST_CODE -> {
+            LOCATION_PERMISSION_REQUEST_CODE -> {
                 if (grantResults.isNotEmpty()
                     && grantResults[0] == PackageManager.PERMISSION_GRANTED
                 ) {
@@ -64,6 +65,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showRationaleForPermissions() {
+        //Todo extract strings
         if (shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)) {
             showPermissionsRequiredDialog(
                 "Permission to access location is needed for the app to work.",
@@ -80,6 +82,8 @@ class MainActivity : AppCompatActivity() {
     private fun showPermissionsRequiredDialog(body: String, dontAskAgainChecked: Boolean) {
         val builder = AlertDialog.Builder(this)
         builder.setMessage(body)
+            //Todo extract strings
+
             .setTitle("Permission required")
             .setPositiveButton("OK") { _, _ ->
                 if (!dontAskAgainChecked) requestPermissions() else openSettings()
@@ -98,7 +102,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     companion object {
-        const val LOCATION_REQUEST_CODE = 15
+        const val LOCATION_PERMISSION_REQUEST_CODE = 15
         const val ZOOM_MODE = 15f
     }
 
