@@ -8,10 +8,13 @@ import com.retar.go4lunch.utils.getApiString
 import com.retar.go4lunch.utils.getLatLng
 import com.retar.go4lunch.ui.map.model.UiMarkerModel
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposable
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 
 class MapViewPresenterImpl(private val view: MapView) : MapViewPresenter {
+
+    private var disposable: Disposable? = null
 
     override fun onActivityCreated() {
         view.getMapAsync()
@@ -56,5 +59,8 @@ class MapViewPresenterImpl(private val view: MapView) : MapViewPresenter {
             )
     }
 
+    override fun onDetach() {
+        //Todo
+    }
 
 }
