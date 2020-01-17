@@ -10,7 +10,11 @@ import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
+import com.retar.go4lunch.ui.list.ListFragment
 import com.retar.go4lunch.ui.map.MapFragment
+import com.retar.go4lunch.ui.mates.MatesFragment
+import kotlinx.android.synthetic.main.activity_main.*
 
 
 class MainActivity : AppCompatActivity() {
@@ -20,11 +24,22 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        if (permissionsGranted()) loadMapFragment() else requestPermissions()
-    }
+        if (permissionsGranted()) loadFragment(
+            MapFragment.newInstance(),
+            MapFragment.TAG
+        ) else requestPermissions()
 
-    private fun loadMapFragment() {
-        supportFragmentManager.beginTransaction().add(R.id.fragmentContainer, MapFragment.newInstance()).commit()
+        bottomNavigation.setOnNavigationItemSelectedListener {
+            when (it.itemId) {
+                R.id.navigation_map -> loadFragment(MapFragment.newInstance(), MapFragment.TAG)
+                R.id.navigation_list -> loadFragment(ListFragment.newInstance(), ListFragment.TAG)
+                R.id.navigation_mates -> loadFragment(
+                    MatesFragment.newInstance(),
+                    MatesFragment.TAG
+                )
+                else -> false
+            }
+        }
     }
 
     private fun permissionsGranted(): Boolean {
@@ -44,7 +59,6 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
@@ -56,7 +70,7 @@ class MainActivity : AppCompatActivity() {
                 if (grantResults.isNotEmpty()
                     && grantResults[0] == PackageManager.PERMISSION_GRANTED
                 ) {
-                    loadMapFragment()
+                    loadFragment(MapFragment.newInstance(), MapFragment.TAG)
                 } else {
                     showRationaleForPermissions()
                 }
@@ -99,6 +113,31 @@ class MainActivity : AppCompatActivity() {
         val intent = Intent(ACTION_APPLICATION_DETAILS_SETTINGS)
         intent.data = Uri.parse("package:$packageName")
         startActivity(intent)
+    }
+
+
+    private fun loadFragment(newFragment: Fragment, tag: String): Boolean {
+
+        val fragmentTransaction = supportFragmentManager.beginTransaction()
+
+        val curFrag = supportFragmentManager.primaryNavigationFragment
+        if (curFrag != null) {
+            fragmentTransaction.detach(curFrag)
+        }
+
+        var fragment = supportFragmentManager.findFragmentByTag(tag)
+        if (fragment == null) {
+            fragment = newFragment
+            fragmentTransaction.add(R.id.fragmentContainer, fragment, tag)
+        } else {
+            fragmentTransaction.attach(fragment)
+        }
+
+        fragmentTransaction.setPrimaryNavigationFragment(fragment)
+            .setReorderingAllowed(true)
+            .commitNowAllowingStateLoss()
+
+        return true
     }
 
     companion object {

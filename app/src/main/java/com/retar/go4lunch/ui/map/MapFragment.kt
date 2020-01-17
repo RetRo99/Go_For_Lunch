@@ -25,6 +25,7 @@ import kotlinx.android.synthetic.main.fragment_map_view.*
 class MapFragment : Fragment(), MapView,
     OnMapReadyCallback {
     private lateinit var googleMap: GoogleMap
+    private var mapFragment: SupportMapFragment? = null
 
     val presenter = MapViewPresenterImpl(this)
 
@@ -37,6 +38,7 @@ class MapFragment : Fragment(), MapView,
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+
 
         fabGetLocation.setOnClickListener {
             presenter.zoomToCurrentLocation()
@@ -59,10 +61,12 @@ class MapFragment : Fragment(), MapView,
     }
 
     override fun getMapAsync() {
-        val mapFragment =
-            childFragmentManager.findFragmentById(R.id.googleMap) as SupportMapFragment?
 
-        mapFragment?.getMapAsync(this)
+        if (mapFragment == null) {
+            mapFragment =
+                childFragmentManager.findFragmentById(R.id.googleMap) as SupportMapFragment?
+            mapFragment?.getMapAsync(this)
+        }
 
     }
 
@@ -98,8 +102,16 @@ class MapFragment : Fragment(), MapView,
 
 
     companion object {
+
+        const val TAG = "com.retar.go4lunch.ui.map.mapfragment"
+
         @JvmStatic
         fun newInstance() = MapFragment()
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        presenter.onDetach()
     }
 
 }
