@@ -4,7 +4,7 @@ import com.retar.go4lunch.MainActivity
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
-@Module(includes = [UiModule::class])
+@Module(includes = [UiModule::class, RepositoryModule::class])
 internal interface ActivityBuilderModule {
 
     @ContributesAndroidInjector

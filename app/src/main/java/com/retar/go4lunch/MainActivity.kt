@@ -112,6 +112,7 @@ class MainActivity : DaggerAppCompatActivity() {
     }
 
     private fun openSettings() {
+        //todo handle user return to app so the map fragment is shown
         val intent = Intent(ACTION_APPLICATION_DETAILS_SETTINGS)
         intent.data = Uri.parse("package:$packageName")
         startActivity(intent)
