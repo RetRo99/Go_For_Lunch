@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.fragment.app.Fragment
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -19,15 +18,18 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.retar.go4lunch.MainActivity
 import com.retar.go4lunch.R
 import com.retar.go4lunch.ui.map.model.UiMarkerModel
+import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.fragment_map_view.*
+import javax.inject.Inject
 
 
-class MapFragment : Fragment(), MapView,
+class MapFragment : DaggerFragment(), MapView,
     OnMapReadyCallback {
     private lateinit var googleMap: GoogleMap
     private var mapFragment: SupportMapFragment? = null
 
-    val presenter = MapViewPresenterImpl(this)
+    @Inject
+    lateinit var presenter: MapViewPresenter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,7 +40,6 @@ class MapFragment : Fragment(), MapView,
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-
 
         fabGetLocation.setOnClickListener {
             presenter.zoomToCurrentLocation()
@@ -53,6 +54,7 @@ class MapFragment : Fragment(), MapView,
             googleMap = it
 
             googleMap.setOnInfoWindowClickListener { marker ->
+                //todo show different fragment
                 Toast.makeText(context, marker.tag.toString(), Toast.LENGTH_LONG).show()
             }
 
