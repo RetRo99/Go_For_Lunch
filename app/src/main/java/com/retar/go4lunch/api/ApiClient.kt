@@ -1,4 +1,4 @@
-package com.retar.go4lunch
+package com.retar.go4lunch.api
 
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor

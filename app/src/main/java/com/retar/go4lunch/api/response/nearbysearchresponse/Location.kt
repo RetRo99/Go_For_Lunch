@@ -1,4 +1,4 @@
-package com.retar.go4lunch.nearbysearchresponse
+package com.retar.go4lunch.api.response.nearbysearchresponse
 
 import com.google.android.gms.maps.model.LatLng
 
