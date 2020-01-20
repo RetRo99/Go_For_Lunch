@@ -10,3 +10,16 @@ fun Location.getApiString():String{
 fun Location.getLatLng():LatLng{
     return LatLng(this.latitude, this.longitude)
 }
+
+fun Location.distanceBetweenLatLng(startLatLng: LatLng, endLatLng: LatLng):String{
+    val locationStart = Location("").apply {
+        latitude = startLatLng.latitude
+        longitude = startLatLng.longitude
+    }
+
+    val locationEnd = Location("").apply {
+        latitude = endLatLng.latitude
+        longitude = endLatLng.longitude
+    }
+    return locationStart.distanceTo(locationEnd).toString()
+}

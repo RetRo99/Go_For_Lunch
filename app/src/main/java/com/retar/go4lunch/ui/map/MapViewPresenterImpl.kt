@@ -1,6 +1,8 @@
 package com.retar.go4lunch.ui.map
 
 import android.location.Location
+import android.util.Log
+import com.google.android.gms.maps.model.LatLng
 import com.retar.go4lunch.repository.restaurant.RestaurantsRepository
 import com.retar.go4lunch.repository.restaurant.model.RestaurantEntity
 import com.retar.go4lunch.ui.map.model.UiMarkerModel
@@ -29,7 +31,7 @@ class MapViewPresenterImpl @Inject constructor(
 
     override fun onGotLastLocation(location: Location) {
         view.zoomToLocation(location.getLatLng())
-        loadNearbyRestaurants(location.getApiString())
+        loadNearbyRestaurants(location)
 
     }
 
@@ -37,10 +39,13 @@ class MapViewPresenterImpl @Inject constructor(
         view.getLastLocation()
     }
 
-    private fun loadNearbyRestaurants(locationString: String, distance: String = "500") {
+    private fun loadNearbyRestaurants(
+        location:Location,
+        distance: String = "500"
+    ) {
 
         disposable =
-            repository.getRestaurants(locationString, distance)
+            repository.getRestaurants(location,distance)
                 .subscribeOn(Schedulers.io())
                 .map {
                     mapRestaurantResponseToUi(it)
@@ -60,6 +65,7 @@ class MapViewPresenterImpl @Inject constructor(
         val markersList = mutableListOf<UiMarkerModel>()
         restaurantEntity.forEach {
             markersList.add(UiMarkerModel(it.latLng, it.name, it.id))
+            Log.d("čič", it.distance)
         }
         return markersList
     }
