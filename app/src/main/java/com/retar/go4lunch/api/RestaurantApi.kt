@@ -8,6 +8,6 @@ import retrofit2.http.Query
 interface RestaurantApi {
 
     @GET("nearbysearch/json")
-    fun getNearbySquareRestaurants(@Query("location") location:String, @Query("radius") radius:String): Single<NearbySearchResponse>
+    fun getNearbyRestaurants(@Query("location") location:String, @Query("radius") radius:String): Single<NearbySearchResponse>
 
 }

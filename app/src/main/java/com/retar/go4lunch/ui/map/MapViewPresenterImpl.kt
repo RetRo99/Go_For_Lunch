@@ -1,10 +1,8 @@
 package com.retar.go4lunch.ui.map
 
 import android.location.Location
-
-import android.util.Log
-import com.retar.go4lunch.api.ApiClient
-import com.retar.go4lunch.api.response.nearbysearchresponse.NearbySearchResponse
+import com.retar.go4lunch.repository.restaurant.RestaurantsRepository
+import com.retar.go4lunch.repository.restaurant.model.RestaurantEntity
 import com.retar.go4lunch.ui.map.model.UiMarkerModel
 import com.retar.go4lunch.utils.getApiString
 import com.retar.go4lunch.utils.getLatLng
@@ -14,7 +12,10 @@ import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
-class MapViewPresenterImpl @Inject constructor(private val view: MapView) : MapViewPresenter {
+class MapViewPresenterImpl @Inject constructor(
+    private val view: MapView,
+    private val repository: RestaurantsRepository
+) : MapViewPresenter {
 
     private var disposable: Disposable? = null
 
@@ -39,7 +40,7 @@ class MapViewPresenterImpl @Inject constructor(private val view: MapView) : MapV
     private fun loadNearbyRestaurants(locationString: String, distance: String = "500") {
 
         disposable =
-            ApiClient.getGoogleMapsRestaurants.getNearbySquareRestaurants(locationString, distance)
+            repository.getRestaurants(locationString, distance)
                 .subscribeOn(Schedulers.io())
                 .map {
                     mapRestaurantResponseToUi(it)
@@ -55,10 +56,10 @@ class MapViewPresenterImpl @Inject constructor(private val view: MapView) : MapV
                 )
     }
 
-    private fun mapRestaurantResponseToUi(restaurantResponse: NearbySearchResponse): List<UiMarkerModel> {
+    private fun mapRestaurantResponseToUi(restaurantEntity: List<RestaurantEntity>): List<UiMarkerModel> {
         val markersList = mutableListOf<UiMarkerModel>()
-        restaurantResponse.results.forEach {
-            markersList.add(UiMarkerModel(it.geometry.location.getLatLng(), it.name, it.place_id))
+        restaurantEntity.forEach {
+            markersList.add(UiMarkerModel(it.latLng, it.name, it.id))
         }
         return markersList
     }
