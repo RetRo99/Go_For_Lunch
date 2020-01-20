@@ -11,8 +11,9 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.schedulers.Schedulers
+import javax.inject.Inject
 
-class MapViewPresenterImpl(private val view: MapView) : MapViewPresenter {
+class MapViewPresenterImpl @Inject constructor(private val view: MapView) : MapViewPresenter {
 
     private var disposable: Disposable? = null
 
