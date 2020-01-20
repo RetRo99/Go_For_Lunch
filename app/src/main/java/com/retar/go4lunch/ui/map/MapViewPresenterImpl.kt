@@ -1,6 +1,8 @@
 package com.retar.go4lunch.ui.map
 
 import android.location.Location
+
+import android.util.Log
 import com.retar.go4lunch.api.ApiClient
 import com.retar.go4lunch.api.response.nearbysearchresponse.NearbySearchResponse
 import com.retar.go4lunch.ui.map.model.UiMarkerModel
