@@ -96,9 +96,12 @@ class MapFragment : DaggerFragment(), MapView,
         googleMap.addMarker(MarkerOptions().position(latLng))
     }
 
-    override fun addMarker(marker: UiMarkerModel) {
-        googleMap.addMarker(MarkerOptions().position(marker.latLng).title(marker.title)).tag =
-            marker.id
+    override fun addMarkers(markers: List<UiMarkerModel>) {
+        markers.forEach {
+            googleMap.addMarker(MarkerOptions().position(it.latLng).title(it.title)).tag =
+                it.id
+        }
+
 
     }
 
@@ -111,9 +114,9 @@ class MapFragment : DaggerFragment(), MapView,
         fun newInstance() = MapFragment()
     }
 
-    override fun onDetach() {
-        super.onDetach()
-        presenter.onDetach()
+    override fun onDestroy() {
+        presenter.onDestroy()
+        super.onDestroy()
     }
 
 }

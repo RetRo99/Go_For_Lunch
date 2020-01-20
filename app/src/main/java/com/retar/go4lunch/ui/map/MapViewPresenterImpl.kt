@@ -1,12 +1,13 @@
 package com.retar.go4lunch.ui.map
 
-import android.annotation.SuppressLint
 import android.location.Location
+
 import android.util.Log
 import com.retar.go4lunch.api.ApiClient
+import com.retar.go4lunch.api.response.nearbysearchresponse.NearbySearchResponse
+import com.retar.go4lunch.ui.map.model.UiMarkerModel
 import com.retar.go4lunch.utils.getApiString
 import com.retar.go4lunch.utils.getLatLng
-import com.retar.go4lunch.ui.map.model.UiMarkerModel
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.rxkotlin.subscribeBy
@@ -27,9 +28,7 @@ class MapViewPresenterImpl @Inject constructor(private val view: MapView) : MapV
 
     override fun onGotLastLocation(location: Location) {
         view.zoomToLocation(location.getLatLng())
-
         loadNearbyRestaurants(location.getApiString())
-
 
     }
 
@@ -37,31 +36,35 @@ class MapViewPresenterImpl @Inject constructor(private val view: MapView) : MapV
         view.getLastLocation()
     }
 
-    @SuppressLint("CheckResult")
-    fun loadNearbyRestaurants(locationString: String, distance: String = "500") {
+    private fun loadNearbyRestaurants(locationString: String, distance: String = "500") {
 
-        val observable =
+        disposable =
             ApiClient.getGoogleMapsRestaurants.getNearbySquareRestaurants(locationString, distance)
-
-        observable
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribeBy(
-                onSuccess = {
-                    it.results.forEach {
-                        val marker =
-                            UiMarkerModel(it.geometry.location.getLatLng(), it.name, it.place_id)
-                        view.addMarker(
-                            marker
-                        )
+                .subscribeOn(Schedulers.io())
+                .map {
+                    mapRestaurantResponseToUi(it)
+                }
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeBy(
+                    onSuccess = {
+                        view.addMarkers(it)
+                    },
+                    onError = {
+                        //todo handle error on maps response
                     }
-                },
-                onError = { Log.d("čič", it.localizedMessage) }
-            )
+                )
     }
 
-    override fun onDetach() {
-        //Todo
+    private fun mapRestaurantResponseToUi(restaurantResponse: NearbySearchResponse): List<UiMarkerModel> {
+        val markersList = mutableListOf<UiMarkerModel>()
+        restaurantResponse.results.forEach {
+            markersList.add(UiMarkerModel(it.geometry.location.getLatLng(), it.name, it.place_id))
+        }
+        return markersList
+    }
+
+    override fun onDestroy() {
+        disposable?.dispose()
     }
 
 }

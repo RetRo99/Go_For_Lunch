@@ -9,6 +9,6 @@ interface MapViewPresenter {
     fun onMapReady()
     fun onGotLastLocation(location: Location)
     fun zoomToCurrentLocation()
-    fun onDetach()
+    fun onDestroy()
 
 }
