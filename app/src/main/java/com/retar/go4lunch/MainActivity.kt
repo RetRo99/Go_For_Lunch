@@ -15,6 +15,7 @@ import com.retar.go4lunch.ui.map.MapFragment
 import com.retar.go4lunch.ui.mates.MatesFragment
 import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
+import javax.inject.Inject
 
 
 class MainActivity : DaggerAppCompatActivity() {

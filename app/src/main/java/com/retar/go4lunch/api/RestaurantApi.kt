@@ -1,6 +1,6 @@
-package com.retar.go4lunch
+package com.retar.go4lunch.api
 
-import com.retar.go4lunch.nearbysearchresponse.NearbySearchResponse
+import com.retar.go4lunch.api.response.nearbysearchresponse.NearbySearchResponse
 import io.reactivex.Single
 import retrofit2.http.GET
 import retrofit2.http.Query

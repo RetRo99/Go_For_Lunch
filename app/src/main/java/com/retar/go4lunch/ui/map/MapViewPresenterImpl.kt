@@ -3,7 +3,7 @@ package com.retar.go4lunch.ui.map
 import android.annotation.SuppressLint
 import android.location.Location
 import android.util.Log
-import com.retar.go4lunch.ApiClient
+import com.retar.go4lunch.api.ApiClient
 import com.retar.go4lunch.utils.getApiString
 import com.retar.go4lunch.utils.getLatLng
 import com.retar.go4lunch.ui.map.model.UiMarkerModel
