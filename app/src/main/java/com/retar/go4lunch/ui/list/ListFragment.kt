@@ -27,7 +27,6 @@ class ListFragment : DaggerFragment(), ListView {
         super.onActivityCreated(savedInstanceState)
 
         presenter.onActivityCreated()
-
     }
 
     companion object {
