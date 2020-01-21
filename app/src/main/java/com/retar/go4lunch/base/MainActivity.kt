@@ -1,4 +1,4 @@
-package com.retar.go4lunch
+package com.retar.go4lunch.base
 
 import android.Manifest
 import android.content.Intent
@@ -9,13 +9,9 @@ import android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.Fragment
-import com.retar.go4lunch.ui.list.ListFragment
-import com.retar.go4lunch.ui.map.MapFragment
-import com.retar.go4lunch.ui.mates.MatesFragment
+import com.retar.go4lunch.R
 import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
-import javax.inject.Inject
 
 
 class MainActivity : DaggerAppCompatActivity() {
@@ -25,23 +21,8 @@ class MainActivity : DaggerAppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        if (permissionsGranted()) setUpTabLayout() else requestPermissions()
 
-        if (permissionsGranted()) loadFragment(
-            MapFragment.newInstance(),
-            MapFragment.TAG
-        ) else requestPermissions()
-
-        bottomNavigation.setOnNavigationItemSelectedListener {
-            when (it.itemId) {
-                R.id.navigation_map -> loadFragment(MapFragment.newInstance(), MapFragment.TAG)
-                R.id.navigation_list -> loadFragment(ListFragment.newInstance(), ListFragment.TAG)
-                R.id.navigation_mates -> loadFragment(
-                    MatesFragment.newInstance(),
-                    MatesFragment.TAG
-                )
-                else -> false
-            }
-        }
     }
 
     private fun permissionsGranted(): Boolean {
@@ -72,7 +53,7 @@ class MainActivity : DaggerAppCompatActivity() {
                 if (grantResults.isNotEmpty()
                     && grantResults[0] == PackageManager.PERMISSION_GRANTED
                 ) {
-                    loadFragment(MapFragment.newInstance(), MapFragment.TAG)
+                    setUpTabLayout()
                 } else {
                     showRationaleForPermissions()
                 }
@@ -119,33 +100,25 @@ class MainActivity : DaggerAppCompatActivity() {
     }
 
 
-    private fun loadFragment(newFragment: Fragment, tag: String): Boolean {
 
-        val fragmentTransaction = supportFragmentManager.beginTransaction()
+    private fun setUpTabLayout() {
+        viewPager.adapter =
+            TabAdapter(supportFragmentManager, this)
+        viewPager.offscreenPageLimit =
+            OFFSCREEN_PAGES
 
-        val curFrag = supportFragmentManager.primaryNavigationFragment
-        if (curFrag != null) {
-            fragmentTransaction.detach(curFrag)
-        }
+        tab_layout.setupWithViewPager(viewPager)
+        tab_layout.getTabAt(0)?.setIcon(R.drawable.ic_map)
+        tab_layout.getTabAt(1)?.setIcon(R.drawable.ic_list)
+        tab_layout.getTabAt(2)?.setIcon(R.drawable.ic_mates)
 
-        var fragment = supportFragmentManager.findFragmentByTag(tag)
-        if (fragment == null) {
-            fragment = newFragment
-            fragmentTransaction.add(R.id.fragmentContainer, fragment, tag)
-        } else {
-            fragmentTransaction.attach(fragment)
-        }
-
-        fragmentTransaction.setPrimaryNavigationFragment(fragment)
-            .setReorderingAllowed(true)
-            .commitNowAllowingStateLoss()
-
-        return true
     }
 
     companion object {
         const val LOCATION_PERMISSION_REQUEST_CODE = 15
         const val ZOOM_MODE = 15f
+        const val OFFSCREEN_PAGES = 2
+
     }
 
 }

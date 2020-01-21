@@ -15,7 +15,7 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
-import com.retar.go4lunch.MainActivity
+import com.retar.go4lunch.base.MainActivity
 import com.retar.go4lunch.R
 import com.retar.go4lunch.ui.map.model.UiMarkerModel
 import dagger.android.support.DaggerFragment
