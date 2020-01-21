@@ -2,16 +2,13 @@ package com.retar.go4lunch.ui.map
 
 import android.location.Location
 import android.util.Log
-import com.google.android.gms.maps.model.LatLng
 import com.retar.go4lunch.repository.restaurant.RestaurantsRepository
 import com.retar.go4lunch.repository.restaurant.model.RestaurantEntity
+import com.retar.go4lunch.ui.map.MapFragment.Companion.TAG
 import com.retar.go4lunch.ui.map.model.UiMarkerModel
-import com.retar.go4lunch.utils.getApiString
 import com.retar.go4lunch.utils.getLatLng
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.rxkotlin.subscribeBy
-import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 class MapViewPresenterImpl @Inject constructor(
@@ -40,22 +37,22 @@ class MapViewPresenterImpl @Inject constructor(
     }
 
     private fun loadNearbyRestaurants(
-        location:Location,
+        location: Location,
         distance: String = "500"
     ) {
 
         disposable =
-            repository.getRestaurants(location,distance)
-                .subscribeOn(Schedulers.io())
+            repository
+                .getRestaurants(location, distance)
                 .map {
                     mapRestaurantResponseToUi(it)
                 }
-                .observeOn(AndroidSchedulers.mainThread())
                 .subscribeBy(
                     onSuccess = {
                         view.addMarkers(it)
                     },
                     onError = {
+                        Log.d(TAG, it.localizedMessage)
                         //todo handle error on maps response
                     }
                 )
@@ -65,7 +62,6 @@ class MapViewPresenterImpl @Inject constructor(
         val markersList = mutableListOf<UiMarkerModel>()
         restaurantEntity.forEach {
             markersList.add(UiMarkerModel(it.latLng, it.name, it.id))
-            Log.d("čič", it.distance)
         }
         return markersList
     }
