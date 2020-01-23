@@ -14,7 +14,7 @@ class ListViewPresenterImpl @Inject constructor(
     private var disposable: Disposable? = null
 
 
-    private fun loadData() {
+    private fun observeData() {
         disposable = repository.list
             .subscribeBy(
                 onNext = {
@@ -35,6 +35,6 @@ class ListViewPresenterImpl @Inject constructor(
     }
 
     override fun onActivityCreated() {
-        loadData()
+        observeData()
     }
 }

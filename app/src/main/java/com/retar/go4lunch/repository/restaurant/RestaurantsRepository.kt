@@ -12,5 +12,5 @@ interface RestaurantsRepository {
     val list: BehaviorSubject<List<RestaurantEntity>>
 
 
-    fun getRestaurants(location: Location, distance: String): Single<List<RestaurantEntity>>
+    fun getRestaurants(location: Location, distance: String, resetData:Boolean)
 }

@@ -11,31 +11,40 @@ import com.retar.go4lunch.utils.getApiString
 import com.retar.go4lunch.utils.getLatLng
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.Disposable
+import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.subjects.BehaviorSubject
 import javax.inject.Inject
 
-class RestaurantsRepositoryImpl @Inject constructor(private val googlePlacesApi: GooglePlacesApi): RestaurantsRepository {
+class RestaurantsRepositoryImpl @Inject constructor(private val googlePlacesApi: GooglePlacesApi) :
+    RestaurantsRepository {
 
     override val list: BehaviorSubject<List<RestaurantEntity>> = BehaviorSubject.create()
 
-    override fun getRestaurants(
-        location: Location,
-        distance: String
-    ): Single<List<RestaurantEntity>> {
-        return googlePlacesApi.getNearbyRestaurants(
-            location.getApiString(),
-            distance
-        )
-            .observeOn(AndroidSchedulers.mainThread())
-            .map {
-                mapToRestaurantEntity(
-                    it, location.getLatLng()
+    private var disposable: Disposable? = null
+
+    override fun getRestaurants(location: Location, distance: String, resetData: Boolean) {
+
+        if (list.value == null || resetData){
+            disposable = googlePlacesApi.getNearbyRestaurants(
+                location.getApiString(),
+                distance
+            )
+                .observeOn(AndroidSchedulers.mainThread())
+                .map {
+                    mapToRestaurantEntity(
+                        it, location.getLatLng()
+                    )
+                }
+                .subscribeBy(
+                    onSuccess = {
+                        list.onNext(it)
+                        disposable?.dispose()
+                    }
                 )
-            }
-            .doAfterSuccess {
-                Log.d("čič", "dajem na list")
-                list.onNext(it)
-            }
+
+        }
+
 
     }
 
