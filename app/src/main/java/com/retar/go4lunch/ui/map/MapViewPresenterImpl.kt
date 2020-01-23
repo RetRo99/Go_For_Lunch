@@ -25,38 +25,44 @@ class MapViewPresenterImpl @Inject constructor(
     }
 
     override fun onMapReady() {
-        view.getLastLocation()
+        observerData()
+        view.getLastLocation(isFromFab = false)
     }
 
-    override fun onGotLastLocation(location: Location) {
+    override fun onGotLastLocation(location: Location, isFromFab: Boolean) {
         view.zoomToLocation(location.getLatLng())
-        loadNearbyRestaurants(location)
+        loadNearbyRestaurants(location, isFromFab)
     }
 
     override fun onFabClick() {
-        view.getLastLocation()
+        view.getLastLocation(true)
+    }
+
+    private fun observerData() {
+        disposable = repository.list
+            .map {
+                mapRestaurantResponseToUi(it)
+            }
+            .subscribeBy(
+                onNext = {
+                    view.addMarkers(it)
+                },
+                onError = {
+                    ///todo handle error
+                }
+            )
     }
 
     private fun loadNearbyRestaurants(
         location: Location,
+        isFromFab: Boolean,
         distance: String = "500"
     ) {
 
-        disposable =
-            repository
-                .getRestaurants(location, distance)
-                .map {
-                    mapRestaurantResponseToUi(it)
-                }
-                .subscribeBy(
-                    onSuccess = {
-                        view.addMarkers(it)
-                    },
-                    onError = {
-                        Log.d(TAG, it.localizedMessage)
-                        //todo handle error on maps response
-                    }
-                )
+
+        repository
+            .getRestaurants(location, distance, isFromFab)
+
     }
 
     private fun mapRestaurantResponseToUi(restaurantEntity: List<RestaurantEntity>): List<UiMarkerModel> {

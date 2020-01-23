@@ -6,7 +6,7 @@ import com.retar.go4lunch.ui.map.model.UiMarkerModel
 interface MapView {
 
     fun addMarkers(markers: List<UiMarkerModel>)
-    fun getLastLocation()
+    fun getLastLocation(isFromFab: Boolean)
     fun getMapAsync()
     fun zoomToLocation(latLng: LatLng)
 

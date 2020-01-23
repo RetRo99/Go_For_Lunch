@@ -72,14 +72,14 @@ class MapFragment : DaggerFragment(), MapView,
 
     }
 
-    override fun getLastLocation() {
+    override fun getLastLocation(isFromFab:Boolean) {
         activity?.let {
             val fusedLocationClient: FusedLocationProviderClient =
                 LocationServices.getFusedLocationProviderClient(it)
             fusedLocationClient.lastLocation
                 .addOnSuccessListener { location: Location? ->
                     location?.let {
-                        presenter.onGotLastLocation(location)
+                        presenter.onGotLastLocation(location, isFromFab)
                     }
                 }
         }
