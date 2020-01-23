@@ -16,8 +16,9 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 import javax.inject.Singleton
 
 @Module
-class RetrofitModule {
+class RetrofitModule  {
 
+    @Throws(IllegalStateException::class)
     @Provides
     @Singleton
     fun provideApiBaseUrl(): HttpUrl {
@@ -88,7 +89,4 @@ class RetrofitModule {
         return retrofit.create(GooglePlacesApi::class.java)
     }
 
-    companion object {
-
-    }
 }

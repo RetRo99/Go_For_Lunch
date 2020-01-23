@@ -8,7 +8,7 @@ interface MapViewPresenter {
     fun onActivityCreated()
     fun onMapReady()
     fun onGotLastLocation(location: Location)
-    fun zoomToCurrentLocation()
+    fun onFabClick()
     fun onDestroy()
 
 }

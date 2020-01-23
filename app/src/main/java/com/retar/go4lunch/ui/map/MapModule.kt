@@ -1,6 +1,8 @@
 package com.retar.go4lunch.ui.map
 
 import androidx.fragment.app.Fragment
+import com.retar.go4lunch.ui.mainfragment.MainViewPresenter
+import com.retar.go4lunch.ui.mainfragment.MainViewPresenterImpl
 import dagger.Binds
 import dagger.Module
 
