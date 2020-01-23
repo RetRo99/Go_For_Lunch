@@ -6,10 +6,13 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS
+import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.retar.go4lunch.R
+import com.retar.go4lunch.ui.mainfragment.MainFragment
 import dagger.android.support.DaggerAppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -20,8 +23,6 @@ class MainActivity : DaggerAppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
-        if (permissionsGranted()) setUpTabLayout() else requestPermissions()
 
     }
 
@@ -53,7 +54,7 @@ class MainActivity : DaggerAppCompatActivity() {
                 if (grantResults.isNotEmpty()
                     && grantResults[0] == PackageManager.PERMISSION_GRANTED
                 ) {
-                    setUpTabLayout()
+                    Toast.makeText(this, "teste", Toast.LENGTH_LONG).show()
                 } else {
                     showRationaleForPermissions()
                 }
@@ -88,6 +89,7 @@ class MainActivity : DaggerAppCompatActivity() {
             .setNegativeButton("EXIT") { _, _ ->
                 finish()
             }
+            .setCancelable(false)
             .create()
             .show()
     }
@@ -100,25 +102,15 @@ class MainActivity : DaggerAppCompatActivity() {
     }
 
 
-
-    private fun setUpTabLayout() {
-        viewPager.adapter =
-            TabAdapter(supportFragmentManager, this)
-        viewPager.offscreenPageLimit =
-            OFFSCREEN_PAGES
-
-        tab_layout.setupWithViewPager(viewPager)
-        tab_layout.getTabAt(0)?.setIcon(R.drawable.ic_map)
-        tab_layout.getTabAt(1)?.setIcon(R.drawable.ic_list)
-        tab_layout.getTabAt(2)?.setIcon(R.drawable.ic_mates)
-
-    }
-
     companion object {
         const val LOCATION_PERMISSION_REQUEST_CODE = 15
         const val ZOOM_MODE = 15f
-        const val OFFSCREEN_PAGES = 2
 
     }
 
+    override fun onStart() {
+        super.onStart()
+        if (!permissionsGranted()) requestPermissions()
+
+    }
 }

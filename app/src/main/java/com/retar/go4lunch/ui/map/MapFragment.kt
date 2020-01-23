@@ -42,7 +42,7 @@ class MapFragment : DaggerFragment(), MapView,
         super.onActivityCreated(savedInstanceState)
 
         fabGetLocation.setOnClickListener {
-            presenter.zoomToCurrentLocation()
+            presenter.onFabClick()
         }
 
         presenter.onActivityCreated()

@@ -4,6 +4,8 @@ import android.location.Location
 import android.util.Log
 import com.retar.go4lunch.repository.restaurant.RestaurantsRepository
 import com.retar.go4lunch.repository.restaurant.model.RestaurantEntity
+import com.retar.go4lunch.ui.mainfragment.MainView
+import com.retar.go4lunch.ui.mainfragment.MainViewPresenter
 import com.retar.go4lunch.ui.map.MapFragment.Companion.TAG
 import com.retar.go4lunch.ui.map.model.UiMarkerModel
 import com.retar.go4lunch.utils.getLatLng
@@ -29,10 +31,9 @@ class MapViewPresenterImpl @Inject constructor(
     override fun onGotLastLocation(location: Location) {
         view.zoomToLocation(location.getLatLng())
         loadNearbyRestaurants(location)
-
     }
 
-    override fun zoomToCurrentLocation() {
+    override fun onFabClick() {
         view.getLastLocation()
     }
 
