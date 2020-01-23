@@ -3,22 +3,18 @@ package com.retar.go4lunch.repository.restaurant
 import android.location.Location
 import android.util.Log
 import com.google.android.gms.maps.model.LatLng
-import com.retar.go4lunch.api.ApiClient
 import com.retar.go4lunch.api.response.nearbysearchresponse.NearbySearchResponse
 import com.retar.go4lunch.api.response.nearbysearchresponse.Results
+import com.retar.go4lunch.api.retrofit.GooglePlacesApi
 import com.retar.go4lunch.repository.restaurant.model.RestaurantEntity
 import com.retar.go4lunch.utils.getApiString
 import com.retar.go4lunch.utils.getLatLng
-import io.reactivex.Observable
-import io.reactivex.Scheduler
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.rxkotlin.toObservable
-import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.BehaviorSubject
-import io.reactivex.subjects.PublishSubject
+import javax.inject.Inject
 
-class RestaurantsRepositoryImpl : RestaurantsRepository {
+class RestaurantsRepositoryImpl @Inject constructor(private val googlePlacesApi: GooglePlacesApi): RestaurantsRepository {
 
     override val list: BehaviorSubject<List<RestaurantEntity>> = BehaviorSubject.create()
 
@@ -26,10 +22,10 @@ class RestaurantsRepositoryImpl : RestaurantsRepository {
         location: Location,
         distance: String
     ): Single<List<RestaurantEntity>> {
-        return ApiClient.getGoogleMapsRestaurants.getNearbyRestaurants(
+        return googlePlacesApi.getNearbyRestaurants(
             location.getApiString(),
             distance
-        ).subscribeOn(Schedulers.io())
+        )
             .observeOn(AndroidSchedulers.mainThread())
             .map {
                 mapToRestaurantEntity(
