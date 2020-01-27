@@ -7,8 +7,9 @@ interface MapViewPresenter {
 
     fun onActivityCreated()
     fun onMapReady()
-    fun onGotLastLocation(location: Location, isFromFab:Boolean)
+    fun onGotLastLocation(location: Location, isFromFab: Boolean)
     fun onFabClick()
     fun onDestroy()
+    fun onMarkerClicked(id: String)
 
 }

@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -15,8 +14,8 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
-import com.retar.go4lunch.base.MainActivity
 import com.retar.go4lunch.R
+import com.retar.go4lunch.base.LocationPermissionActivity
 import com.retar.go4lunch.ui.map.model.UiMarkerModel
 import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.fragment_map_view.*
@@ -54,8 +53,7 @@ class MapFragment : DaggerFragment(), MapView,
             googleMap = it
 
             googleMap.setOnInfoWindowClickListener { marker ->
-                //todo show different fragment
-                Toast.makeText(context, marker.tag.toString(), Toast.LENGTH_LONG).show()
+                presenter.onMarkerClicked(marker.tag.toString())
             }
 
             presenter.onMapReady()
@@ -72,7 +70,7 @@ class MapFragment : DaggerFragment(), MapView,
 
     }
 
-    override fun getLastLocation(isFromFab:Boolean) {
+    override fun getLastLocation(isFromFab: Boolean) {
         activity?.let {
             val fusedLocationClient: FusedLocationProviderClient =
                 LocationServices.getFusedLocationProviderClient(it)
@@ -90,7 +88,7 @@ class MapFragment : DaggerFragment(), MapView,
         googleMap.animateCamera(
             CameraUpdateFactory.newLatLngZoom(
                 latLng,
-                MainActivity.ZOOM_MODE
+                LocationPermissionActivity.ZOOM_MODE
             )
         )
         googleMap.addMarker(MarkerOptions().position(latLng))

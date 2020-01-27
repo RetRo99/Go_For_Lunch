@@ -16,7 +16,7 @@ import retrofit2.converter.moshi.MoshiConverterFactory
 import javax.inject.Singleton
 
 @Module
-class RetrofitModule  {
+class RetrofitModule {
 
     @Throws(IllegalStateException::class)
     @Provides
@@ -33,7 +33,9 @@ class RetrofitModule  {
     }
 
 
-    @Provides @Singleton fun provideCallAdapterFactory(): CallAdapter.Factory {
+    @Provides
+    @Singleton
+    fun provideCallAdapterFactory(): CallAdapter.Factory {
         return RxJava2CallAdapterFactory.createWithScheduler(Schedulers.io())
     }
 

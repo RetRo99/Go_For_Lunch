@@ -6,18 +6,15 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS
-import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.retar.go4lunch.R
-import com.retar.go4lunch.ui.mainfragment.MainFragment
 import dagger.android.support.DaggerAppCompatActivity
-import kotlinx.android.synthetic.main.activity_main.*
 
 
-class MainActivity : DaggerAppCompatActivity() {
+abstract class LocationPermissionActivity : DaggerAppCompatActivity() {
 
 
     override fun onCreate(savedInstanceState: Bundle?) {

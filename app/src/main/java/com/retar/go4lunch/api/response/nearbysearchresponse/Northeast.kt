@@ -1,7 +1,7 @@
 package com.retar.go4lunch.api.response.nearbysearchresponse
 
-data class Northeast (
+data class Northeast(
 
-	val lat : Double,
-	val lng : Double
+    val lat: Double,
+    val lng: Double
 )

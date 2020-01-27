@@ -1,12 +1,9 @@
 package com.retar.go4lunch.ui.map
 
 import android.location.Location
-import android.util.Log
 import com.retar.go4lunch.repository.restaurant.RestaurantsRepository
 import com.retar.go4lunch.repository.restaurant.model.RestaurantEntity
-import com.retar.go4lunch.ui.mainfragment.MainView
-import com.retar.go4lunch.ui.mainfragment.MainViewPresenter
-import com.retar.go4lunch.ui.map.MapFragment.Companion.TAG
+import com.retar.go4lunch.ui.MainViewPresenter
 import com.retar.go4lunch.ui.map.model.UiMarkerModel
 import com.retar.go4lunch.utils.getLatLng
 import io.reactivex.disposables.Disposable
@@ -15,7 +12,9 @@ import javax.inject.Inject
 
 class MapViewPresenterImpl @Inject constructor(
     private val view: MapView,
-    private val repository: RestaurantsRepository
+    private val repository: RestaurantsRepository,
+    private val parentPresenter: MainViewPresenter
+
 ) : MapViewPresenter {
 
     private var disposable: Disposable? = null
@@ -56,7 +55,7 @@ class MapViewPresenterImpl @Inject constructor(
     private fun loadNearbyRestaurants(
         location: Location,
         isFromFab: Boolean,
-        distance: String = "500"
+        distance: String = DEFAULT_DISTANCE
     ) {
 
 
@@ -73,8 +72,17 @@ class MapViewPresenterImpl @Inject constructor(
         return markersList
     }
 
+    override fun onMarkerClicked(id: String) {
+        parentPresenter.toRestaurantDetail()
+
+    }
+
     override fun onDestroy() {
         disposable?.dispose()
     }
 
+    companion object {
+
+        private const val DEFAULT_DISTANCE = "1500"
+    }
 }
