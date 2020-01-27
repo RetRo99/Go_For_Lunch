@@ -1,7 +1,6 @@
 package com.retar.go4lunch.repository.restaurant
 
 import android.location.Location
-import android.util.Log
 import com.google.android.gms.maps.model.LatLng
 import com.retar.go4lunch.api.response.nearbysearchresponse.NearbySearchResponse
 import com.retar.go4lunch.api.response.nearbysearchresponse.Results
@@ -9,7 +8,6 @@ import com.retar.go4lunch.api.retrofit.GooglePlacesApi
 import com.retar.go4lunch.repository.restaurant.model.RestaurantEntity
 import com.retar.go4lunch.utils.getApiString
 import com.retar.go4lunch.utils.getLatLng
-import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.rxkotlin.subscribeBy
@@ -25,7 +23,7 @@ class RestaurantsRepositoryImpl @Inject constructor(private val googlePlacesApi:
 
     override fun getRestaurants(location: Location, distance: String, resetData: Boolean) {
 
-        if (list.value == null || resetData){
+        if (list.value == null || resetData) {
             disposable = googlePlacesApi.getNearbyRestaurants(
                 location.getApiString(),
                 distance

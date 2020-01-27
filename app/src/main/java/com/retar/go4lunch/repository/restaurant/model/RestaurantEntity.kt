@@ -9,7 +9,7 @@ data class RestaurantEntity(
     private val distance: String,
     private val address: String,
     val photoUrl: String?,
-    val isOpenedNow:String
+    val isOpenedNow: String
 ) {
 
     fun distance(): String {

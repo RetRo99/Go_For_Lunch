@@ -1,4 +1,4 @@
-package com.retar.go4lunch.base
+package com.retar.go4lunch.ui.holderfragment.adapter
 
 import android.content.Context
 import android.util.Log

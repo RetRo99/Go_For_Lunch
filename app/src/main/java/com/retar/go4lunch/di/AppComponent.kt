@@ -1,7 +1,6 @@
 package com.retar.go4lunch.di
 
 import android.app.Application
-import com.retar.go4lunch.ui.map.MapModule
 import dagger.BindsInstance
 import dagger.Component
 import dagger.android.AndroidInjector

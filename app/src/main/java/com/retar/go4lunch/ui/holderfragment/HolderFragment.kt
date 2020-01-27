@@ -1,23 +1,19 @@
-package com.retar.go4lunch.ui.mainfragment
+package com.retar.go4lunch.ui.holderfragment
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-
 import com.retar.go4lunch.R
-import com.retar.go4lunch.base.TabAdapter
-import com.retar.go4lunch.ui.map.MapViewPresenter
+import com.retar.go4lunch.ui.holderfragment.adapter.TabAdapter
 import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.fragment_main.*
 import javax.inject.Inject
 
-class MainFragment : DaggerFragment(), MainView {
+class HolderFragment : DaggerFragment(), HolderView {
 
     @Inject
-    lateinit var presenter: MainViewPresenter
+    lateinit var presenter: HolderViewPresenter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,24 +30,25 @@ class MainFragment : DaggerFragment(), MainView {
 
     companion object {
         @JvmStatic
-        fun newInstance() = MainFragment()
+        fun newInstance() = HolderFragment()
 
         const val OFFSCREEN_PAGES = 2
 
     }
 
-    override fun toRestaurantDetail(id: String) {
-        Toast.makeText(context, "heheh", Toast.LENGTH_LONG).show()
-    }
 
     override fun setUpLayout() {
         viewPager.adapter =
-            TabAdapter(childFragmentManager, requireContext())
+            TabAdapter(
+                childFragmentManager,
+                requireContext()
+            )
         viewPager.offscreenPageLimit =
             OFFSCREEN_PAGES
 
         tab_layout.setupWithViewPager(viewPager)
         tab_layout.getTabAt(0)?.setIcon(R.drawable.ic_map)
         tab_layout.getTabAt(1)?.setIcon(R.drawable.ic_list)
-        tab_layout.getTabAt(2)?.setIcon(R.drawable.ic_mates)    }
+        tab_layout.getTabAt(2)?.setIcon(R.drawable.ic_mates)
+    }
 }
