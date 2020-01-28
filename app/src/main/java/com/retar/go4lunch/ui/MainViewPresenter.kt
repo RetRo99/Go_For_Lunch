@@ -2,5 +2,5 @@ package com.retar.go4lunch.ui
 
 interface MainViewPresenter {
 
-    fun toRestaurantDetail()
+    fun toRestaurantDetail(id: String)
 }

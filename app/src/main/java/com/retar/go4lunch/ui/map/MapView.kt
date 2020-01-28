@@ -8,6 +8,7 @@ interface MapView {
     fun addMarkers(markers: List<UiMarkerModel>)
     fun getLastLocation(isFromFab: Boolean)
     fun getMapAsync()
-    fun zoomToLocation(latLng: LatLng)
+    fun animateToLocation(latLng: LatLng)
+    fun moveToLocation(latLng: LatLng)
 
 }

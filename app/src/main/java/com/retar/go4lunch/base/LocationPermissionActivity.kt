@@ -10,17 +10,22 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.navigation.NavController
+import androidx.navigation.findNavController
 import com.retar.go4lunch.R
 import dagger.android.support.DaggerAppCompatActivity
 
 
-abstract class LocationPermissionActivity : DaggerAppCompatActivity() {
+abstract class LocationPermissionActivity : DaggerAppCompatActivity(), ProvideNavController {
 
+
+    override fun getNavController(): NavController {
+        return findNavController(R.id.nav_host)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
     }
 
     private fun permissionsGranted(): Boolean {
@@ -101,8 +106,6 @@ abstract class LocationPermissionActivity : DaggerAppCompatActivity() {
 
     companion object {
         const val LOCATION_PERMISSION_REQUEST_CODE = 15
-        const val ZOOM_MODE = 15f
-
     }
 
     override fun onStart() {

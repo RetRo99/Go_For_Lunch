@@ -84,14 +84,22 @@ class MapFragment : DaggerFragment(), MapView,
 
     }
 
-    override fun zoomToLocation(latLng: LatLng) {
+    override fun animateToLocation(latLng: LatLng) {
         googleMap.animateCamera(
             CameraUpdateFactory.newLatLngZoom(
                 latLng,
-                LocationPermissionActivity.ZOOM_MODE
+                ZOOM_MODE
             )
         )
-        googleMap.addMarker(MarkerOptions().position(latLng))
+    }
+
+    override fun moveToLocation(latLng: LatLng) {
+        googleMap.moveCamera(
+            CameraUpdateFactory.newLatLngZoom(
+                latLng,
+                ZOOM_MODE
+            )
+        )
     }
 
     override fun addMarkers(markers: List<UiMarkerModel>) {
@@ -107,6 +115,9 @@ class MapFragment : DaggerFragment(), MapView,
     companion object {
 
         const val TAG = "com.retar.go4lunch.ui.map.mapfragment"
+
+        const val ZOOM_MODE = 15f
+
 
         @JvmStatic
         fun newInstance() = MapFragment()
