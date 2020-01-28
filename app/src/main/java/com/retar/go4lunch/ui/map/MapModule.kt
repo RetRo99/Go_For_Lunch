@@ -3,6 +3,7 @@ package com.retar.go4lunch.ui.map
 import androidx.fragment.app.Fragment
 import dagger.Binds
 import dagger.Module
+import javax.inject.Singleton
 
 @Module
 internal interface MapModule {

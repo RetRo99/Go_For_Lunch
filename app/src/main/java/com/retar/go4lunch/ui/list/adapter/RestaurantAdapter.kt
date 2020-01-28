@@ -10,11 +10,11 @@ import com.retar.go4lunch.utils.inflate
 import com.retar.go4lunch.utils.loadPhotoFromUrl
 import kotlinx.android.synthetic.main.fragment_list_item.view.*
 
-class RestaurantAdapter(val restaurants: List<RestaurantEntity>) :
+class RestaurantAdapter(private val restaurants: List<RestaurantEntity>, val action: (String) -> Unit) :
     RecyclerView.Adapter<RestaurantAdapter.RestaurantHolder>() {
 
 
-    class RestaurantHolder(v: View) : RecyclerView.ViewHolder(v) {
+    inner class RestaurantHolder(v: View) : RecyclerView.ViewHolder(v) {
         private var view: View = v
 
         fun bindRestaurant(restaurant: RestaurantEntity) {
@@ -24,13 +24,12 @@ class RestaurantAdapter(val restaurants: List<RestaurantEntity>) :
                 fragment_list_restaurant_view_item_address.text = restaurant.address()
                 fragment_list_restaurant_view_item_distance.text = "${restaurant.distance()} m"
                 fragment_list_restaurant_view_item_opening_hours.text = restaurant.isOpenedNow
-                setOnClickListener {
-                    Toast.makeText(context, "test", Toast.LENGTH_LONG).show()
+                fragment_list_restaurant_view_item_image.loadPhotoFromUrl(restaurant.photoUrl)
 
+                view.setOnClickListener{
+                    action(restaurant.id)
                 }
 
-
-                fragment_list_restaurant_view_item_image.loadPhotoFromUrl(restaurant.photoUrl)
             }
         }
 
@@ -38,7 +37,7 @@ class RestaurantAdapter(val restaurants: List<RestaurantEntity>) :
     }
 
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RestaurantHolder {
+     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RestaurantHolder {
         val inflatedView = parent.inflate(R.layout.fragment_list_item)
         return RestaurantHolder(
             inflatedView
@@ -50,8 +49,8 @@ class RestaurantAdapter(val restaurants: List<RestaurantEntity>) :
     }
 
     override fun onBindViewHolder(holder: RestaurantHolder, position: Int) {
-        val venue = restaurants[position]
-        holder.bindRestaurant(venue)
+        val restaurant = restaurants[position]
+        holder.bindRestaurant(restaurant)
 
     }
 }

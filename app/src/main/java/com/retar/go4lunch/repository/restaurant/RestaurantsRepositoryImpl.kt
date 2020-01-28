@@ -80,7 +80,7 @@ class RestaurantsRepositoryImpl @Inject constructor(private val googlePlacesApi:
         }
         //todo extract strings
         return if (openedBoolean != null) {
-            if (openedBoolean as Boolean) "Restaurant is opened" else "Restaurant is closed"
+            if (openedBoolean as Boolean) "Restaurant is open" else "Restaurant is closed"
         } else {
             "We don't have any information"
         }

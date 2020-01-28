@@ -1,4 +1,4 @@
-package com.retar.go4lunch.di
+package com.retar.go4lunch.ui
 
 import com.retar.go4lunch.ui.holderfragment.HolderFragment
 import com.retar.go4lunch.ui.holderfragment.HolderModule

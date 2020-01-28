@@ -1,13 +1,15 @@
 package com.retar.go4lunch.ui.list
 
 import com.retar.go4lunch.repository.restaurant.RestaurantsRepository
+import com.retar.go4lunch.ui.MainViewPresenter
 import io.reactivex.disposables.Disposable
 import io.reactivex.rxkotlin.subscribeBy
 import javax.inject.Inject
 
 class ListViewPresenterImpl @Inject constructor(
     private val view: ListView,
-    private val repository: RestaurantsRepository
+    private val repository: RestaurantsRepository,
+    private val parentPresenter: MainViewPresenter
 ) : ListViewPresenter {
 
 
@@ -20,6 +22,7 @@ class ListViewPresenterImpl @Inject constructor(
                 onNext = {
                     view.loadData(it)
                 },
+
                 onError = {
                     ///todo handle error
                 }
@@ -31,7 +34,7 @@ class ListViewPresenterImpl @Inject constructor(
     }
 
     override fun onListItemClick(id: String) {
-        // TODO not implemented
+        parentPresenter.toRestaurantDetail(id)
     }
 
     override fun onActivityCreated() {

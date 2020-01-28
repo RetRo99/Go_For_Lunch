@@ -1,7 +1,6 @@
 package com.retar.go4lunch.ui
 
 import android.app.Activity
-import com.retar.go4lunch.di.UiModule
 import dagger.Binds
 import dagger.Module
 

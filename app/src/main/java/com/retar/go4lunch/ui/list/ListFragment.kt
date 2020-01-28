@@ -41,7 +41,9 @@ class ListFragment : DaggerFragment(), ListView {
     }
 
     override fun loadData(data: List<RestaurantEntity>) {
-        recyclerView.adapter = RestaurantAdapter(data)
+        recyclerView.adapter = RestaurantAdapter(data){
+            presenter.onListItemClick(it)
+        }
     }
 
 }

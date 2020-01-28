@@ -29,7 +29,13 @@ class MapViewPresenterImpl @Inject constructor(
     }
 
     override fun onGotLastLocation(location: Location, isFromFab: Boolean) {
-        view.zoomToLocation(location.getLatLng())
+
+        if (isFirstRun || isFromFab){
+            view.animateToLocation(location.getLatLng())
+            isFirstRun = false
+        }else{
+            view.moveToLocation(location.getLatLng())
+        }
         loadNearbyRestaurants(location, isFromFab)
     }
 
@@ -73,7 +79,7 @@ class MapViewPresenterImpl @Inject constructor(
     }
 
     override fun onMarkerClicked(id: String) {
-        parentPresenter.toRestaurantDetail()
+        parentPresenter.toRestaurantDetail(id)
 
     }
 
@@ -82,6 +88,7 @@ class MapViewPresenterImpl @Inject constructor(
     }
 
     companion object {
+        private var isFirstRun = true
 
         private const val DEFAULT_DISTANCE = "1500"
     }

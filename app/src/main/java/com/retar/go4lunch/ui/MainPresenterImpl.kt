@@ -7,8 +7,8 @@ class MainPresenterImpl @Inject constructor(
 
 ) : MainViewPresenter {
 
-    override fun toRestaurantDetail() {
-        view.fromHolderToResturantDetail()
+    override fun toRestaurantDetail(id: String) {
+        view.fromHolderToResturantDetail(id)
     }
 
 
