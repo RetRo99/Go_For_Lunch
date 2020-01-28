@@ -2,15 +2,14 @@ package com.retar.go4lunch.ui.list.adapter
 
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.retar.go4lunch.R
-import com.retar.go4lunch.repository.restaurant.model.RestaurantEntity
+import com.retar.go4lunch.repository.restaurant.restaurant.model.model.RestaurantEntity
 import com.retar.go4lunch.utils.inflate
 import com.retar.go4lunch.utils.loadPhotoFromUrl
 import kotlinx.android.synthetic.main.fragment_list_item.view.*
 
-class RestaurantAdapter(private val restaurants: List<RestaurantEntity>, val action: (String) -> Unit) :
+class RestaurantAdapter(private val restaurants: List<RestaurantEntity>, private val action: (String) -> Unit) :
     RecyclerView.Adapter<RestaurantAdapter.RestaurantHolder>() {
 
 

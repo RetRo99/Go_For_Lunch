@@ -5,7 +5,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.retar.go4lunch.api.response.nearbysearchresponse.NearbySearchResponse
 import com.retar.go4lunch.api.response.nearbysearchresponse.Results
 import com.retar.go4lunch.api.retrofit.GooglePlacesApi
-import com.retar.go4lunch.repository.restaurant.model.RestaurantEntity
+import com.retar.go4lunch.repository.restaurant.restaurant.model.model.RestaurantEntity
 import com.retar.go4lunch.utils.getApiString
 import com.retar.go4lunch.utils.getLatLng
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -17,13 +17,13 @@ import javax.inject.Inject
 class RestaurantsRepositoryImpl @Inject constructor(private val googlePlacesApi: GooglePlacesApi) :
     RestaurantsRepository {
 
-    override val list: BehaviorSubject<List<RestaurantEntity>> = BehaviorSubject.create()
+    override val restaurants: BehaviorSubject<List<RestaurantEntity>> = BehaviorSubject.create()
 
     private var disposable: Disposable? = null
 
     override fun getRestaurants(location: Location, distance: String, resetData: Boolean) {
 
-        if (list.value == null || resetData) {
+        if (restaurants.value == null || resetData) {
             disposable = googlePlacesApi.getNearbyRestaurants(
                 location.getApiString(),
                 distance
@@ -36,7 +36,7 @@ class RestaurantsRepositoryImpl @Inject constructor(private val googlePlacesApi:
                 }
                 .subscribeBy(
                     onSuccess = {
-                        list.onNext(it)
+                        restaurants.onNext(it)
                         disposable?.dispose()
                     }
                 )

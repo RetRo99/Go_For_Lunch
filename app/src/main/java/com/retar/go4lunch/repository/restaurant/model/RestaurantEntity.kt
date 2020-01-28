@@ -1,4 +1,4 @@
-package com.retar.go4lunch.repository.restaurant.model
+package com.retar.go4lunch.repository.restaurant.restaurant.model.model
 
 import com.google.android.gms.maps.model.LatLng
 
