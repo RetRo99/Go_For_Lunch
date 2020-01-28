@@ -17,10 +17,10 @@ class ListViewPresenterImpl @Inject constructor(
 
 
     private fun observeData() {
-        disposable = repository.list
+        disposable = repository.restaurants
             .subscribeBy(
                 onNext = {
-                    view.loadData(it)
+                    view.loadData(it, firstPosition)
                 },
 
                 onError = {
@@ -33,11 +33,16 @@ class ListViewPresenterImpl @Inject constructor(
         disposable?.dispose()
     }
 
-    override fun onListItemClick(id: String) {
+    override fun onListItemClick(id: String, firstItem:Int) {
+        firstPosition = firstItem
         parentPresenter.toRestaurantDetail(id)
     }
 
     override fun onActivityCreated() {
         observeData()
+    }
+
+    companion object{
+        private var firstPosition = 0
     }
 }

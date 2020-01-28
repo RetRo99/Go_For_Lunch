@@ -4,8 +4,9 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.retar.go4lunch.R
-import com.retar.go4lunch.repository.restaurant.model.RestaurantEntity
+import com.retar.go4lunch.repository.restaurant.restaurant.model.model.RestaurantEntity
 import com.retar.go4lunch.ui.list.adapter.RestaurantAdapter
 import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.fragment_list.*
@@ -40,10 +41,17 @@ class ListFragment : DaggerFragment(), ListView {
         super.onDestroy()
     }
 
-    override fun loadData(data: List<RestaurantEntity>) {
-        recyclerView.adapter = RestaurantAdapter(data){
-            presenter.onListItemClick(it)
-        }
-    }
+    override fun loadData(data: List<RestaurantEntity>, firstItem: Int) {
 
+        val linearLayoutManager = LinearLayoutManager(context)
+        recyclerView.layoutManager = linearLayoutManager
+        recyclerView.adapter = RestaurantAdapter(data) {
+            presenter.onListItemClick(
+                it,
+                (recyclerView.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
+            )
+        }
+
+        (recyclerView.layoutManager as LinearLayoutManager).scrollToPosition(firstItem)
+    }
 }

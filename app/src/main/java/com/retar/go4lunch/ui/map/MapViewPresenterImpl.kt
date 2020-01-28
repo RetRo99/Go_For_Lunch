@@ -2,7 +2,7 @@ package com.retar.go4lunch.ui.map
 
 import android.location.Location
 import com.retar.go4lunch.repository.restaurant.RestaurantsRepository
-import com.retar.go4lunch.repository.restaurant.model.RestaurantEntity
+import com.retar.go4lunch.repository.restaurant.restaurant.model.model.RestaurantEntity
 import com.retar.go4lunch.ui.MainViewPresenter
 import com.retar.go4lunch.ui.map.model.UiMarkerModel
 import com.retar.go4lunch.utils.getLatLng
@@ -44,7 +44,7 @@ class MapViewPresenterImpl @Inject constructor(
     }
 
     private fun observerData() {
-        disposable = repository.list
+        disposable = repository.restaurants
             .map {
                 mapRestaurantResponseToUi(it)
             }
