@@ -13,9 +13,9 @@ import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.MarkerOptions
 import com.retar.go4lunch.R
-import com.retar.go4lunch.base.LocationPermissionActivity
 import com.retar.go4lunch.ui.map.model.UiMarkerModel
 import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.fragment_map_view.*
@@ -51,11 +51,6 @@ class MapFragment : DaggerFragment(), MapView,
     override fun onMapReady(map: GoogleMap?) {
         map?.let {
             googleMap = it
-
-            googleMap.setOnInfoWindowClickListener { marker ->
-                presenter.onMarkerClicked(marker.tag.toString())
-            }
-
             presenter.onMapReady()
         }
     }
@@ -98,6 +93,20 @@ class MapFragment : DaggerFragment(), MapView,
             CameraUpdateFactory.newLatLngZoom(
                 latLng,
                 ZOOM_MODE
+            )
+        )
+    }
+
+    override fun setMarkerClickListener() {
+        googleMap.setOnInfoWindowClickListener { marker ->
+            presenter.onMarkerClicked(marker.tag.toString())
+        }
+    }
+
+    override fun setDarkTheme() {
+        googleMap.setMapStyle(
+            MapStyleOptions.loadRawResourceStyle(
+                context, R.raw.style_json
             )
         )
     }

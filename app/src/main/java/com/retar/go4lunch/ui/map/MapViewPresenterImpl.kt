@@ -26,6 +26,8 @@ class MapViewPresenterImpl @Inject constructor(
     override fun onMapReady() {
         observerData()
         view.getLastLocation(isFromFab = false)
+        view.setDarkTheme()
+
     }
 
     override fun onGotLastLocation(location: Location, isFromFab: Boolean) {
@@ -51,6 +53,7 @@ class MapViewPresenterImpl @Inject constructor(
             .subscribeBy(
                 onNext = {
                     view.addMarkers(it)
+                    view.setMarkerClickListener()
                 },
                 onError = {
                     ///todo handle error

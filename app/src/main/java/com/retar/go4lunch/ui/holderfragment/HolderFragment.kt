@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import com.retar.go4lunch.R
 import com.retar.go4lunch.ui.holderfragment.adapter.TabAdapter
 import dagger.android.support.DaggerFragment
-import kotlinx.android.synthetic.main.fragment_main.*
+import kotlinx.android.synthetic.main.fragment_holder.*
 import javax.inject.Inject
 
 class HolderFragment : DaggerFragment(), HolderView {
@@ -19,7 +19,7 @@ class HolderFragment : DaggerFragment(), HolderView {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_main, container, false)
+        return inflater.inflate(R.layout.fragment_holder, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

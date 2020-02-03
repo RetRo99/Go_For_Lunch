@@ -10,5 +10,7 @@ interface MapView {
     fun getMapAsync()
     fun animateToLocation(latLng: LatLng)
     fun moveToLocation(latLng: LatLng)
+    fun setMarkerClickListener()
+    fun setDarkTheme()
 
 }
