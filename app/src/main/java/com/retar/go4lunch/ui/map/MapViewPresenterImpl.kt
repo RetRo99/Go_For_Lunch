@@ -52,7 +52,9 @@ class MapViewPresenterImpl @Inject constructor(
             }
             .subscribeBy(
                 onNext = {
-                    view.addMarkers(it)
+                    it.forEach {
+                        view.addNotVisitedMarker(it)
+                    }
                     view.setMarkerClickListener()
                 },
                 onError = {

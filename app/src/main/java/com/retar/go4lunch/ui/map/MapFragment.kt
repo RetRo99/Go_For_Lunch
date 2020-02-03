@@ -12,6 +12,7 @@ import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.BitmapDescriptorFactory
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.MarkerOptions
@@ -24,6 +25,7 @@ import javax.inject.Inject
 
 class MapFragment : DaggerFragment(), MapView,
     OnMapReadyCallback {
+
     private lateinit var googleMap: GoogleMap
     private var mapFragment: SupportMapFragment? = null
 
@@ -111,13 +113,25 @@ class MapFragment : DaggerFragment(), MapView,
         )
     }
 
-    override fun addMarkers(markers: List<UiMarkerModel>) {
-        markers.forEach {
-            googleMap.addMarker(MarkerOptions().position(it.latLng).title(it.title)).tag =
-                it.id
+    override fun addVisitedMarker(marker: UiMarkerModel) {
+        val mapMarker = MarkerOptions().position(marker.latLng).title(marker.title).run {
+            icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_restaurant_marker_green))
+
         }
 
 
+
+        googleMap.addMarker(mapMarker).tag = marker.id
+
+    }
+
+    override fun addNotVisitedMarker(marker: UiMarkerModel) {
+        val mapMarker = MarkerOptions().position(marker.latLng).title(marker.title).run {
+            icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_restaurant_marker_orange))
+
+        }
+
+        googleMap.addMarker(mapMarker).tag = marker.id
     }
 
 
