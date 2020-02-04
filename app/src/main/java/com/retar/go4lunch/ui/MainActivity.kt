@@ -3,13 +3,14 @@ package com.retar.go4lunch.ui
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuInflater
 import android.view.MenuItem
 import androidx.core.view.GravityCompat
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupWithNavController
 import com.firebase.ui.auth.AuthMethodPickerLayout
 import com.firebase.ui.auth.AuthUI
-import com.firebase.ui.auth.IdpResponse
 import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseUser
 import com.retar.go4lunch.R
@@ -31,7 +32,6 @@ class MainActivity : LocationPermissionActivity(), MainView,
         setContentView(R.layout.activity_main)
         presenter.onCreate()
 
-
     }
 
     override fun startApp(user: FirebaseUser) {
@@ -43,13 +43,21 @@ class MainActivity : LocationPermissionActivity(), MainView,
 
         navigationView.setNavigationItemSelectedListener(this)
         val header = navigationView.getHeaderView(0)
+        toolbar.menu.clear()
         header.apply {
 
             nav_img_profile.loadRoundPhoto(user.photoUrl.toString())
             nav_email.text = user.email
             nav_name.text = user.displayName
         }
+        getNavController().addOnDestinationChangedListener { _, destination, _ ->
+            when (destination.id) {
+                R.id.mainFragment2 -> menuInflater.inflate(R.menu.top_menu, toolbar.menu)
+                else -> toolbar.menu.clear()
 
+
+            }
+        }
     }
 
     override fun loginUser() {
@@ -77,7 +85,12 @@ class MainActivity : LocationPermissionActivity(), MainView,
     }
 
     override fun fromHolderToResturantDetail(id: String, title: String) {
-        getNavController().navigate(HolderFragmentDirections.actionToRestaurantDetailFragment(title, id))
+        getNavController().navigate(
+            HolderFragmentDirections.actionToRestaurantDetailFragment(
+                title,
+                id
+            )
+        )
     }
 
     override fun onNavigationItemSelected(p0: MenuItem): Boolean {
@@ -95,19 +108,31 @@ class MainActivity : LocationPermissionActivity(), MainView,
     }
 
 
+    override fun onCreateOptionsMenu(menu: Menu): Boolean {
+        val inflater: MenuInflater = menuInflater
+        inflater.inflate(R.menu.top_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.search -> {
+                //todo autocomplete
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
         if (requestCode == RC_SIGN_IN) {
-            val response = IdpResponse.fromResultIntent(data)
 
             if (resultCode == Activity.RESULT_OK) {
                 presenter.onUserLogin()
             } else {
-                // Sign in failed. If response is null the user canceled the
-                // sign-in flow using the back button. Otherwise check
-                // response.getError().getErrorCode() and handle the error.
-                // ...
+                loginUser()
             }
         }
     }
