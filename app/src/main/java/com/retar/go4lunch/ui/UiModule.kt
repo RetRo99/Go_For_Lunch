@@ -1,7 +1,5 @@
 package com.retar.go4lunch.ui
 
-import com.retar.go4lunch.ui.holderfragment.HolderFragment
-import com.retar.go4lunch.ui.holderfragment.HolderModule
 import com.retar.go4lunch.ui.list.ListFragment
 import com.retar.go4lunch.ui.list.ListModule
 import com.retar.go4lunch.ui.map.MapFragment
@@ -19,9 +17,6 @@ internal interface UiModule {
 
     @ContributesAndroidInjector(modules = [ListModule::class])
     fun contributeListFragmentInjector(): ListFragment
-
-    @ContributesAndroidInjector(modules = [HolderModule::class])
-    fun contributeMainFragmentInjector(): HolderFragment
 
     @ContributesAndroidInjector(modules = [RestaurantDetailModule::class])
     fun contributeRestaurantDetailFragmentInjector(): RestaurantDetailFragment

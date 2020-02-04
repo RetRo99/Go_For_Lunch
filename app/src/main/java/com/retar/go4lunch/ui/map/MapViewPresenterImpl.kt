@@ -84,7 +84,7 @@ class MapViewPresenterImpl @Inject constructor(
     }
 
     override fun onMarkerClicked(id: String, title: String) {
-        parentPresenter.toRestaurantDetail(id, title)
+        parentPresenter.fromMapToRestaurantDetail(id, title)
 
     }
 

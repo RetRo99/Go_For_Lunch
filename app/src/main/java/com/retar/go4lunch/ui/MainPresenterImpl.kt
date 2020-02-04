@@ -29,8 +29,11 @@ class MainPresenterImpl @Inject constructor(
         checkForUser()
     }
 
-    override fun toRestaurantDetail(id: String, title: String) {
-        view.fromHolderToResturantDetail(id, title)
+    override fun fromMapToRestaurantDetail(id: String, title: String) {
+        view.fromMapToResturantDetail(id, title)
+    }
+    override fun fromListToRestaurantDetail(id: String, title: String) {
+        view.fromListToResturantDetail(id, title)
     }
 
     private fun checkForUser() {

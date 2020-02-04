@@ -4,8 +4,9 @@ import com.google.firebase.auth.FirebaseUser
 
 interface MainView {
 
-    fun fromHolderToResturantDetail(id: String, title: String)
+    fun fromMapToResturantDetail(id: String, title: String)
     fun loginUser()
     fun startApp(user: FirebaseUser)
+    fun fromListToResturantDetail(id: String, title: String)
 
 }

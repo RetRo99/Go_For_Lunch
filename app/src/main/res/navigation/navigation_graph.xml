@@ -1,19 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--todo extraxt values-->
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto" android:id="@+id/navigation_graph"
-    app:startDestination="@id/mainFragment2">
-    <fragment
-        android:id="@+id/mainFragment2"
-        android:name="com.retar.go4lunch.ui.holderfragment.HolderFragment"
-        android:label="@string/app_name"
-
-        >
-        <action
-            android:id="@+id/action_to_restaurantDetailFragment"
-            app:destination="@id/restaurantDetailFragment"
-            app:enterAnim="@anim/fragment_close_enter"
-            app:exitAnim="@anim/fragment_close_exit" />
-    </fragment>
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation_graph"
+    app:startDestination="@id/navigation_map"
+    >
     <fragment
         android:id="@+id/restaurantDetailFragment"
         android:name="com.retar.go4lunch.ui.restaurantdetail.RestaurantDetailFragment"
@@ -25,4 +17,26 @@
             android:name="id"
             app:argType="string" />
     </fragment>
+    <fragment
+        android:id="@+id/navigation_map"
+        android:name="com.retar.go4lunch.ui.map.MapFragment"
+        android:label="@string/app_name" >
+        <action
+            android:id="@+id/action_map_to_detail"
+            app:destination="@id/restaurantDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/navigation_list"
+        android:name="com.retar.go4lunch.ui.list.ListFragment"
+        android:label="@string/app_name"
+        tools:layout="@layout/fragment_list" >
+        <action
+            android:id="@+id/action_list_to_detail"
+            app:destination="@id/restaurantDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/navigation_mates"
+        android:name="com.retar.go4lunch.ui.mates.MatesFragment"
+        android:label="Friend List"
+        tools:layout="@layout/fragment_mates" />
 </navigation>
