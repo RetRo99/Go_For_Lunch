@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.annotation.LayoutRes
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.google.android.gms.maps.model.LatLng
 import com.retar.go4lunch.R
 import com.retar.go4lunch.ui.list.ListFragment
@@ -24,13 +25,20 @@ fun ViewGroup.inflate(@LayoutRes layoutRes: Int, attachToRoot: Boolean = false):
     return LayoutInflater.from(context).inflate(layoutRes, this, attachToRoot)
 }
 
-fun ImageView.loadPhotoFromUrl(photoReference: String?) {
+fun ImageView.loadRestaurantPhoto(photoReference: String?) {
     Glide.with(this)
         .load("https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=$photoReference&key=AIzaSyB6JuG-GiQgQG2RixaTKyhqBlhT9Uklr6Y\n")
         .placeholder(R.drawable.ic_restaurant)
         .error(R.drawable.ic_restaurant)
         .into(this)
-    Log.d(ListFragment.TAG, "loadinphoto")
+
+
+}
+fun ImageView.loadRoundPhoto(url: String?) {
+    Glide.with(this)
+        .load(url)
+        .apply(RequestOptions.circleCropTransform())
+        .into(this)
 
 
 }

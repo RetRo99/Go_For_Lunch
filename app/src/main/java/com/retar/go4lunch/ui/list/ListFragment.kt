@@ -47,7 +47,8 @@ class ListFragment : DaggerFragment(), ListView {
         recyclerView.layoutManager = linearLayoutManager
         recyclerView.adapter = RestaurantAdapter(data) {
             presenter.onListItemClick(
-                it,
+                it.id,
+                it.name,
                 (recyclerView.layoutManager as LinearLayoutManager).findFirstVisibleItemPosition()
             )
         }

@@ -101,7 +101,7 @@ class MapFragment : DaggerFragment(), MapView,
 
     override fun setMarkerClickListener() {
         googleMap.setOnInfoWindowClickListener { marker ->
-            presenter.onMarkerClicked(marker.tag.toString())
+            presenter.onMarkerClicked(marker.tag.toString(), marker.title)
         }
     }
 

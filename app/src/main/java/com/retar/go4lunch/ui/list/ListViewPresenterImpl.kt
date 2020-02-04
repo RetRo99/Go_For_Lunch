@@ -33,16 +33,16 @@ class ListViewPresenterImpl @Inject constructor(
         disposable?.dispose()
     }
 
-    override fun onListItemClick(id: String, firstItem:Int) {
+    override fun onListItemClick(id: String, title: String, firstItem: Int) {
         firstPosition = firstItem
-        parentPresenter.toRestaurantDetail(id)
+        parentPresenter.toRestaurantDetail(id, title)
     }
 
     override fun onActivityCreated() {
         observeData()
     }
 
-    companion object{
+    companion object {
         private var firstPosition = 0
     }
 }

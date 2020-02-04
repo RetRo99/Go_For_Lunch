@@ -1,4 +1,4 @@
-package com.retar.go4lunch.di
+package com.retar.go4lunch.repository
 
 import com.retar.go4lunch.repository.restaurant.RestaurantsRepositoryModule
 import com.retar.go4lunch.repository.restaurantdetail.RestaurantDetailRepositoryModule

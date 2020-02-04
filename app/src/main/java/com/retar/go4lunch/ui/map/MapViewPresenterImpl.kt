@@ -32,10 +32,10 @@ class MapViewPresenterImpl @Inject constructor(
 
     override fun onGotLastLocation(location: Location, isFromFab: Boolean) {
 
-        if (isFirstRun || isFromFab){
+        if (isFirstRun || isFromFab) {
             view.animateToLocation(location.getLatLng())
             isFirstRun = false
-        }else{
+        } else {
             view.moveToLocation(location.getLatLng())
         }
         loadNearbyRestaurants(location, isFromFab)
@@ -83,8 +83,8 @@ class MapViewPresenterImpl @Inject constructor(
         return markersList
     }
 
-    override fun onMarkerClicked(id: String) {
-        parentPresenter.toRestaurantDetail(id)
+    override fun onMarkerClicked(id: String, title: String) {
+        parentPresenter.toRestaurantDetail(id, title)
 
     }
 

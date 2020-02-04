@@ -6,7 +6,6 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS
-import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -18,6 +17,7 @@ import dagger.android.support.DaggerAppCompatActivity
 
 abstract class LocationPermissionActivity : DaggerAppCompatActivity(), ProvideNavController {
 
+    private var requestDialog: AlertDialog? = null
 
     override fun getNavController(): NavController {
         return findNavController(R.id.nav_host)
@@ -25,7 +25,8 @@ abstract class LocationPermissionActivity : DaggerAppCompatActivity(), ProvideNa
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        if (!permissionsGranted()) requestPermissions()
+
     }
 
     private fun permissionsGranted(): Boolean {
@@ -56,7 +57,7 @@ abstract class LocationPermissionActivity : DaggerAppCompatActivity(), ProvideNa
                 if (grantResults.isNotEmpty()
                     && grantResults[0] == PackageManager.PERMISSION_GRANTED
                 ) {
-                    Toast.makeText(this, "teste", Toast.LENGTH_LONG).show()
+                    requestDialog?.dismiss()
                 } else {
                     showRationaleForPermissions()
                 }
@@ -81,7 +82,7 @@ abstract class LocationPermissionActivity : DaggerAppCompatActivity(), ProvideNa
 
     private fun showPermissionsRequiredDialog(body: String, dontAskAgainChecked: Boolean) {
         val builder = AlertDialog.Builder(this)
-        builder.setMessage(body)
+        requestDialog = builder.setMessage(body)
             //Todo extract strings
 
             .setTitle("Permission required")
@@ -93,7 +94,7 @@ abstract class LocationPermissionActivity : DaggerAppCompatActivity(), ProvideNa
             }
             .setCancelable(false)
             .create()
-            .show()
+        requestDialog?.show()
     }
 
     private fun openSettings() {
@@ -112,5 +113,10 @@ abstract class LocationPermissionActivity : DaggerAppCompatActivity(), ProvideNa
         super.onStart()
         if (!permissionsGranted()) requestPermissions()
 
+    }
+
+    override fun onPause() {
+        super.onPause()
+        requestDialog?.dismiss()
     }
 }

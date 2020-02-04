@@ -6,10 +6,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.retar.go4lunch.R
 import com.retar.go4lunch.repository.restaurant.restaurant.model.model.RestaurantEntity
 import com.retar.go4lunch.utils.inflate
-import com.retar.go4lunch.utils.loadPhotoFromUrl
+import com.retar.go4lunch.utils.loadRestaurantPhoto
 import kotlinx.android.synthetic.main.fragment_list_item.view.*
 
-class RestaurantAdapter(private val restaurants: List<RestaurantEntity>, private val action: (String) -> Unit) :
+class RestaurantAdapter(private val restaurants: List<RestaurantEntity>, private val action: (RestaurantEntity) -> Unit) :
     RecyclerView.Adapter<RestaurantAdapter.RestaurantHolder>() {
 
 
@@ -23,10 +23,10 @@ class RestaurantAdapter(private val restaurants: List<RestaurantEntity>, private
                 fragment_list_restaurant_view_item_address.text = restaurant.address()
                 fragment_list_restaurant_view_item_distance.text = "${restaurant.distance()} m"
                 fragment_list_restaurant_view_item_opening_hours.text = restaurant.isOpenedNow
-                fragment_list_restaurant_view_item_image.loadPhotoFromUrl(restaurant.photoUrl)
+                fragment_list_restaurant_view_item_image.loadRestaurantPhoto(restaurant.photoUrl)
 
                 view.setOnClickListener{
-                    action(restaurant.id)
+                    action(restaurant)
                 }
 
             }

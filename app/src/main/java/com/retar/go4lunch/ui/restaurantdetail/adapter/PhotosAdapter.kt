@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.viewpager.widget.PagerAdapter
 import com.retar.go4lunch.R
-import com.retar.go4lunch.utils.loadPhotoFromUrl
+import com.retar.go4lunch.utils.loadRestaurantPhoto
 import kotlinx.android.synthetic.main.view_restaurant_detail_photo.view.*
 
 class PhotosAdapter(context: Context?, private val photoReferences: List<String>) :
@@ -26,7 +26,7 @@ class PhotosAdapter(context: Context?, private val photoReferences: List<String>
 
 
 
-        imageLayout.restaurantDetailPhoto.loadPhotoFromUrl(photoReferences[position])
+        imageLayout.restaurantDetailPhoto.loadRestaurantPhoto(photoReferences[position])
 
         view.addView(imageLayout, 0)
 

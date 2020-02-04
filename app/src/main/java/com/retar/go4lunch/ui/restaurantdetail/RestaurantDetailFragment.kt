@@ -12,7 +12,6 @@ import androidx.navigation.fragment.navArgs
 import com.retar.go4lunch.R
 import com.retar.go4lunch.ui.restaurantdetail.adapter.PhotosAdapter
 import com.retar.go4lunch.ui.restaurantdetail.model.UiRestaurantDetailItem
-import com.retar.go4lunch.utils.loadPhotoFromUrl
 import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.fragment_restaurant_detail.*
 import javax.inject.Inject

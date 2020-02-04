@@ -10,6 +10,6 @@ interface MapViewPresenter {
     fun onGotLastLocation(location: Location, isFromFab: Boolean)
     fun onFabClick()
     fun onDestroy()
-    fun onMarkerClicked(id: String)
+    fun onMarkerClicked(id: String, title: String)
 
 }
