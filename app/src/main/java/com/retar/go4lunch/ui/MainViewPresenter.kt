@@ -2,8 +2,10 @@ package com.retar.go4lunch.ui
 
 interface MainViewPresenter {
 
-    fun toRestaurantDetail(id: String, title: String)
-    fun onCreate()
+    fun fromMapToRestaurantDetail(id: String, title: String)
+    fun fromListToRestaurantDetail(id: String, title: String)
+    fun onResume()
     fun onDestroy()
-    fun onUserLogin()
+    fun onSignIn(isNewUser: Boolean?)
+
 }

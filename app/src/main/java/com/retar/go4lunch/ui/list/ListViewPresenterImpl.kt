@@ -35,7 +35,7 @@ class ListViewPresenterImpl @Inject constructor(
 
     override fun onListItemClick(id: String, title: String, firstItem: Int) {
         firstPosition = firstItem
-        parentPresenter.toRestaurantDetail(id, title)
+        parentPresenter.fromListToRestaurantDetail(id, title)
     }
 
     override fun onActivityCreated() {

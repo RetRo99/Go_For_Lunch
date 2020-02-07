@@ -1,6 +1,7 @@
 package com.retar.go4lunch.repository.restaurant
 
 import android.location.Location
+import android.util.Log
 import com.google.android.gms.maps.model.LatLng
 import com.retar.go4lunch.api.response.nearbysearchresponse.NearbySearchResponse
 import com.retar.go4lunch.api.response.nearbysearchresponse.Results
@@ -35,9 +36,13 @@ class RestaurantsRepositoryImpl @Inject constructor(private val googlePlacesApi:
                     )
                 }
                 .subscribeBy(
+                    //todo handle error
                     onSuccess = {
                         restaurants.onNext(it)
                         disposable?.dispose()
+                    },
+                    onError = {
+                        restaurants.onError(it)
                     }
                 )
 

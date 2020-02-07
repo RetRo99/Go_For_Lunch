@@ -118,29 +118,21 @@ class MapFragment : DaggerFragment(), MapView,
             icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_restaurant_marker_green))
 
         }
-
-
-
         googleMap.addMarker(mapMarker).tag = marker.id
-
     }
 
     override fun addNotVisitedMarker(marker: UiMarkerModel) {
         val mapMarker = MarkerOptions().position(marker.latLng).title(marker.title).run {
             icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_restaurant_marker_orange))
-
         }
-
         googleMap.addMarker(mapMarker).tag = marker.id
     }
-
 
     companion object {
 
         const val TAG = "com.retar.go4lunch.ui.map.mapfragment"
 
         const val ZOOM_MODE = 15f
-
 
         @JvmStatic
         fun newInstance() = MapFragment()

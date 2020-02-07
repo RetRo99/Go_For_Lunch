@@ -10,6 +10,7 @@ import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import androidx.navigation.findNavController
 import com.retar.go4lunch.R
 import dagger.android.support.DaggerAppCompatActivity
@@ -119,4 +120,9 @@ abstract class LocationPermissionActivity : DaggerAppCompatActivity(), ProvideNa
         super.onPause()
         requestDialog?.dismiss()
     }
+
+
+    override fun onSupportNavigateUp() =Navigation.findNavController(this, R.id.nav_host).navigateUp()
 }
+
+
