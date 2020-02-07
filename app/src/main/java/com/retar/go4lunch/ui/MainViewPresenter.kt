@@ -7,5 +7,6 @@ interface MainViewPresenter {
     fun onResume()
     fun onDestroy()
     fun onSignIn(isNewUser: Boolean?)
-
+    fun onLogoutClicked()
+    fun onLogoutConfirmed()
 }

@@ -20,5 +20,9 @@ class FireAuthManager @Inject constructor(
         return Maybe.empty()
     }
 
+    fun logoutUser(){
+        auth.signOut()
+    }
+
 
 }

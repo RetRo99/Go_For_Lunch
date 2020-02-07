@@ -41,6 +41,15 @@ class MainPresenterImpl @Inject constructor(
         authManager.getCurrentUser(isNewUser)
     }
 
+    override fun onLogoutClicked() {
+        view.showLogOutDialog()
+    }
+
+    override fun onLogoutConfirmed() {
+        authManager.logoutUser()
+        view.requestLogin()
+    }
+
     override fun fromMapToRestaurantDetail(id: String, title: String) {
         view.fromMapToResturantDetail(id, title)
     }

@@ -82,10 +82,9 @@ abstract class LocationPermissionActivity : DaggerAppCompatActivity(), ProvideNa
     }
 
     private fun showPermissionsRequiredDialog(body: String, dontAskAgainChecked: Boolean) {
-        val builder = AlertDialog.Builder(this)
-        requestDialog = builder.setMessage(body)
+        requestDialog = AlertDialog.Builder(this)
+            .setMessage(body)
             //Todo extract strings
-
             .setTitle("Permission required")
             .setPositiveButton("OK") { _, _ ->
                 if (!dontAskAgainChecked) requestPermissions() else openSettings()
@@ -122,7 +121,8 @@ abstract class LocationPermissionActivity : DaggerAppCompatActivity(), ProvideNa
     }
 
 
-    override fun onSupportNavigateUp() =Navigation.findNavController(this, R.id.nav_host).navigateUp()
+    override fun onSupportNavigateUp() =
+        Navigation.findNavController(this, R.id.nav_host).navigateUp()
 }
 
 
