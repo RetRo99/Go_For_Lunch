@@ -8,5 +8,5 @@ interface MainView {
     fun requestLogin()
     fun setDrawerData(user: User)
     fun fromListToResturantDetail(id: String, title: String)
-
+    fun showLogOutDialog()
 }

@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
+import androidx.appcompat.app.AlertDialog
 import androidx.core.view.GravityCompat
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
@@ -110,9 +111,30 @@ class MainActivity : LocationPermissionActivity(), MainView,
         )
     }
 
-    override fun onNavigationItemSelected(p0: MenuItem): Boolean {
+    override fun onNavigationItemSelected(item: MenuItem): Boolean {
+        when(item.itemId){
+            R.id.logout -> {
+                presenter.onLogoutClicked()
+                return true
+            }
+        }
         drawer_layout.closeDrawer(GravityCompat.START)
         return true
+    }
+
+    override fun showLogOutDialog() {
+        AlertDialog.Builder(this)
+            .setTitle("Are you sure you want to logout?")
+            //Todo extract strings
+            .setPositiveButton("Yes") { _, _ ->
+                presenter.onLogoutConfirmed()
+            }
+            .setNegativeButton("No") { _, _ ->
+                //todo nothing
+            }
+            .create()
+            .show()
+
     }
 
     override fun onDestroy() {
