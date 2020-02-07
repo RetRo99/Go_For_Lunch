@@ -9,6 +9,10 @@ apply plugin: 'kotlin-android-extensions'
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.2"
+    compileOptions {
+        targetCompatibility = "8"
+        sourceCompatibility = "8"
+    }
     defaultConfig {
         applicationId "com.retar.go4lunch"
         minSdkVersion 23
@@ -31,7 +35,7 @@ tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
     }
 }
 
-def retrofitVersion = '2.3.0'
+def retrofitVersion = '2.7.1'
 
 def daggerVersion = "2.25.3"
 
@@ -45,13 +49,16 @@ dependencies {
 
     //firebase auth
     implementation 'com.google.firebase:firebase-auth:19.2.0'
-    implementation 'com.firebaseui:firebase-ui-auth:4.3.1'
+    implementation 'com.firebaseui:firebase-ui-auth:5.0.0'
+
+    //firestore
+    implementation 'com.google.firebase:firebase-firestore:21.4.0'
 
     // facebook login
     implementation 'com.facebook.android:facebook-android-sdk:5.13.0'
 
     //twitter login
-    implementation 'com.twitter.sdk.android:twitter-core:3.1.1'
+    implementation 'com.twitter.sdk.android:twitter-core:3.3.0'
 
     //for the map
     implementation 'com.google.android.gms:play-services-maps:17.0.0'

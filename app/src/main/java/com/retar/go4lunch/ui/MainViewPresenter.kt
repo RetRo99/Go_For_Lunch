@@ -4,7 +4,8 @@ interface MainViewPresenter {
 
     fun fromMapToRestaurantDetail(id: String, title: String)
     fun fromListToRestaurantDetail(id: String, title: String)
-    fun onCreate()
+    fun onResume()
     fun onDestroy()
-    fun onUserLogin()
+    fun onSignIn(isNewUser: Boolean?)
+
 }

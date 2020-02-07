@@ -1,12 +1,12 @@
 package com.retar.go4lunch.ui
 
-import com.google.firebase.auth.FirebaseUser
+import com.retar.go4lunch.firebase.model.User
 
 interface MainView {
 
     fun fromMapToResturantDetail(id: String, title: String)
-    fun loginUser()
-    fun startApp(user: FirebaseUser)
+    fun requestLogin()
+    fun setDrawerData(user: User)
     fun fromListToResturantDetail(id: String, title: String)
 
 }

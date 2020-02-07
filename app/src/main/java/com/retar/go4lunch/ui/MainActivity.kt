@@ -12,10 +12,11 @@ import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupWithNavController
 import com.firebase.ui.auth.AuthMethodPickerLayout
 import com.firebase.ui.auth.AuthUI
+import com.firebase.ui.auth.IdpResponse
 import com.google.android.material.navigation.NavigationView
-import com.google.firebase.auth.FirebaseUser
 import com.retar.go4lunch.R
 import com.retar.go4lunch.base.LocationPermissionActivity
+import com.retar.go4lunch.firebase.model.User
 import com.retar.go4lunch.ui.list.ListFragmentDirections
 import com.retar.go4lunch.ui.map.MapFragmentDirections
 import com.retar.go4lunch.utils.loadRoundPhoto
@@ -32,36 +33,42 @@ class MainActivity : LocationPermissionActivity(), MainView,
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        presenter.onCreate()
-
-    }
-
-    override fun startApp(user: FirebaseUser) {
 
         setSupportActionBar(toolbar)
 
-        val appBarConfiguration = AppBarConfiguration.Builder(setOf(
-            R.id.navigation_map,
-            R.id.navigation_list,
-            R.id.navigation_mates
-        )).setDrawerLayout(drawer_layout).build()
+        val appBarConfiguration = AppBarConfiguration.Builder(
+            setOf(
+                R.id.navigation_map,
+                R.id.navigation_list,
+                R.id.navigation_mates
+            )
+        ).setDrawerLayout(drawer_layout).build()
 
         toolbar.setupWithNavController(getNavController(), appBarConfiguration)
 
         navigationView.setNavigationItemSelectedListener(this)
-        val header = navigationView.getHeaderView(0)
-        toolbar.menu.clear()
-        header.apply {
 
-            nav_img_profile.loadRoundPhoto(user.photoUrl.toString())
-            nav_email.text = user.email
-            nav_name.text = user.displayName
-        }
         NavigationUI.setupWithNavController(bottomNavigationView, getNavController())
+    }
+
+    override fun onResume() {
+        presenter.onResume()
+        super.onResume()
+    }
+
+    override fun setDrawerData(user: User) {
+
+        val header = navigationView.getHeaderView(0)
+
+        header.apply {
+            nav_img_profile.loadRoundPhoto(user.photoUrl)
+            nav_email.text = user.email
+            nav_name.text = user.name
+        }
 
     }
 
-    override fun loginUser() {
+    override fun requestLogin() {
         val customLayout = AuthMethodPickerLayout.Builder(R.layout.activity_login)
             .setGoogleButtonId(R.id.signIn_google)
             .setFacebookButtonId(R.id.signIn_facebook)
@@ -117,6 +124,16 @@ class MainActivity : LocationPermissionActivity(), MainView,
         private const val RC_SIGN_IN = 12
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if (requestCode == RC_SIGN_IN) {
+            if (resultCode == Activity.RESULT_OK) {
+                val response = IdpResponse.fromResultIntent(data)
+                presenter.onSignIn(response?.isNewUser)
+            }
+        }
+    }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val inflater: MenuInflater = menuInflater
@@ -133,17 +150,8 @@ class MainActivity : LocationPermissionActivity(), MainView,
             else -> super.onOptionsItemSelected(item)
         }
     }
+}
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
 
-        if (requestCode == RC_SIGN_IN) {
 
-            if (resultCode == Activity.RESULT_OK) {
-                presenter.onUserLogin()
-            } else {
-                loginUser()
-            }
-        }
-    }}
 
