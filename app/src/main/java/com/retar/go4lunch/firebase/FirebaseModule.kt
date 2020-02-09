@@ -20,4 +20,18 @@ class FirebaseModule {
     fun provideFireStore(): FirebaseFirestore {
         return FirebaseFirestore.getInstance()
     }
+
+    @Provides
+    @Singleton
+    fun provideFireStoreManager(db: FirebaseFirestore): FireStoreManager {
+        return FireStoreManager(db)
+    }
+
+    @Provides
+    @Singleton
+    fun provideAuthManager(storeManager: FireStoreManager, auth: FirebaseAuth): FireAuthManager {
+        return FireAuthManager(auth, storeManager)
+    }
+
+
 }

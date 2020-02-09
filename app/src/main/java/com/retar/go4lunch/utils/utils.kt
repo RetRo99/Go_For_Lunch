@@ -1,7 +1,6 @@
 package com.retar.go4lunch.utils
 
 import android.location.Location
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,7 +10,6 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.gms.maps.model.LatLng
 import com.retar.go4lunch.R
-import com.retar.go4lunch.ui.list.ListFragment
 
 fun Location.getApiString(): String {
     return "${this.latitude},${this.longitude}"

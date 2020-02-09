@@ -17,9 +17,9 @@ import com.firebase.ui.auth.IdpResponse
 import com.google.android.material.navigation.NavigationView
 import com.retar.go4lunch.R
 import com.retar.go4lunch.base.LocationPermissionActivity
-import com.retar.go4lunch.firebase.model.User
-import com.retar.go4lunch.ui.list.ListFragmentDirections
 import com.retar.go4lunch.ui.map.MapFragmentDirections
+import com.retar.go4lunch.ui.resturants.RestaurantsFragmentDirections
+import com.retar.go4lunch.ui.users.model.User
 import com.retar.go4lunch.utils.loadRoundPhoto
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.nav_header.view.*
@@ -104,7 +104,7 @@ class MainActivity : LocationPermissionActivity(), MainView,
 
     override fun fromListToResturantDetail(id: String, title: String) {
         getNavController().navigate(
-            ListFragmentDirections.actionListToDetail(
+            RestaurantsFragmentDirections.actionListToDetail(
                 title,
                 id
             )
@@ -112,7 +112,7 @@ class MainActivity : LocationPermissionActivity(), MainView,
     }
 
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        when(item.itemId){
+        when (item.itemId) {
             R.id.logout -> {
                 presenter.onLogoutClicked()
                 return true

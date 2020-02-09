@@ -1,4 +1,4 @@
-package com.retar.go4lunch.ui.list.adapter
+package com.retar.go4lunch.ui.resturants.adapter
 
 import android.view.View
 import android.view.ViewGroup
@@ -7,23 +7,22 @@ import com.retar.go4lunch.R
 import com.retar.go4lunch.repository.restaurant.restaurant.model.model.RestaurantEntity
 import com.retar.go4lunch.utils.inflate
 import com.retar.go4lunch.utils.loadRestaurantPhoto
-import kotlinx.android.synthetic.main.fragment_list_item.view.*
+import kotlinx.android.synthetic.main.item_fragment_list.view.*
 
 class RestaurantAdapter(private val restaurants: List<RestaurantEntity>, private val action: (RestaurantEntity) -> Unit) :
     RecyclerView.Adapter<RestaurantAdapter.RestaurantHolder>() {
 
 
-    inner class RestaurantHolder(v: View) : RecyclerView.ViewHolder(v) {
-        private var view: View = v
+    inner class RestaurantHolder(val view: View) : RecyclerView.ViewHolder(view) {
 
         fun bindRestaurant(restaurant: RestaurantEntity) {
             view.apply {
-                fragment_list_restaurant_view_item_name.text = restaurant.name
+                item_restaurant_name.text = restaurant.name
 
-                fragment_list_restaurant_view_item_address.text = restaurant.address()
-                fragment_list_restaurant_view_item_distance.text = "${restaurant.distance()} m"
-                fragment_list_restaurant_view_item_opening_hours.text = restaurant.isOpenedNow
-                fragment_list_restaurant_view_item_image.loadRestaurantPhoto(restaurant.photoUrl)
+                item_restaurant_address.text = restaurant.address()
+                item_restaurant_distance.text = "${restaurant.distance()} m"
+                item_restaurant_hours.text = restaurant.isOpenedNow
+                item_restaurant_photo.loadRestaurantPhoto(restaurant.photoUrl)
 
                 view.setOnClickListener{
                     action(restaurant)
@@ -37,7 +36,7 @@ class RestaurantAdapter(private val restaurants: List<RestaurantEntity>, private
 
 
      override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RestaurantHolder {
-        val inflatedView = parent.inflate(R.layout.fragment_list_item)
+        val inflatedView = parent.inflate(R.layout.item_fragment_list)
         return RestaurantHolder(
             inflatedView
         )
