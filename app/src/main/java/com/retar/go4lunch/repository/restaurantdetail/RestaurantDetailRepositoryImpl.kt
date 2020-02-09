@@ -2,32 +2,42 @@ package com.retar.go4lunch.repository.restaurantdetail
 
 import com.retar.go4lunch.api.response.restaurantdetails.RestaurantDetailResponse
 import com.retar.go4lunch.api.retrofit.GooglePlacesApi
+import com.retar.go4lunch.firebase.FireStoreManager
 import com.retar.go4lunch.ui.restaurantdetail.model.UiRestaurantDetailItem
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import javax.inject.Inject
 
-class RestaurantDetailRepositoryImpl @Inject constructor(private val googlePlacesApi: GooglePlacesApi) :
+class RestaurantDetailRepositoryImpl @Inject constructor(
+    private val googlePlacesApi: GooglePlacesApi,
+    private val fireStoreManager: FireStoreManager
+) :
     RestaurantDetailRepository {
 
 
-    override fun getRestaurants(id: String): Single<UiRestaurantDetailItem> {
+    override fun getRestaurant(id: String): Single<UiRestaurantDetailItem> {
         return googlePlacesApi.getResturantDetails(id)
             .map {
-                mapToUi(it)
+                mapToUi(it, fireStoreManager.checkIfPicked(it.result.place_id))
             }
             .observeOn(AndroidSchedulers.mainThread())
 
 
     }
 
-    private fun mapToUi(it: RestaurantDetailResponse): UiRestaurantDetailItem {
+    override fun onRestaurantPicked(id: String): Single<String> {
+        return fireStoreManager.onRestaurantPicked(id)
+    }
+
+    private fun mapToUi(it: RestaurantDetailResponse, isPicked: Boolean): UiRestaurantDetailItem {
         return UiRestaurantDetailItem(
             it.result.formatted_phone_number,
             it.result.photos.map { it.photo_reference },
             it.result.website,
             it.result.name,
-            it.result.formatted_address.substringBefore(","))
+            it.result.formatted_address.substringBefore(","),
+            isPicked
+        )
     }
 
 
