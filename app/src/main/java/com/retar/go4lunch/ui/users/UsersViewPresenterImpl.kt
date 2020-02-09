@@ -19,11 +19,11 @@ class UsersViewPresenterImpl @Inject constructor(
     override fun onActivityCreated() {
         disposable =
             repo.getUsers()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
                 .subscribeBy(
                     onNext = {
                         view.setData(it)
+                        Log.d("čič", "onNext")
+
                     },
                     onError = {
                         Log.d("čič", "onError")

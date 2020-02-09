@@ -15,6 +15,7 @@ class UsersFragment : DaggerFragment(), UsersView {
 
     @Inject
     lateinit var presenter: UsersViewPresenter
+    private lateinit var adapter:UserAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -25,6 +26,9 @@ class UsersFragment : DaggerFragment(), UsersView {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+
+        adapter = UserAdapter(listOf())
+        recyclerView.adapter = adapter
 
         presenter.onActivityCreated()
     }
@@ -38,6 +42,6 @@ class UsersFragment : DaggerFragment(), UsersView {
     }
 
     override fun setData(data: List<User>) {
-        recyclerView.adapter = UserAdapter(data)
+        adapter.update(data)
     }
 }

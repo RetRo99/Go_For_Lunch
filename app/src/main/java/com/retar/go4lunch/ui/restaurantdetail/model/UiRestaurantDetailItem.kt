@@ -5,5 +5,6 @@ data class UiRestaurantDetailItem(
     val photoReferences: List<String>,
     val webPage: String?,
     val name: String,
-    val address: String
+    val address: String,
+    val isPicked: Boolean
 )

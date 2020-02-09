@@ -2,6 +2,7 @@ package com.retar.go4lunch.repository.restaurantdetail
 
 import com.retar.go4lunch.api.retrofit.GooglePlacesApi
 import com.retar.go4lunch.api.retrofit.RetrofitModule
+import com.retar.go4lunch.firebase.FireStoreManager
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -17,9 +18,13 @@ class RestaurantDetailRepositoryModule {
 
     @Provides
     @Singleton
-    fun provideRestaurantDetailsRepository(googlePlacesApi: GooglePlacesApi): RestaurantDetailRepository {
+    fun provideRestaurantDetailsRepository(
+        googlePlacesApi: GooglePlacesApi,
+        fireStoreManager: FireStoreManager
+    ): RestaurantDetailRepository {
         return RestaurantDetailRepositoryImpl(
-            googlePlacesApi
+            googlePlacesApi,
+            fireStoreManager
         )
     }
 

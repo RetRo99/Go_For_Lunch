@@ -1,28 +1,77 @@
 package com.retar.go4lunch.ui.restaurantdetail
 
+import android.util.Log
+import com.retar.go4lunch.firebase.FireStoreManager
 import com.retar.go4lunch.repository.restaurantdetail.RestaurantDetailRepository
-import io.reactivex.disposables.Disposable
+import com.retar.go4lunch.repository.users.UsersRepository
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.subscribeBy
 import javax.inject.Inject
 
 class RestaurantDetailPresenterImpl @Inject constructor(
     private val view: RestaurantDetailView,
-    private val repository: RestaurantDetailRepository
+    private val repository: RestaurantDetailRepository,
+    private val usersRepository: UsersRepository
+
 ) : RestaurantDetailPresenter {
 
-    private var disposable: Disposable? = null
+    private var disposable: CompositeDisposable? = CompositeDisposable()
 
-    override fun onActivityCreated(restaurantId:String) {
-        disposable = repository.getRestaurants(restaurantId)
-            .subscribeBy (
+
+    private lateinit var restaurantId: String
+
+    override fun onActivityCreated(id: String) {
+        restaurantId = id
+        disposable?.add(repository.getRestaurant(restaurantId)
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(
                 onSuccess = {
                     view.showData(it)
+                    view.setFab(it.isPicked)
                 }
-            )
+            ))
+
+        disposable?.add(
+            usersRepository.getUsers()
+                .map {
+                    it.filter { user ->
+                        user.pickedRestaurant == restaurantId
+                    }
+                }
+                .subscribeBy(
+                    onNext = {
+                        Log.d("čič", "onNext")
+                        view.showUsers(it)
+                    },
+                    onError = {
+                        Log.d("čič", "onError")
+
+                    },
+                    onComplete = {
+                        Log.d("čič", "onComplete")
+                    }
+
+
+                )
+        )
     }
 
 
     override fun onDestroy() {
         disposable?.dispose()
+    }
+
+    override fun onFabClick() {
+        disposable?.add(repository.onRestaurantPicked(restaurantId)
+            .subscribeBy(
+                onSuccess = {
+                    when (it) {
+                        FireStoreManager.CURRENT_NOT_PICKED -> view.setFab(false)
+                        FireStoreManager.CURRENT_PICKED -> view.setFab(true)
+                    }
+                }
+            ))
+
     }
 }
