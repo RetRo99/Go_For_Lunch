@@ -1,6 +1,6 @@
-package com.retar.go4lunch.ui.list
+package com.retar.go4lunch.ui.resturants
 
-interface ListViewPresenter {
+interface RestaurantsViewPresenter {
 
     fun onDestroy()
     fun onListItemClick(id: String, title: String, firstItem: Int)

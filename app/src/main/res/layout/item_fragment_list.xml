@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/card_view"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:layout_margin="5dp"
+    android:orientation="horizontal"
+    card_view:cardCornerRadius="5dp"
+    card_view:contentPadding="10dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/item_restaurant_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toStartOf="@id/item_restaurant_distance"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="čevap" />
+
+        <TextView
+            android:id="@+id/item_restaurant_address"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:maxLines="1"
+            app:layout_constraintEnd_toStartOf="@id/item_resturant_votes"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/item_restaurant_name"
+            tools:text="hotic 6" />
+
+        <TextView
+            android:id="@+id/item_restaurant_hours"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:maxLines="1"
+            android:textStyle="italic"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/item_restaurant_address"
+            tools:text="never" />
+
+        <ImageView
+            android:id="@+id/item_restaurant_photo"
+            android:layout_width="@dimen/photo_width"
+            android:layout_height="@dimen/photo_height"
+            android:scaleType="centerCrop"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <TextView
+            android:id="@+id/item_restaurant_distance"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:maxLines="1"
+            app:layout_constraintEnd_toStartOf="@id/item_restaurant_photo"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="800m" />
+
+        <TextView
+            android:id="@+id/item_resturant_votes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:ellipsize="end"
+            android:hint="(0)"
+            android:maxLines="1"
+            app:layout_constraintEnd_toStartOf="@id/item_restaurant_photo"
+            app:layout_constraintTop_toBottomOf="@id/item_restaurant_distance" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</com.google.android.material.card.MaterialCardView>

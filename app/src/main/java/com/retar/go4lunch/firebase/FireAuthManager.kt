@@ -1,11 +1,12 @@
 package com.retar.go4lunch.firebase
 
+import android.util.Log
 import com.google.firebase.auth.FirebaseAuth
-import com.retar.go4lunch.firebase.model.User
+import com.retar.go4lunch.ui.users.model.User
 import io.reactivex.Maybe
 import javax.inject.Inject
 
-class FireAuthManager @Inject constructor(
+class FireAuthManager (
     private val auth: FirebaseAuth,
     private val fireStoreManager: FireStoreManager
 ) {
@@ -20,7 +21,7 @@ class FireAuthManager @Inject constructor(
         return Maybe.empty()
     }
 
-    fun logoutUser(){
+    fun logoutUser() {
         auth.signOut()
     }
 

@@ -1,4 +1,4 @@
-package com.retar.go4lunch.ui.list
+package com.retar.go4lunch.ui.resturants
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,16 +7,15 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.retar.go4lunch.R
 import com.retar.go4lunch.repository.restaurant.restaurant.model.model.RestaurantEntity
-import com.retar.go4lunch.ui.list.adapter.RestaurantAdapter
-import dagger.android.HasAndroidInjector
+import com.retar.go4lunch.ui.resturants.adapter.RestaurantAdapter
 import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.fragment_list.*
 import javax.inject.Inject
 
-class ListFragment : DaggerFragment(), ListView {
+class RestaurantsFragment : DaggerFragment(), RestaurantsView {
 
     @Inject
-    lateinit var presenter: ListViewPresenter
+    lateinit var presenter: RestaurantsViewPresenter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -34,7 +33,7 @@ class ListFragment : DaggerFragment(), ListView {
     companion object {
         const val TAG = "com.retar.go4lunch.ui.list.listfragment"
         @JvmStatic
-        fun newInstance() = ListFragment()
+        fun newInstance() = RestaurantsFragment()
     }
 
     override fun onDestroy() {
@@ -42,7 +41,7 @@ class ListFragment : DaggerFragment(), ListView {
         super.onDestroy()
     }
 
-    override fun loadData(data: List<RestaurantEntity>, firstItem: Int) {
+    override fun setData(data: List<RestaurantEntity>, firstItem: Int) {
 
         val linearLayoutManager = LinearLayoutManager(context)
         recyclerView.layoutManager = linearLayoutManager

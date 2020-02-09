@@ -1,4 +1,4 @@
-package com.retar.go4lunch.ui.list
+package com.retar.go4lunch.ui.resturants
 
 import com.retar.go4lunch.repository.restaurant.RestaurantsRepository
 import com.retar.go4lunch.ui.MainViewPresenter
@@ -6,11 +6,11 @@ import io.reactivex.disposables.Disposable
 import io.reactivex.rxkotlin.subscribeBy
 import javax.inject.Inject
 
-class ListViewPresenterImpl @Inject constructor(
-    private val view: ListView,
+class RestaurantsViewPresenterImpl @Inject constructor(
+    private val view: RestaurantsView,
     private val repository: RestaurantsRepository,
     private val parentPresenter: MainViewPresenter
-) : ListViewPresenter {
+) : RestaurantsViewPresenter {
 
 
     private var disposable: Disposable? = null
@@ -20,7 +20,7 @@ class ListViewPresenterImpl @Inject constructor(
         disposable = repository.restaurants
             .subscribeBy(
                 onNext = {
-                    view.loadData(it, firstPosition)
+                    view.setData(it, firstPosition)
                 },
 
                 onError = {
