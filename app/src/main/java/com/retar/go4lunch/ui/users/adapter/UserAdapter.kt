@@ -4,7 +4,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.retar.go4lunch.R
-import com.retar.go4lunch.ui.users.model.User
+import com.retar.go4lunch.base.model.User
 import com.retar.go4lunch.utils.inflate
 import com.retar.go4lunch.utils.loadRoundPhoto
 import kotlinx.android.synthetic.main.item_fragment_users.view.*

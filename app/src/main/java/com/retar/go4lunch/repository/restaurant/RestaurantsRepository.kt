@@ -1,7 +1,7 @@
 package com.retar.go4lunch.repository.restaurant
 
 import android.location.Location
-import com.retar.go4lunch.repository.restaurant.restaurant.model.model.RestaurantEntity
+import com.retar.go4lunch.base.model.RestaurantEntity
 import io.reactivex.subjects.BehaviorSubject
 
 interface RestaurantsRepository {

@@ -1,11 +1,12 @@
 package com.retar.go4lunch.ui.map
 
 import android.location.Location
+import com.retar.go4lunch.base.model.RestaurantEntity
 import com.retar.go4lunch.repository.restaurant.RestaurantsRepository
-import com.retar.go4lunch.repository.restaurant.restaurant.model.model.RestaurantEntity
 import com.retar.go4lunch.ui.MainViewPresenter
 import com.retar.go4lunch.ui.map.model.UiMarkerModel
 import com.retar.go4lunch.utils.getLatLng
+import io.reactivex.Observable
 import io.reactivex.disposables.Disposable
 import io.reactivex.rxkotlin.subscribeBy
 import javax.inject.Inject
@@ -47,14 +48,16 @@ class MapViewPresenterImpl @Inject constructor(
 
     private fun observerData() {
         disposable = repository.restaurants
+            .flatMap {
+                Observable.fromIterable(it)
+            }
             .map {
                 mapRestaurantResponseToUi(it)
             }
+
             .subscribeBy(
                 onNext = {
-                    it.forEach {
-                        view.addNotVisitedMarker(it)
-                    }
+                    view.addMarker(it)
                     view.setMarkerClickListener()
                 },
                 onError = {
@@ -75,12 +78,8 @@ class MapViewPresenterImpl @Inject constructor(
 
     }
 
-    private fun mapRestaurantResponseToUi(restaurantEntity: List<RestaurantEntity>): List<UiMarkerModel> {
-        val markersList = mutableListOf<UiMarkerModel>()
-        restaurantEntity.forEach {
-            markersList.add(UiMarkerModel(it.latLng, it.name, it.id))
-        }
-        return markersList
+    private fun mapRestaurantResponseToUi(restaurantEntity: RestaurantEntity): UiMarkerModel {
+        return UiMarkerModel(restaurantEntity.latLng, restaurantEntity.name, restaurantEntity.id, restaurantEntity.icon)
     }
 
     override fun onMarkerClicked(id: String, title: String) {

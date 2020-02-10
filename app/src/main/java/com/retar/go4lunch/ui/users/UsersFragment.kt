@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.retar.go4lunch.R
 import com.retar.go4lunch.ui.users.adapter.UserAdapter
-import com.retar.go4lunch.ui.users.model.User
+import com.retar.go4lunch.base.model.User
 import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.fragment_users.*
 import javax.inject.Inject

@@ -3,7 +3,11 @@ package com.retar.go4lunch.firebase
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
-import com.retar.go4lunch.ui.users.model.User
+import com.retar.go4lunch.R
+import com.retar.go4lunch.base.model.RestaurantEntity
+import com.retar.go4lunch.base.model.User
+import com.retar.go4lunch.firebase.model.FireStoreRestaurant
+import de.aaronoe.rxfirestore.getSingle
 import io.reactivex.Single
 import io.reactivex.subjects.BehaviorSubject
 
@@ -12,10 +16,11 @@ class FireStoreManager(
 ) {
 
     val users: BehaviorSubject<List<User>> = BehaviorSubject.create()
+    lateinit var visitedRestaurants: Single<List<FireStoreRestaurant>>
 
     private val userRef: CollectionReference
     private val visitedRef: CollectionReference
-    private  var currentUser: User? = null
+    private var currentUser: User? = null
 
     init {
         userRef = db.collection(USERS_COLLECTION)
@@ -50,19 +55,36 @@ class FireStoreManager(
 
     }
 
-    private fun mapToUser(documents:List<DocumentSnapshot>):List<User>{
-       return  documents.map {
+    private fun mapToUser(documents: List<DocumentSnapshot>): List<User> {
+        return documents.map {
             val user = it.toObject(User::class.java)!!
             if (user.id == currentUser?.id) currentUser = user
             user
         }
     }
 
-    fun getVisitedRestaurants(){
-        visitedRef.whereEqualTo(PICKED_TODAY, false)
+    private fun mapToVisited(
+        fireStoreRestaurants: List<FireStoreRestaurant>,
+        restaurantsEntity: List<RestaurantEntity>
+    ): List<RestaurantEntity> {
+        val visitedIds = fireStoreRestaurants.map {
+            it.id
+        }
+
+        return restaurantsEntity.map {
+            if (it.id in visitedIds) it.icon = R.drawable.ic_restaurant_marker_green
+            it
+        }
 
     }
 
+    fun mapWithVisitedRestaurants(restaurantsEntity: List<RestaurantEntity>): Single<List<RestaurantEntity>> {
+        return visitedRef.getSingle<FireStoreRestaurant>()
+            .map { firestoreRestaurants ->
+                mapToVisited(firestoreRestaurants, restaurantsEntity)
+
+            }
+    }
 
 
     fun onRestaurantPicked(id: String): Single<String> {
@@ -87,6 +109,7 @@ class FireStoreManager(
     private fun isCurrentPicked(id: String): Boolean {
         return (id == currentUser?.pickedRestaurant)
     }
+
 
     companion object {
         private const val USERS_COLLECTION = "users"

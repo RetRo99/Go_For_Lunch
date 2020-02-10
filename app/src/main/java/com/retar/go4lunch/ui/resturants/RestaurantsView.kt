@@ -1,6 +1,6 @@
 package com.retar.go4lunch.ui.resturants
 
-import com.retar.go4lunch.repository.restaurant.restaurant.model.model.RestaurantEntity
+import com.retar.go4lunch.base.model.RestaurantEntity
 
 interface RestaurantsView {
 

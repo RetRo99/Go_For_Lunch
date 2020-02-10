@@ -19,7 +19,7 @@ import com.retar.go4lunch.R
 import com.retar.go4lunch.base.LocationPermissionActivity
 import com.retar.go4lunch.ui.map.MapFragmentDirections
 import com.retar.go4lunch.ui.resturants.RestaurantsFragmentDirections
-import com.retar.go4lunch.ui.users.model.User
+import com.retar.go4lunch.base.model.User
 import com.retar.go4lunch.utils.loadRoundPhoto
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.nav_header.view.*

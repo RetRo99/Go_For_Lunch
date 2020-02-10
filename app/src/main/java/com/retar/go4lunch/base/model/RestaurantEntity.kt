@@ -1,6 +1,8 @@
-package com.retar.go4lunch.repository.restaurant.restaurant.model.model
+package com.retar.go4lunch.base.model
 
+import androidx.annotation.DrawableRes
 import com.google.android.gms.maps.model.LatLng
+import com.retar.go4lunch.R
 
 data class RestaurantEntity(
     val latLng: LatLng,
@@ -9,7 +11,8 @@ data class RestaurantEntity(
     private val distance: String,
     private val address: String,
     val photoUrl: String?,
-    val isOpenedNow: String
+    val isOpenedNow: String,
+    @DrawableRes var icon: Int = R.drawable.ic_restaurant_marker_orange
 ) {
 
     fun distance(): String {

@@ -1,7 +1,7 @@
 package com.retar.go4lunch.ui.restaurantdetail
 
 import com.retar.go4lunch.ui.restaurantdetail.model.UiRestaurantDetailItem
-import com.retar.go4lunch.ui.users.model.User
+import com.retar.go4lunch.base.model.User
 
 interface RestaurantDetailView {
 

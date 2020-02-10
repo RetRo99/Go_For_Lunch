@@ -1,4 +1,4 @@
-package com.retar.go4lunch.ui.users.model
+package com.retar.go4lunch.base.model
 
 data class User(
     val id: String = "",

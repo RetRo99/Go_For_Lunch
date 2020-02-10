@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.retar.go4lunch.R
-import com.retar.go4lunch.repository.restaurant.restaurant.model.model.RestaurantEntity
+import com.retar.go4lunch.base.model.RestaurantEntity
 import com.retar.go4lunch.ui.resturants.adapter.RestaurantAdapter
 import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.fragment_list.*

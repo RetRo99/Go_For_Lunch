@@ -5,7 +5,7 @@ admin.initializeApp(functions.config().firebase);
 // // Create and Deploy Your First Cloud Functions
 // // https://firebase.google.com/docs/functions/write-firebase-functions
 //
-exports.scheduledFunction = functions.pubsub.schedule('0 0 * * *').onRun((context) => {
+exports.removingPickedRestaurant = functions.pubsub.schedule('0 0 * * *').onRun((context) => {
 
         var db = admin.firestore();
         var userRef = db.collection("users");

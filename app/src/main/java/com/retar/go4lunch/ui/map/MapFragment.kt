@@ -113,17 +113,9 @@ class MapFragment : DaggerFragment(), MapView,
         )
     }
 
-    override fun addVisitedMarker(marker: UiMarkerModel) {
+    override fun addMarker(marker: UiMarkerModel) {
         val mapMarker = MarkerOptions().position(marker.latLng).title(marker.title).run {
-            icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_restaurant_marker_green))
-
-        }
-        googleMap.addMarker(mapMarker).tag = marker.id
-    }
-
-    override fun addNotVisitedMarker(marker: UiMarkerModel) {
-        val mapMarker = MarkerOptions().position(marker.latLng).title(marker.title).run {
-            icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_restaurant_marker_orange))
+            icon(BitmapDescriptorFactory.fromResource(marker.icon))
         }
         googleMap.addMarker(mapMarker).tag = marker.id
     }

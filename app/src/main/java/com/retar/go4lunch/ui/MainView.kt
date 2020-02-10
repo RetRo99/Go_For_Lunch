@@ -1,6 +1,6 @@
 package com.retar.go4lunch.ui
 
-import com.retar.go4lunch.ui.users.model.User
+import com.retar.go4lunch.base.model.User
 
 interface MainView {
 

@@ -6,7 +6,8 @@ import com.google.android.gms.maps.model.LatLng
 import com.retar.go4lunch.api.response.nearbysearchresponse.NearbySearchResponse
 import com.retar.go4lunch.api.response.nearbysearchresponse.Results
 import com.retar.go4lunch.api.retrofit.GooglePlacesApi
-import com.retar.go4lunch.repository.restaurant.restaurant.model.model.RestaurantEntity
+import com.retar.go4lunch.base.model.RestaurantEntity
+import com.retar.go4lunch.firebase.FireStoreManager
 import com.retar.go4lunch.utils.getApiString
 import com.retar.go4lunch.utils.getLatLng
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -15,7 +16,10 @@ import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.subjects.BehaviorSubject
 import javax.inject.Inject
 
-class RestaurantsRepositoryImpl @Inject constructor(private val googlePlacesApi: GooglePlacesApi) :
+class RestaurantsRepositoryImpl @Inject constructor(
+    private val googlePlacesApi: GooglePlacesApi,
+    private val firestoreManager: FireStoreManager
+) :
     RestaurantsRepository {
 
     override val restaurants: BehaviorSubject<List<RestaurantEntity>> = BehaviorSubject.create()
@@ -34,6 +38,9 @@ class RestaurantsRepositoryImpl @Inject constructor(private val googlePlacesApi:
                     mapToRestaurantEntity(
                         it, location.getLatLng()
                     )
+                }
+                .flatMap {
+                    firestoreManager.mapWithVisitedRestaurants(it)
                 }
                 .subscribeBy(
                     //todo handle error

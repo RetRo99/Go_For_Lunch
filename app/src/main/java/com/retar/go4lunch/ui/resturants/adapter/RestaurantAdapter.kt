@@ -4,7 +4,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.retar.go4lunch.R
-import com.retar.go4lunch.repository.restaurant.restaurant.model.model.RestaurantEntity
+import com.retar.go4lunch.base.model.RestaurantEntity
 import com.retar.go4lunch.utils.inflate
 import com.retar.go4lunch.utils.loadRestaurantPhoto
 import kotlinx.android.synthetic.main.item_fragment_list.view.*
