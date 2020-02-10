@@ -26,14 +26,8 @@ class UsersViewPresenterImpl @Inject constructor(
 
                     },
                     onError = {
-                        Log.d("čič", "onError")
-
-                    },
-                    onComplete = {
-                        Log.d("čič", "onComplete")
+            //todo handle error
                     }
-
-
                 )
 
     }

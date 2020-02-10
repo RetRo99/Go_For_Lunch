@@ -1,6 +1,7 @@
 package com.retar.go4lunch.firebase
 
 import com.google.firebase.firestore.CollectionReference
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.retar.go4lunch.ui.users.model.User
 import io.reactivex.Single
@@ -10,17 +11,17 @@ class FireStoreManager(
     db: FirebaseFirestore
 ) {
 
+    val users: BehaviorSubject<List<User>> = BehaviorSubject.create()
+
     private val userRef: CollectionReference
-    private lateinit var currentUser: User
+    private val visitedRef: CollectionReference
+    private  var currentUser: User? = null
 
     init {
         userRef = db.collection(USERS_COLLECTION)
+        visitedRef = db.collection(VISITED_COLLECTION)
         getUsers()
     }
-
-
-    val users: BehaviorSubject<List<User>> = BehaviorSubject.create()
-
 
     fun saveUser(user: User) {
         userRef.document(user.id).set(user)
@@ -32,6 +33,7 @@ class FireStoreManager(
         }
     }
 
+
     private fun getUsers() {
         userRef.addSnapshotListener { snapshot, e ->
             if (e != null) {
@@ -40,16 +42,27 @@ class FireStoreManager(
             }
 
             if (snapshot != null && !snapshot.isEmpty) {
-                users.onNext(snapshot.documents.map {
-                    it.toObject(User::class.java)!!
-                })
-
+                users.onNext(mapToUser(snapshot.documents))
             } else {
                 users.onNext(listOf())
             }
         }
 
     }
+
+    private fun mapToUser(documents:List<DocumentSnapshot>):List<User>{
+       return  documents.map {
+            val user = it.toObject(User::class.java)!!
+            if (user.id == currentUser?.id) currentUser = user
+            user
+        }
+    }
+
+    fun getVisitedRestaurants(){
+        visitedRef.whereEqualTo(PICKED_TODAY, false)
+
+    }
+
 
 
     fun onRestaurantPicked(id: String): Single<String> {
@@ -64,8 +77,7 @@ class FireStoreManager(
 
 
     private fun updatePickedRestaurant(id: String) {
-        userRef.document(currentUser.id).update(PICKED_RESTAURANT, id)
-
+        userRef.document(currentUser!!.id).update(PICKED_RESTAURANT, id)
     }
 
     fun checkIfPicked(id: String): Boolean {
@@ -73,11 +85,15 @@ class FireStoreManager(
     }
 
     private fun isCurrentPicked(id: String): Boolean {
-        return (id == currentUser.pickedRestaurant)
+        return (id == currentUser?.pickedRestaurant)
     }
 
     companion object {
         private const val USERS_COLLECTION = "users"
+        private const val VISITED_COLLECTION = "visitedRestaurants"
+
+        private const val PICKED_TODAY = "pickedToday"
+
         private const val PICKED_RESTAURANT = "pickedRestaurant"
         const val CURRENT_PICKED = "changed"
         const val CURRENT_NOT_PICKED = "deleted"

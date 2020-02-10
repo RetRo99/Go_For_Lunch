@@ -16,7 +16,7 @@ class RestaurantDetailPresenterImpl @Inject constructor(
 
 ) : RestaurantDetailPresenter {
 
-    private var disposable: CompositeDisposable? = CompositeDisposable()
+    private val disposable: CompositeDisposable? = CompositeDisposable()
 
 
     private lateinit var restaurantId: String
@@ -41,12 +41,10 @@ class RestaurantDetailPresenterImpl @Inject constructor(
                 }
                 .subscribeBy(
                     onNext = {
-                        Log.d("čič", "onNext")
                         view.showUsers(it)
                     },
                     onError = {
-                        Log.d("čič", "onError")
-
+                        //todo handle error
                     },
                     onComplete = {
                         Log.d("čič", "onComplete")
