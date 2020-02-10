@@ -2,7 +2,7 @@ package com.retar.go4lunch.repository.users
 
 import com.retar.go4lunch.firebase.FireStoreManager
 import com.retar.go4lunch.base.model.User
-import io.reactivex.subjects.BehaviorSubject
+import io.reactivex.Observable
 import javax.inject.Inject
 
 class UsersRepositoryImpl @Inject constructor(
@@ -10,8 +10,8 @@ class UsersRepositoryImpl @Inject constructor(
 
 ) : UsersRepository {
 
-    override fun getUsers(): BehaviorSubject<List<User>> {
-        return fireStoreManager.users
+    override fun getUsers(): Observable<List<User>> {
+        return fireStoreManager.getUsers()
     }
 
 }

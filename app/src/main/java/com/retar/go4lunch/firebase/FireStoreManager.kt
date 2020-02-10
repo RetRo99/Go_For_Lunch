@@ -1,22 +1,21 @@
 package com.retar.go4lunch.firebase
 
 import com.google.firebase.firestore.CollectionReference
-import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.retar.go4lunch.R
 import com.retar.go4lunch.base.model.RestaurantEntity
 import com.retar.go4lunch.base.model.User
 import com.retar.go4lunch.firebase.model.FireStoreRestaurant
+import de.aaronoe.rxfirestore.getObservable
 import de.aaronoe.rxfirestore.getSingle
+import io.reactivex.Observable
 import io.reactivex.Single
-import io.reactivex.subjects.BehaviorSubject
+import io.reactivex.rxkotlin.subscribeBy
 
 class FireStoreManager(
     db: FirebaseFirestore
 ) {
 
-    val users: BehaviorSubject<List<User>> = BehaviorSubject.create()
-    lateinit var visitedRestaurants: Single<List<FireStoreRestaurant>>
 
     private val userRef: CollectionReference
     private val visitedRef: CollectionReference
@@ -25,7 +24,6 @@ class FireStoreManager(
     init {
         userRef = db.collection(USERS_COLLECTION)
         visitedRef = db.collection(VISITED_COLLECTION)
-        getUsers()
     }
 
     fun saveUser(user: User) {
@@ -39,34 +37,16 @@ class FireStoreManager(
     }
 
 
-    private fun getUsers() {
-        userRef.addSnapshotListener { snapshot, e ->
-            if (e != null) {
-                users.onError(e)
-                return@addSnapshotListener
-            }
-
-            if (snapshot != null && !snapshot.isEmpty) {
-                users.onNext(mapToUser(snapshot.documents))
-            } else {
-                users.onNext(listOf())
-            }
-        }
-
+     fun getUsers(): Observable<List<User>> {
+        return userRef.getObservable()
     }
 
-    private fun mapToUser(documents: List<DocumentSnapshot>): List<User> {
-        return documents.map {
-            val user = it.toObject(User::class.java)!!
-            if (user.id == currentUser?.id) currentUser = user
-            user
-        }
-    }
 
     private fun mapToVisited(
         fireStoreRestaurants: List<FireStoreRestaurant>,
         restaurantsEntity: List<RestaurantEntity>
     ): List<RestaurantEntity> {
+
         val visitedIds = fireStoreRestaurants.map {
             it.id
         }
@@ -114,8 +94,6 @@ class FireStoreManager(
     companion object {
         private const val USERS_COLLECTION = "users"
         private const val VISITED_COLLECTION = "visitedRestaurants"
-
-        private const val PICKED_TODAY = "pickedToday"
 
         private const val PICKED_RESTAURANT = "pickedRestaurant"
         const val CURRENT_PICKED = "changed"

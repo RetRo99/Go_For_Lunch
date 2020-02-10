@@ -35,21 +35,19 @@ class RestaurantDetailPresenterImpl @Inject constructor(
         disposable?.add(
             usersRepository.getUsers()
                 .map {
-                    it.filter { user ->
+                    it.filter{user ->
                         user.pickedRestaurant == restaurantId
                     }
                 }
                 .subscribeBy(
                     onNext = {
+                        Log.d("čič", "test")
                         view.showUsers(it)
+
                     },
                     onError = {
                         //todo handle error
-                    },
-                    onComplete = {
-                        Log.d("čič", "onComplete")
                     }
-
 
                 )
         )
