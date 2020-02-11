@@ -2,14 +2,12 @@ package com.retar.go4lunch.repository.restaurant
 
 import android.location.Location
 import com.google.android.gms.maps.model.LatLng
-import com.retar.go4lunch.api.response.nearbysearchresponse.NearbySearchResponse
 import com.retar.go4lunch.api.response.restaurantdetails.RestaurantDetailResponse
 import com.retar.go4lunch.api.retrofit.GooglePlacesApi
 import com.retar.go4lunch.base.model.RestaurantEntity
 import com.retar.go4lunch.firebase.FireStoreManager
 import com.retar.go4lunch.utils.getApiString
 import com.retar.go4lunch.utils.getLatLng
-import io.reactivex.Observable
 import io.reactivex.disposables.Disposable
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.subjects.BehaviorSubject
@@ -32,12 +30,8 @@ class RestaurantsRepositoryImpl @Inject constructor(
                 location.getApiString(),
                 distance
             )
-                .map {
-                    mapToIds(it)
-                }
-                .flatMapObservable {
-                    Observable.fromIterable(it)
-                }
+                .map { it.results.map { it.place_id } }
+                .flattenAsObservable { it }
                 .flatMapSingle {
                     googlePlacesApi.getResturantDetails(it)
                 }
@@ -88,17 +82,6 @@ class RestaurantsRepositoryImpl @Inject constructor(
             it.distance().toFloat()
         }
         return listRestaurantEntity
-    }
-
-
-    private fun mapToIds(
-        nearbySearchResponse: NearbySearchResponse
-    ): List<String> {
-        val restaurantIds = mutableListOf<String>()
-        nearbySearchResponse.results.forEach {
-            restaurantIds.add(it.place_id)
-        }
-        return restaurantIds
     }
 
     private fun getOpenedString(restaurant: RestaurantDetailResponse): String {
