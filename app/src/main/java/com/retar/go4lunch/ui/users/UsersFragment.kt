@@ -44,4 +44,9 @@ class UsersFragment : DaggerFragment(), UsersView {
     override fun setData(data: List<User>) {
         adapter.update(data)
     }
+
+    override fun onDestroy() {
+        presenter.onDestroy()
+        super.onDestroy()
+    }
 }

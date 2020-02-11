@@ -2,10 +2,8 @@ package com.retar.go4lunch.ui.users
 
 import android.util.Log
 import com.retar.go4lunch.repository.users.UsersRepository
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.rxkotlin.subscribeBy
-import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 class UsersViewPresenterImpl @Inject constructor(
@@ -26,9 +24,13 @@ class UsersViewPresenterImpl @Inject constructor(
 
                     },
                     onError = {
-            //todo handle error
+                        //todo handle error
                     }
                 )
 
+    }
+
+    override fun onDestroy() {
+        disposable?.dispose()
     }
 }
