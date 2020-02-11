@@ -7,13 +7,7 @@ import javax.inject.Singleton
 
 
 @Module
-//    (
-//    includes = [
-//        RetrofitModule::class
-//    ]
-//)
 class UsersRepositoryModule {
-
 
     @Provides
     @Singleton

@@ -1,7 +1,6 @@
 package com.retar.go4lunch.ui.resturants
 
-import com.retar.go4lunch.repository.restaurant.RestaurantsRepository
-import com.retar.go4lunch.repository.restaurantdetail.RestaurantDetailRepository
+import com.retar.go4lunch.manager.contentdata.ContentDataManager
 import com.retar.go4lunch.ui.MainViewPresenter
 import io.reactivex.disposables.Disposable
 import io.reactivex.rxkotlin.subscribeBy
@@ -9,7 +8,7 @@ import javax.inject.Inject
 
 class RestaurantsViewPresenterImpl @Inject constructor(
     private val view: RestaurantsView,
-    private val restaurantsRepository: RestaurantsRepository,
+    private val dataManager: ContentDataManager,
     private val parentPresenter: MainViewPresenter
 ) : RestaurantsViewPresenter {
 
@@ -18,7 +17,7 @@ class RestaurantsViewPresenterImpl @Inject constructor(
 
 
     private fun observeData() {
-        disposable = restaurantsRepository.restaurants
+        disposable = dataManager.restaurants
             .subscribeBy(
                 onNext = {
                     view.setData(it, firstPosition)
