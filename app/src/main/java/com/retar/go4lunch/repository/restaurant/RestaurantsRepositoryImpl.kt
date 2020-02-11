@@ -5,7 +5,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.retar.go4lunch.api.response.restaurantdetails.RestaurantDetailResponse
 import com.retar.go4lunch.api.retrofit.GooglePlacesApi
 import com.retar.go4lunch.base.model.RestaurantEntity
-import com.retar.go4lunch.manager.firebase.FireStoreManager
+import com.retar.go4lunch.manager.firebase.firestore.FireStoreManager
 import com.retar.go4lunch.utils.getApiString
 import com.retar.go4lunch.utils.getLatLng
 import io.reactivex.disposables.Disposable

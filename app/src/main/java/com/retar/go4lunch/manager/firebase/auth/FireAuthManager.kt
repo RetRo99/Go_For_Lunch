@@ -1,7 +1,8 @@
-package com.retar.go4lunch.manager.firebase
+package com.retar.go4lunch.manager.firebase.auth
 
 import com.google.firebase.auth.FirebaseAuth
 import com.retar.go4lunch.base.model.User
+import com.retar.go4lunch.manager.firebase.firestore.FireStoreManager
 import io.reactivex.Maybe
 
 class FireAuthManager(

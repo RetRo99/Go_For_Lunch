@@ -1,6 +1,6 @@
 package com.retar.go4lunch.repository.users
 
-import com.retar.go4lunch.manager.firebase.FireStoreManager
+import com.retar.go4lunch.manager.firebase.firestore.FireStoreManager
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton

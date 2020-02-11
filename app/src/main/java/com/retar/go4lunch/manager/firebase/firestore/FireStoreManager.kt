@@ -1,11 +1,11 @@
-package com.retar.go4lunch.manager.firebase
+package com.retar.go4lunch.manager.firebase.firestore
 
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.retar.go4lunch.R
 import com.retar.go4lunch.base.model.RestaurantEntity
 import com.retar.go4lunch.base.model.User
-import com.retar.go4lunch.manager.firebase.model.FireStoreRestaurant
+import com.retar.go4lunch.manager.firebase.firestore.model.FireStoreRestaurant
 import de.aaronoe.rxfirestore.getObservable
 import de.aaronoe.rxfirestore.getSingle
 import io.reactivex.Observable

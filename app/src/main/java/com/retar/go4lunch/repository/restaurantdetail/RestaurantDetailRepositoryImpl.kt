@@ -2,7 +2,7 @@ package com.retar.go4lunch.repository.restaurantdetail
 
 import com.retar.go4lunch.api.response.restaurantdetails.RestaurantDetailResponse
 import com.retar.go4lunch.api.retrofit.GooglePlacesApi
-import com.retar.go4lunch.manager.firebase.FireStoreManager
+import com.retar.go4lunch.manager.firebase.firestore.FireStoreManager
 import com.retar.go4lunch.ui.restaurantdetail.model.UiRestaurantDetailItem
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
