@@ -1,7 +1,7 @@
 package com.retar.go4lunch.ui.restaurantdetail
 
 import android.util.Log
-import com.retar.go4lunch.firebase.FireStoreManager
+import com.retar.go4lunch.manager.firebase.FireStoreManager
 import com.retar.go4lunch.repository.restaurantdetail.RestaurantDetailRepository
 import com.retar.go4lunch.repository.users.UsersRepository
 import io.reactivex.android.schedulers.AndroidSchedulers

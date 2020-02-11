@@ -1,7 +1,7 @@
 package com.retar.go4lunch.ui
 
 import android.util.Log
-import com.retar.go4lunch.firebase.FireAuthManager
+import com.retar.go4lunch.manager.firebase.FireAuthManager
 import io.reactivex.disposables.Disposable
 import io.reactivex.rxkotlin.subscribeBy
 import javax.inject.Inject
