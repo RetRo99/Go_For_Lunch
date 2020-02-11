@@ -1,16 +1,15 @@
-package com.retar.go4lunch.firebase
+package com.retar.go4lunch.manager.firebase
 
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.retar.go4lunch.R
 import com.retar.go4lunch.base.model.RestaurantEntity
 import com.retar.go4lunch.base.model.User
-import com.retar.go4lunch.firebase.model.FireStoreRestaurant
+import com.retar.go4lunch.manager.firebase.model.FireStoreRestaurant
 import de.aaronoe.rxfirestore.getObservable
 import de.aaronoe.rxfirestore.getSingle
 import io.reactivex.Observable
 import io.reactivex.Single
-import io.reactivex.rxkotlin.subscribeBy
 
 class FireStoreManager(
     db: FirebaseFirestore
@@ -37,32 +36,22 @@ class FireStoreManager(
     }
 
 
-     fun getUsers(): Observable<List<User>> {
+    fun getUsers(): Observable<List<User>> {
         return userRef.getObservable()
-    }
-
-
-    private fun mapToVisited(
-        fireStoreRestaurants: List<FireStoreRestaurant>,
-        restaurantsEntity: List<RestaurantEntity>
-    ): List<RestaurantEntity> {
-
-        val visitedIds = fireStoreRestaurants.map {
-            it.id
-        }
-
-        return restaurantsEntity.map {
-            if (it.id in visitedIds) it.icon = R.drawable.ic_restaurant_marker_green
-            it
-        }
-
     }
 
     fun mapWithVisitedRestaurants(restaurantsEntity: List<RestaurantEntity>): Single<List<RestaurantEntity>> {
         return visitedRef.getSingle<FireStoreRestaurant>()
-            .map { firestoreRestaurants ->
-                mapToVisited(firestoreRestaurants, restaurantsEntity)
-
+            .map { visitedRestaurants ->
+                visitedRestaurants.map { visitedRestaurant ->
+                    visitedRestaurant.id
+                }
+            }
+            .map { visitedIds ->
+                restaurantsEntity.map {
+                    if (it.id in visitedIds) it.icon = R.drawable.ic_restaurant_marker_green
+                    it
+                }
             }
     }
 

@@ -1,4 +1,4 @@
-package com.retar.go4lunch.firebase
+package com.retar.go4lunch.manager.firebase
 
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore

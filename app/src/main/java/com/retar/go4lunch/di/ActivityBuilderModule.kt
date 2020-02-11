@@ -1,6 +1,6 @@
 package com.retar.go4lunch.di
 
-import com.retar.go4lunch.firebase.FirebaseModule
+import com.retar.go4lunch.manager.firebase.FirebaseModule
 import com.retar.go4lunch.repository.RepositoryModule
 import com.retar.go4lunch.ui.MainActivity
 import com.retar.go4lunch.ui.MainModule
