@@ -33,9 +33,7 @@ class RestaurantsRepositoryImpl @Inject constructor(
                 distance
             )
                 .map {
-                    mapToIds(
-                        it
-                    )
+                    mapToIds(it)
                 }
                 .flatMapObservable {
                     Observable.fromIterable(it)
@@ -59,10 +57,7 @@ class RestaurantsRepositoryImpl @Inject constructor(
                         restaurants.onError(it)
                     }
                 )
-
         }
-
-
     }
 
     private fun mapDetailsToEntity(
