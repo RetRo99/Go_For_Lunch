@@ -10,8 +10,7 @@ import javax.inject.Inject
 class RestaurantsViewPresenterImpl @Inject constructor(
     private val view: RestaurantsView,
     private val restaurantsRepository: RestaurantsRepository,
-    private val parentPresenter: MainViewPresenter,
-    private val restaurantDetailRepository: RestaurantDetailRepository
+    private val parentPresenter: MainViewPresenter
 ) : RestaurantsViewPresenter {
 
 

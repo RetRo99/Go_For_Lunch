@@ -5,6 +5,7 @@ import com.retar.go4lunch.base.model.RestaurantEntity
 import com.retar.go4lunch.repository.restaurant.RestaurantsRepository
 import com.retar.go4lunch.ui.MainViewPresenter
 import com.retar.go4lunch.ui.map.model.UiMarkerModel
+import com.retar.go4lunch.ui.restaurantdetail.model.UiRestaurantDetailItem
 import com.retar.go4lunch.utils.getLatLng
 import io.reactivex.Observable
 import io.reactivex.disposables.Disposable
