@@ -1,16 +1,13 @@
 package com.retar.go4lunch.repository.restaurant
 
 import android.location.Location
-import android.util.Log
 import com.google.android.gms.maps.model.LatLng
-import com.retar.go4lunch.api.response.nearbysearchresponse.NearbySearchResponse
-import com.retar.go4lunch.api.response.nearbysearchresponse.Results
+import com.retar.go4lunch.api.response.restaurantdetails.RestaurantDetailResponse
 import com.retar.go4lunch.api.retrofit.GooglePlacesApi
 import com.retar.go4lunch.base.model.RestaurantEntity
 import com.retar.go4lunch.firebase.FireStoreManager
 import com.retar.go4lunch.utils.getApiString
 import com.retar.go4lunch.utils.getLatLng
-import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.subjects.BehaviorSubject
@@ -33,11 +30,14 @@ class RestaurantsRepositoryImpl @Inject constructor(
                 location.getApiString(),
                 distance
             )
-                .observeOn(AndroidSchedulers.mainThread())
+                .map { it.results.map { it.place_id } }
+                .flattenAsObservable { it }
+                .flatMapSingle {
+                    googlePlacesApi.getResturantDetails(it)
+                }
+                .toList()
                 .map {
-                    mapToRestaurantEntity(
-                        it, location.getLatLng()
-                    )
+                    mapDetailsToEntity(it, location.getLatLng())
                 }
                 .flatMap {
                     firestoreManager.mapWithVisitedRestaurants(it)
@@ -46,35 +46,34 @@ class RestaurantsRepositoryImpl @Inject constructor(
                     //todo handle error
                     onSuccess = {
                         restaurants.onNext(it)
-                        disposable?.dispose()
                     },
                     onError = {
                         restaurants.onError(it)
                     }
                 )
-
         }
-
-
     }
 
-    private fun mapToRestaurantEntity(
-        nearbySearchResponse: NearbySearchResponse,
+    private fun mapDetailsToEntity(
+        restaurantDetails: List<RestaurantDetailResponse>,
         latLng: LatLng
     ): List<RestaurantEntity> {
         val listRestaurantEntity = mutableListOf<RestaurantEntity>()
-        nearbySearchResponse.results.forEach {
-            val restaurantLatLng = it.geometry.location.getLatLng()
+        restaurantDetails.forEach {
+            val restaurantLatLng = it.result.geometry.location.getLatLng()
 
             val distanceToCurrent = getDistance(latLng, restaurantLatLng)
             listRestaurantEntity.add(
                 RestaurantEntity(
                     restaurantLatLng,
-                    it.name,
-                    it.place_id,
+                    it.result.name,
+                    it.result.place_id,
+                    it.result.formatted_phone_number,
+                    it.result.photos.map { it.photo_reference },
+                    it.result.website,
                     distanceToCurrent,
-                    it.vicinity,
-                    it.photos?.get(0)?.photo_reference,
+                    it.result.vicinity,
+                    it.result.photos[0].photo_reference,
                     getOpenedString(it)
                 )
             )
@@ -85,9 +84,9 @@ class RestaurantsRepositoryImpl @Inject constructor(
         return listRestaurantEntity
     }
 
-    private fun getOpenedString(restaurant: Results): String {
+    private fun getOpenedString(restaurant: RestaurantDetailResponse): String {
         var openedBoolean: Boolean? = null
-        restaurant.opening_hours?.open_now?.let {
+        restaurant.result.opening_hours?.open_now?.let {
             openedBoolean = it
         }
         //todo extract strings

@@ -11,7 +11,7 @@ data class Result(
     val id: String,
     val international_phone_number: String,
     val name: String,
-    val opening_hours: Opening_hours,
+    val opening_hours: Opening_hours?,
     val photos: List<Photos>,
     val place_id: String,
     val plus_code: Plus_code,
