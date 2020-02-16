@@ -14,4 +14,7 @@ interface GooglePlacesApi {
     @GET("details/json")
     fun getResturantDetails(@Query("place_id") restaurantId: String): Single<RestaurantDetailResponse>
 
+    @GET("details/json")
+    fun getAutocomplete(@Query("input") input: String): Single<RestaurantDetailResponse>
+
 }

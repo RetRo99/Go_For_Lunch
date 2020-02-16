@@ -17,13 +17,13 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MapStyleOptions
 import com.google.android.gms.maps.model.MarkerOptions
 import com.retar.go4lunch.R
+import com.retar.go4lunch.base.BaseAutoCompleteFragment
 import com.retar.go4lunch.ui.map.model.UiMarkerModel
-import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.fragment_map_view.*
 import javax.inject.Inject
 
 
-class MapFragment : DaggerFragment(), MapView,
+class MapFragment : BaseAutoCompleteFragment(), MapView,
     OnMapReadyCallback {
 
     private lateinit var googleMap: GoogleMap
@@ -44,6 +44,10 @@ class MapFragment : DaggerFragment(), MapView,
 
         fabGetLocation.setOnClickListener {
             presenter.onFabClick()
+        }
+
+        autoSearch.doOnTextChanged { text, _, _, _ ->
+
         }
 
         presenter.onActivityCreated()

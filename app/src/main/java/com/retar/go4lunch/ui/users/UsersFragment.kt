@@ -5,13 +5,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.retar.go4lunch.R
+import com.retar.go4lunch.base.BaseAutoCompleteFragment
 import com.retar.go4lunch.ui.users.adapter.UserAdapter
 import com.retar.go4lunch.base.model.User
-import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.fragment_users.*
 import javax.inject.Inject
 
-class UsersFragment : DaggerFragment(), UsersView {
+class UsersFragment : BaseAutoCompleteFragment(), UsersView {
 
     @Inject
     lateinit var presenter: UsersViewPresenter
