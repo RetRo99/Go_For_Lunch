@@ -1,15 +1,17 @@
 package com.retar.go4lunch.ui.resturants
 
-import com.retar.go4lunch.repository.restaurant.RestaurantsRepository
-import com.retar.go4lunch.repository.restaurantdetail.RestaurantDetailRepository
+import com.retar.go4lunch.manager.contentdata.ContentDataManager
 import com.retar.go4lunch.ui.MainViewPresenter
+import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.Disposable
 import io.reactivex.rxkotlin.subscribeBy
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class RestaurantsViewPresenterImpl @Inject constructor(
     private val view: RestaurantsView,
-    private val restaurantsRepository: RestaurantsRepository,
+    private val dataManager: ContentDataManager,
     private val parentPresenter: MainViewPresenter
 ) : RestaurantsViewPresenter {
 
@@ -18,7 +20,8 @@ class RestaurantsViewPresenterImpl @Inject constructor(
 
 
     private fun observeData() {
-        disposable = restaurantsRepository.restaurants
+        disposable?.dispose()
+        disposable = dataManager.restaurants
             .subscribeBy(
                 onNext = {
                     view.setData(it, firstPosition)
@@ -42,6 +45,18 @@ class RestaurantsViewPresenterImpl @Inject constructor(
     override fun onActivityCreated() {
         observeData()
     }
+
+    override fun onSearchChanged(text: CharSequence?) {
+        disposable?.dispose()
+        disposable = Observable.just(text.toString())
+            .delay(3, TimeUnit.SECONDS)
+            .subscribeBy(
+                onNext = {
+                    view.toast(it)
+                }
+            )
+    }
+
 
     companion object {
         private var firstPosition = 0

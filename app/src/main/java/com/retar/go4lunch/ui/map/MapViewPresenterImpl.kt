@@ -2,6 +2,8 @@ package com.retar.go4lunch.ui.map
 
 import android.location.Location
 import com.retar.go4lunch.base.model.RestaurantEntity
+import com.retar.go4lunch.manager.contentdata.ContentDataManager
+import com.retar.go4lunch.manager.location.LocationManager
 import com.retar.go4lunch.repository.restaurant.RestaurantsRepository
 import com.retar.go4lunch.ui.MainViewPresenter
 import com.retar.go4lunch.ui.map.model.UiMarkerModel
@@ -14,20 +16,21 @@ import javax.inject.Inject
 
 class MapViewPresenterImpl @Inject constructor(
     private val view: MapView,
-    private val repository: RestaurantsRepository,
-    private val parentPresenter: MainViewPresenter
+    private val dataManager: ContentDataManager,
+    private val parentPresenter: MainViewPresenter,
+    private val locationManager: LocationManager
 
 ) : MapViewPresenter {
 
     private var disposable: Disposable? = null
 
     override fun onActivityCreated() {
+        locationManager.makeLog()
         view.getMapAsync()
     }
 
     override fun onMapReady() {
         observerData()
-        view.getLastLocation(isFromFab = false)
         view.setDarkTheme()
 
     }
@@ -48,7 +51,7 @@ class MapViewPresenterImpl @Inject constructor(
     }
 
     private fun observerData() {
-        disposable = repository.restaurants
+        disposable = dataManager.restaurants
             .flatMap {
                 Observable.fromIterable(it)
             }
@@ -74,8 +77,8 @@ class MapViewPresenterImpl @Inject constructor(
     ) {
 
 
-        repository
-            .getRestaurants(location, distance, isFromFab)
+        dataManager
+            .loadNearbyRestaurants(location, distance, isFromFab)
 
     }
 

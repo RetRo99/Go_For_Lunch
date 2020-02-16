@@ -8,9 +8,7 @@ import com.retar.go4lunch.base.model.RestaurantEntity
 import com.retar.go4lunch.manager.firebase.firestore.FireStoreManager
 import com.retar.go4lunch.utils.getApiString
 import com.retar.go4lunch.utils.getLatLng
-import io.reactivex.disposables.Disposable
-import io.reactivex.rxkotlin.subscribeBy
-import io.reactivex.subjects.BehaviorSubject
+import io.reactivex.Single
 import javax.inject.Inject
 
 class RestaurantsRepositoryImpl @Inject constructor(
@@ -19,39 +17,28 @@ class RestaurantsRepositoryImpl @Inject constructor(
 ) :
     RestaurantsRepository {
 
-    override val restaurants: BehaviorSubject<List<RestaurantEntity>> = BehaviorSubject.create()
 
-    private var disposable: Disposable? = null
+    override fun getRestaurants(
+        location: Location,
+        distance: String
+    ): Single<List<RestaurantEntity>> {
 
-    override fun getRestaurants(location: Location, distance: String, resetData: Boolean) {
-
-        if (restaurants.value == null || resetData) {
-            disposable = googlePlacesApi.getNearbyRestaurants(
-                location.getApiString(),
-                distance
-            )
-                .map { it.results.map { it.place_id } }
-                .flattenAsObservable { it }
-                .flatMapSingle {
-                    googlePlacesApi.getResturantDetails(it)
-                }
-                .toList()
-                .map {
-                    mapDetailsToEntity(it, location.getLatLng())
-                }
-                .flatMap {
-                    firestoreManager.mapWithVisitedRestaurants(it)
-                }
-                .subscribeBy(
-                    //todo handle error
-                    onSuccess = {
-                        restaurants.onNext(it)
-                    },
-                    onError = {
-                        restaurants.onError(it)
-                    }
-                )
-        }
+        return googlePlacesApi.getNearbyRestaurants(
+            location.getApiString(),
+            distance
+        )
+            .map { it.results.map { it.place_id } }
+            .flattenAsObservable { it }
+            .flatMapSingle {
+                googlePlacesApi.getResturantDetails(it)
+            }
+            .toList()
+            .map {
+                mapDetailsToEntity(it, location.getLatLng())
+            }
+            .flatMap {
+                firestoreManager.mapWithVisitedRestaurants(it)
+            }
     }
 
     private fun mapDetailsToEntity(

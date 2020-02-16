@@ -8,11 +8,7 @@ import dagger.Provides
 import javax.inject.Singleton
 
 
-@Module(
-    includes = [
-        RetrofitModule::class
-    ]
-)
+@Module
 class RestaurantDetailRepositoryModule {
 
 

@@ -5,7 +5,7 @@ import dagger.Binds
 import dagger.Module
 
 @Module(includes = [UiModule::class])
-internal interface MainModule {
+internal interface MainActivityModule {
 
     @Binds
     fun bindActivity(activity: MainActivity): Activity

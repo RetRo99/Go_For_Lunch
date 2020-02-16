@@ -1,5 +1,6 @@
 package com.retar.go4lunch.api.retrofit
 
+import android.util.Log
 import com.retar.go4lunch.base.Constants.BASE_URL
 import com.retar.go4lunch.base.Constants.GOOGLE_KEY
 import dagger.Module
@@ -60,7 +61,6 @@ class RetrofitModule {
 
             val requestBuilder = original.newBuilder()
                 .url(url)
-
 
             val request = requestBuilder.build()
             chain.proceed(request)

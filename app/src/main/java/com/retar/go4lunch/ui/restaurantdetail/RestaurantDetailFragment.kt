@@ -15,6 +15,7 @@ import com.retar.go4lunch.ui.restaurantdetail.model.UiRestaurantDetailItem
 import com.retar.go4lunch.ui.users.adapter.UserAdapter
 import com.retar.go4lunch.base.model.User
 import dagger.android.support.DaggerFragment
+import kotlinx.android.synthetic.main.fragment_map_view.*
 import kotlinx.android.synthetic.main.fragment_restaurant_detail.*
 import javax.inject.Inject
 
