@@ -27,6 +27,10 @@ class RestaurantsFragment : BaseAutoCompleteFragment(), RestaurantsView {
         return inflater.inflate(R.layout.fragment_list, container, false)
     }
 
+    override fun showToast(stringResource: Int) {
+        Toast.makeText(context, stringResource, Toast.LENGTH_SHORT).show()
+    }
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 

@@ -67,15 +67,14 @@ abstract class LocationPermissionActivity : DaggerAppCompatActivity(), ProvideNa
     }
 
     private fun showRationaleForPermissions() {
-        //Todo extract strings
         if (shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION)) {
             showPermissionsRequiredDialog(
-                "Permission to access location is needed for the app to work.",
+                getString(R.string.dialog_permission_title),
                 dontAskAgainChecked = false
             )
         } else {
             showPermissionsRequiredDialog(
-                "You previously denied location permission. Click ok to open settings to enable it.",
+                getString(R.string.dialog_permission_previous_denied),
                 dontAskAgainChecked = true
             )
         }
@@ -84,12 +83,11 @@ abstract class LocationPermissionActivity : DaggerAppCompatActivity(), ProvideNa
     private fun showPermissionsRequiredDialog(body: String, dontAskAgainChecked: Boolean) {
         requestDialog = AlertDialog.Builder(this)
             .setMessage(body)
-            //Todo extract strings
-            .setTitle("Permission required")
-            .setPositiveButton("OK") { _, _ ->
+            .setTitle(getString(R.string.dialog_permission_required))
+            .setPositiveButton(getString(R.string.dialog_ok)) { _, _ ->
                 if (!dontAskAgainChecked) requestPermissions() else openSettings()
             }
-            .setNegativeButton("EXIT") { _, _ ->
+            .setNegativeButton(getString(R.string.dialog_exit)) { _, _ ->
                 finish()
             }
             .setCancelable(false)
@@ -98,7 +96,6 @@ abstract class LocationPermissionActivity : DaggerAppCompatActivity(), ProvideNa
     }
 
     private fun openSettings() {
-        //todo handle user return to app so the map fragment is shown
         val intent = Intent(ACTION_APPLICATION_DETAILS_SETTINGS)
         intent.data = Uri.parse("package:$packageName")
         startActivity(intent)

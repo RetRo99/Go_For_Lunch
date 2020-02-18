@@ -122,13 +122,11 @@ class MainActivity : LocationPermissionActivity(), MainView,
 
     override fun showLogOutDialog() {
         AlertDialog.Builder(this)
-            .setTitle("Are you sure you want to logout?")
-            //Todo extract strings
-            .setPositiveButton("Yes") { _, _ ->
+            .setTitle(getString(R.string.dialog_logout_title))
+            .setPositiveButton(getString(R.string.dialog_yes)) { _, _ ->
                 presenter.onLogoutConfirmed()
             }
-            .setNegativeButton("No") { _, _ ->
-                //todo nothing
+            .setNegativeButton(getString(R.string.dialog_no)) { _, _ ->
             }
             .create()
             .show()

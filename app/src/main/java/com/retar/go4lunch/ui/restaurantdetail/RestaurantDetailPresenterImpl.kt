@@ -1,9 +1,12 @@
 package com.retar.go4lunch.ui.restaurantdetail
 
-import android.util.Log
+import android.content.Intent
+import android.net.Uri
+import com.retar.go4lunch.R
 import com.retar.go4lunch.manager.firebase.firestore.FireStoreManager
 import com.retar.go4lunch.repository.restaurantdetail.RestaurantDetailRepository
 import com.retar.go4lunch.repository.users.UsersRepository
+import com.retar.go4lunch.ui.restaurantdetail.model.UiRestaurantDetailItem
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.subscribeBy
@@ -20,6 +23,8 @@ class RestaurantDetailPresenterImpl @Inject constructor(
 
     private lateinit var restaurantId: String
 
+    lateinit var data: UiRestaurantDetailItem
+
     override fun onActivityCreated(restaurantId: String) {
 
         this.restaurantId = restaurantId
@@ -27,6 +32,7 @@ class RestaurantDetailPresenterImpl @Inject constructor(
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
                 onSuccess = {
+                    data = it
                     view.showData(it)
                     view.setFab(it.isPicked)
                 }
@@ -41,18 +47,37 @@ class RestaurantDetailPresenterImpl @Inject constructor(
                 }
                 .subscribeBy(
                     onNext = {
-                        Log.d("čič", "test")
                         view.showUsers(it)
 
                     },
                     onError = {
-                        //todo handle error
+                        view.showToast(R.string.error_no_user_data)
                     }
 
                 )
         )
     }
 
+    override fun onCallClicked() {
+        if (!data.phoneNumber.isNullOrEmpty()) {
+            val intent = Intent(Intent.ACTION_DIAL)
+            intent.data = Uri.parse("tel:${data.phoneNumber}")
+            view.startActivity(intent)
+        } else {
+            view.showToast(R.string.restaurant_detail_no_number)
+
+        }
+    }
+
+    override fun onWebSiteClicked() {
+        if (!data.webPage.isNullOrEmpty()) {
+            val intent = Intent(Intent.ACTION_VIEW)
+            intent.data = Uri.parse(data.webPage)
+            view.startActivity(intent)
+        } else {
+            view.showToast(R.string.restaurant_detail_not_available)
+        }
+    }
 
     override fun onDestroy() {
         compositeDisposable.dispose()

@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import com.retar.go4lunch.R
 import com.retar.go4lunch.base.BaseAutoCompleteFragment
 import com.retar.go4lunch.ui.users.adapter.UserAdapter
@@ -27,10 +28,15 @@ class UsersFragment : BaseAutoCompleteFragment(), UsersView {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        adapter = UserAdapter(listOf())
+        adapter = UserAdapter()
         recyclerView.adapter = adapter
 
         presenter.onActivityCreated()
+    }
+
+    override fun showToast(stringResource: Int) {
+        Toast.makeText(context, stringResource, Toast.LENGTH_SHORT).show()
+
     }
 
     companion object {

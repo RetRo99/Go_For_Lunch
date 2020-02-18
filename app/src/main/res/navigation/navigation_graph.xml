@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?><!--todo extraxt values-->
+<?xml version="1.0" encoding="utf-8"?>
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -35,6 +35,6 @@
     <fragment
         android:id="@+id/navigation_mates"
         android:name="com.retar.go4lunch.ui.users.UsersFragment"
-        android:label="Friend List"
+        android:label="@string/title_friends_list"
         tools:layout="@layout/fragment_users" />
 </navigation>

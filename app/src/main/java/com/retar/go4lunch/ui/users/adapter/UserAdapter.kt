@@ -9,11 +9,14 @@ import com.retar.go4lunch.utils.inflate
 import com.retar.go4lunch.utils.loadRoundPhoto
 import kotlinx.android.synthetic.main.item_fragment_users.view.*
 
-class UserAdapter(private var users: List<User>) :
+class UserAdapter :
     RecyclerView.Adapter<UserAdapter.UserHolder>() {
     override fun getItemCount(): Int {
         return users.size
     }
+
+
+    private var users: List<User> = listOf()
 
     fun update(modelList: List<User>) {
         users = modelList

@@ -1,6 +1,7 @@
 package com.retar.go4lunch.ui
 
 import android.util.Log
+import com.retar.go4lunch.manager.contentdata.ContentDataManager
 import com.retar.go4lunch.manager.firebase.auth.FireAuthManager
 import io.reactivex.disposables.Disposable
 import io.reactivex.rxkotlin.subscribeBy
@@ -8,7 +9,8 @@ import javax.inject.Inject
 
 class MainPresenterImpl @Inject constructor(
     private val view: MainView,
-    private val authManager: FireAuthManager
+    private val authManager: FireAuthManager,
+    private val dataManagerModule: ContentDataManager
 
 ) : MainViewPresenter {
 
@@ -21,8 +23,7 @@ class MainPresenterImpl @Inject constructor(
 
             .subscribeBy(
                 onError = {
-                    //TODO handle error
-                    Log.d("čič", it.localizedMessage)
+                    view.requestLogin()
                 },
                 onSuccess = {
                     view.setDrawerData(it)
@@ -35,6 +36,7 @@ class MainPresenterImpl @Inject constructor(
 
     override fun onDestroy() {
         disposable?.dispose()
+        dataManagerModule.onDestroy()
     }
 
     override fun onSignIn(isNewUser: Boolean?) {

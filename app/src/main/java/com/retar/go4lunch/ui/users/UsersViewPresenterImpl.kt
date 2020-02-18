@@ -1,6 +1,6 @@
 package com.retar.go4lunch.ui.users
 
-import android.util.Log
+import com.retar.go4lunch.R
 import com.retar.go4lunch.repository.users.UsersRepository
 import io.reactivex.disposables.Disposable
 import io.reactivex.rxkotlin.subscribeBy
@@ -20,11 +20,9 @@ class UsersViewPresenterImpl @Inject constructor(
                 .subscribeBy(
                     onNext = {
                         view.setData(it)
-                        Log.d("čič", "onNext")
-
                     },
                     onError = {
-                        //todo handle error
+                        view.showToast(R.string.error_no_user_data)
                     }
                 )
 

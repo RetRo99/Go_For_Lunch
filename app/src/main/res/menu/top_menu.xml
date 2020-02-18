@@ -2,19 +2,16 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <!-- TODO extract the strings -->
-
     <item
-        android:title="Search"
+        android:title="@string/menu_search"
         android:id="@+id/search"
         android:icon="@drawable/ic_search"
         app:showAsAction="always"
         />
 
-<!--    todo add actual menu-->
     <item
         android:id="@+id/navigation_map"
         android:icon="@drawable/ic_map"
-        android:title="Home" />
+        android:title="@string/menu_settings" />
 
 </menu>

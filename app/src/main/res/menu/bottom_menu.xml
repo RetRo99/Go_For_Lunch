@@ -1,18 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <!-- TODO extract the strings -->
-
     <item
         android:id="@+id/navigation_map"
         android:icon="@drawable/ic_map"
-        android:title="Home" />
+        android:title="@string/menu_map" />
     <item
         android:id="@+id/navigation_list"
         android:icon="@drawable/ic_list"
-        android:title="SMS" />
+        android:title="@string/menu_list" />
     <item
         android:id="@+id/navigation_mates"
         android:icon="@drawable/ic_mates"
-        android:title="Notification" />
+        android:title="@string/menu_friends" />
 </menu>
