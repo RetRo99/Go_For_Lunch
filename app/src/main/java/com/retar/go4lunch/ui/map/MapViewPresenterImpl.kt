@@ -1,17 +1,19 @@
 package com.retar.go4lunch.ui.map
 
-import android.location.Location
+import android.util.Log
 import com.retar.go4lunch.base.model.RestaurantEntity
 import com.retar.go4lunch.manager.contentdata.ContentDataManager
 import com.retar.go4lunch.manager.location.LocationManager
-import com.retar.go4lunch.repository.restaurant.RestaurantsRepository
 import com.retar.go4lunch.ui.MainViewPresenter
 import com.retar.go4lunch.ui.map.model.UiMarkerModel
-import com.retar.go4lunch.ui.restaurantdetail.model.UiRestaurantDetailItem
 import com.retar.go4lunch.utils.getLatLng
 import io.reactivex.Observable
-import io.reactivex.disposables.Disposable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.subscribeBy
+import io.reactivex.subjects.BehaviorSubject
+import java.util.*
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class MapViewPresenterImpl @Inject constructor(
@@ -22,36 +24,49 @@ class MapViewPresenterImpl @Inject constructor(
 
 ) : MapViewPresenter {
 
-    private var disposable: Disposable? = null
+    private val searchText: BehaviorSubject<String> = BehaviorSubject.create()
+
+    private val compositeDisposable = CompositeDisposable()
+
 
     override fun onActivityCreated() {
-        locationManager.makeLog()
+        compositeDisposable.add(searchText
+            .debounce(750, TimeUnit.MILLISECONDS)
+            .distinctUntilChanged()
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(
+                onNext = {
+                    view.deleteAllMarkers()
+                    dataManager.searchAutoComplete(it, uniqueId)
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .flattenAsObservable { it }
+                        .map { restaurantEntity ->
+                            mapRestaurantResponseToUi(restaurantEntity)
+                        }
+                        .subscribeBy(
+                            onNext = { marker ->
+                                view.addMarker(marker)
+                            }
+                        )
+                }
+            )
+        )
         view.getMapAsync()
     }
 
     override fun onMapReady() {
         observerData()
+        view.setMarkerClickListener()
         view.setDarkTheme()
-
-    }
-
-    override fun onGotLastLocation(location: Location, isFromFab: Boolean) {
-
-        if (isFirstRun || isFromFab) {
-            view.animateToLocation(location.getLatLng())
-            isFirstRun = false
-        } else {
-            view.moveToLocation(location.getLatLng())
-        }
-        loadNearbyRestaurants(location, isFromFab)
     }
 
     override fun onFabClick() {
-        view.getLastLocation(true)
+        locationManager.updateLocation()
     }
 
     private fun observerData() {
-        disposable = dataManager.restaurants
+
+        compositeDisposable.add(dataManager.restaurants
             .flatMap {
                 Observable.fromIterable(it)
             }
@@ -62,42 +77,46 @@ class MapViewPresenterImpl @Inject constructor(
             .subscribeBy(
                 onNext = {
                     view.addMarker(it)
-                    view.setMarkerClickListener()
                 },
                 onError = {
                     ///todo handle error
                 }
-            )
+            ))
+
+        compositeDisposable.add(locationManager.location
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribeBy(
+                onNext = {
+                    view.moveToLocation(it.getLatLng())
+                }
+            ))
     }
 
-    private fun loadNearbyRestaurants(
-        location: Location,
-        isFromFab: Boolean,
-        distance: String = DEFAULT_DISTANCE
-    ) {
-
-
-        dataManager
-            .loadNearbyRestaurants(location, distance, isFromFab)
-
-    }
 
     private fun mapRestaurantResponseToUi(restaurantEntity: RestaurantEntity): UiMarkerModel {
-        return UiMarkerModel(restaurantEntity.latLng, restaurantEntity.name, restaurantEntity.id, restaurantEntity.icon)
+        return UiMarkerModel(
+            restaurantEntity.latLng,
+            restaurantEntity.name,
+            restaurantEntity.id,
+            restaurantEntity.icon
+        )
     }
 
     override fun onMarkerClicked(id: String, title: String) {
+        uniqueId = UUID.randomUUID().toString()
         parentPresenter.fromMapToRestaurantDetail(id, title)
+    }
 
+    override fun onSearchChanged(text: CharSequence?) {
+        searchText.onNext(text.toString())
     }
 
     override fun onDestroy() {
-        disposable?.dispose()
+        compositeDisposable.dispose()
     }
 
-    companion object {
-        private var isFirstRun = true
-
-        private const val DEFAULT_DISTANCE = "1500"
+    companion object{
+        private var uniqueId = UUID.randomUUID().toString()
     }
+
 }

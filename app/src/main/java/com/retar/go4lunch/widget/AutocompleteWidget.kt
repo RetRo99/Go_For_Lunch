@@ -1,6 +1,7 @@
 package com.retar.go4lunch.widget
 
 import android.content.Context
+import android.text.SpannableStringBuilder
 import android.util.AttributeSet
 import android.view.View
 import android.widget.FrameLayout
@@ -16,6 +17,7 @@ class AutocompleteWidget(context: Context, attrs: AttributeSet?) : FrameLayout(c
 
         View.inflate(context, R.layout.view_autocomplete_widget, this)
         search_close_btn.setOnClickListener {
+            search_edittext.text = SpannableStringBuilder("")
             visibility = View.INVISIBLE
         }
 

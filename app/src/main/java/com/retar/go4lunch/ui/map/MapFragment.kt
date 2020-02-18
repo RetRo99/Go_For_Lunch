@@ -1,13 +1,10 @@
 package com.retar.go4lunch.ui.map
 
 
-import android.location.Location
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -20,8 +17,8 @@ import com.retar.go4lunch.R
 import com.retar.go4lunch.base.BaseAutoCompleteFragment
 import com.retar.go4lunch.ui.map.model.UiMarkerModel
 import kotlinx.android.synthetic.main.fragment_map_view.*
+import java.util.*
 import javax.inject.Inject
-
 
 class MapFragment : BaseAutoCompleteFragment(), MapView,
     OnMapReadyCallback {
@@ -47,7 +44,7 @@ class MapFragment : BaseAutoCompleteFragment(), MapView,
         }
 
         autoSearch.doOnTextChanged { text, _, _, _ ->
-
+            presenter.onSearchChanged(text)
         }
 
         presenter.onActivityCreated()
@@ -67,20 +64,6 @@ class MapFragment : BaseAutoCompleteFragment(), MapView,
             mapFragment =
                 childFragmentManager.findFragmentById(R.id.googleMap) as SupportMapFragment?
             mapFragment?.getMapAsync(this)
-        }
-
-    }
-
-    override fun getLastLocation(isFromFab: Boolean) {
-        activity?.let {
-            val fusedLocationClient: FusedLocationProviderClient =
-                LocationServices.getFusedLocationProviderClient(it)
-            fusedLocationClient.lastLocation
-                .addOnSuccessListener { location: Location? ->
-                    location?.let {
-                        presenter.onGotLastLocation(location, isFromFab)
-                    }
-                }
         }
 
     }
@@ -117,6 +100,10 @@ class MapFragment : BaseAutoCompleteFragment(), MapView,
         )
     }
 
+    override fun deleteAllMarkers() {
+        googleMap.clear()
+    }
+
     override fun addMarker(marker: UiMarkerModel) {
         val mapMarker = MarkerOptions().position(marker.latLng).title(marker.title).run {
             icon(BitmapDescriptorFactory.fromResource(marker.icon))
@@ -128,7 +115,7 @@ class MapFragment : BaseAutoCompleteFragment(), MapView,
 
         const val TAG = "com.retar.go4lunch.ui.map.mapfragment"
 
-        const val ZOOM_MODE = 15f
+        const val ZOOM_MODE = 14.3f
 
         @JvmStatic
         fun newInstance() = MapFragment()

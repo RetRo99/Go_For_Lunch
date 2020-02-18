@@ -1,4 +1,4 @@
-package com.retar.go4lunch.repository.restaurant
+package com.retar.go4lunch.repository.restaurants
 
 import android.location.Location
 import com.retar.go4lunch.base.model.RestaurantEntity

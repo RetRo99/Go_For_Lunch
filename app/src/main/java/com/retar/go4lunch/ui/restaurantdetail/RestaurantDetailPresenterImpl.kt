@@ -4,12 +4,9 @@ import android.util.Log
 import com.retar.go4lunch.manager.firebase.firestore.FireStoreManager
 import com.retar.go4lunch.repository.restaurantdetail.RestaurantDetailRepository
 import com.retar.go4lunch.repository.users.UsersRepository
-import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.disposables.Disposable
 import io.reactivex.rxkotlin.subscribeBy
-import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 class RestaurantDetailPresenterImpl @Inject constructor(
@@ -19,15 +16,14 @@ class RestaurantDetailPresenterImpl @Inject constructor(
 
 ) : RestaurantDetailPresenter {
 
-    private val compositeDisposable: CompositeDisposable? = CompositeDisposable()
-    private var disposable: Disposable? = null
-
+    private val compositeDisposable: CompositeDisposable = CompositeDisposable()
 
     private lateinit var restaurantId: String
 
-    override fun onActivityCreated(id: String) {
-        restaurantId = id
-        compositeDisposable?.add(repository.getRestaurant(restaurantId)
+    override fun onActivityCreated(restaurantId: String) {
+
+        this.restaurantId = restaurantId
+        compositeDisposable.add(repository.getRestaurant(this.restaurantId)
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
                 onSuccess = {
@@ -36,11 +32,11 @@ class RestaurantDetailPresenterImpl @Inject constructor(
                 }
             ))
 
-        compositeDisposable?.add(
+        compositeDisposable.add(
             usersRepository.getUsers()
                 .map {
                     it.filter { user ->
-                        user.pickedRestaurant == restaurantId
+                        user.pickedRestaurant == this.restaurantId
                     }
                 }
                 .subscribeBy(
@@ -59,12 +55,11 @@ class RestaurantDetailPresenterImpl @Inject constructor(
 
 
     override fun onDestroy() {
-        disposable?.dispose()
-        compositeDisposable?.dispose()
+        compositeDisposable.dispose()
     }
 
     override fun onFabClick() {
-        compositeDisposable?.add(repository.onRestaurantPicked(restaurantId)
+        compositeDisposable.add(repository.onRestaurantPicked(restaurantId)
             .subscribeBy(
                 onSuccess = {
                     when (it) {

@@ -1,6 +1,7 @@
-package com.retar.go4lunch.repository.restaurant
+package com.retar.go4lunch.repository.autocomplete
 
 import android.location.Location
+import android.util.Log
 import com.google.android.gms.maps.model.LatLng
 import com.retar.go4lunch.api.response.restaurantdetails.RestaurantDetailResponse
 import com.retar.go4lunch.api.retrofit.GooglePlacesApi
@@ -9,32 +10,31 @@ import com.retar.go4lunch.manager.firebase.firestore.FireStoreManager
 import com.retar.go4lunch.utils.getApiString
 import com.retar.go4lunch.utils.getLatLng
 import io.reactivex.Single
-import javax.inject.Inject
 
-class RestaurantsRepositoryImpl @Inject constructor(
+class AutocompleteRepositoryImpl(
     private val googlePlacesApi: GooglePlacesApi,
     private val firestoreManager: FireStoreManager
-) :
-    RestaurantsRepository {
+) : AutocompleteRepository {
 
-
-    override fun getRestaurants(
+    override fun getAutocompleteResult(
+        searchParam: String,
         location: Location,
-        distance: String
+        radius: String,
+        uniqueId:String
     ): Single<List<RestaurantEntity>> {
-
-        return googlePlacesApi.getNearbyRestaurants(
-            location.getApiString(),
-            distance
-        )
-            .map { it.results.map { it.place_id } }
-            .flattenAsObservable { it }
+        return googlePlacesApi.getAutocomplete(searchParam, location.getApiString(), radius, uniqueId)
+            .flattenAsObservable { it.predictions }
+            .filter {
+                "food" in it.types
+            }
             .flatMapSingle {
-                googlePlacesApi.getResturantDetails(it)
+                googlePlacesApi.getResturantDetails(it.place_id)
             }
             .toList()
             .map {
+                //make remoute mapper class
                 mapDetailsToEntity(it, location.getLatLng())
+
             }
             .flatMap {
                 firestoreManager.mapWithVisitedRestaurants(it)
@@ -48,6 +48,7 @@ class RestaurantsRepositoryImpl @Inject constructor(
         val listRestaurantEntity = mutableListOf<RestaurantEntity>()
         restaurantDetails.forEach {
             val restaurantLatLng = it.result.geometry.location.getLatLng()
+            Log.d("čič", 2.toString())
 
             val distanceToCurrent = getDistance(latLng, restaurantLatLng)
             listRestaurantEntity.add(
@@ -56,11 +57,11 @@ class RestaurantsRepositoryImpl @Inject constructor(
                     it.result.name,
                     it.result.place_id,
                     it.result.formatted_phone_number,
-                    it.result.photos.map { it.photo_reference },
+                    it.result.photos?.map { it.photo_reference },
                     it.result.website,
                     distanceToCurrent,
                     it.result.vicinity,
-                    it.result.photos[0].photo_reference,
+                    it.result.photos?.get(0)?.photo_reference,
                     getOpenedString(it)
                 )
             )
