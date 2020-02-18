@@ -1,5 +1,6 @@
 package com.retar.go4lunch.ui.map
 
+import androidx.annotation.StringRes
 import com.google.android.gms.maps.model.LatLng
 import com.retar.go4lunch.ui.map.model.UiMarkerModel
 
@@ -12,5 +13,7 @@ interface MapView {
     fun setMarkerClickListener()
     fun setDarkTheme()
     fun deleteAllMarkers()
+    fun showToast(@StringRes stringResource: Int)
+
 
 }

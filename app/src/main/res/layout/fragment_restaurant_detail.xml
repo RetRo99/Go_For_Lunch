@@ -105,7 +105,6 @@
             app:layout_constraintTop_toBottomOf="@+id/locationTextView">
 
 
-            <!--        todo extract strings-->
             <TextView
                 android:id="@+id/callConstraint"
                 android:layout_width="wrap_content"
@@ -116,7 +115,7 @@
                 android:drawableTop="@drawable/ic_call"
                 android:focusable="true"
                 android:gravity="center"
-                android:text="CALL" />
+                android:text="@string/restaurant_detail_call" />
 
 
             <TextView
@@ -129,7 +128,7 @@
                 android:drawableTop="@drawable/ic_like"
                 android:focusable="true"
                 android:gravity="center"
-                android:text="LIKE" />
+                android:text="@string/restaurant_detail_like" />
 
 
             <TextView
@@ -142,7 +141,7 @@
                 android:drawableTop="@drawable/ic_web"
                 android:focusable="true"
                 android:gravity="center"
-                android:text="WEBSITE" />
+                android:text="@string/restaurant_detail_website" />
 
 
         </LinearLayout>

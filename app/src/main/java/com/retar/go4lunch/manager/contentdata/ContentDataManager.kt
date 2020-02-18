@@ -38,7 +38,6 @@ class ContentDataManager(
 
         compositeDisposable.add(restaurantRepo.getRestaurants(location, DEFAULT_DISTANCE)
             .subscribeBy(
-                //todo handle error
                 onSuccess = {
                     restaurantsHolder = it
                     restaurants.onNext(it)
@@ -50,7 +49,6 @@ class ContentDataManager(
     }
 
     fun onDestroy() {
-        //call onDestroy somewhere
         compositeDisposable.dispose()
     }
 

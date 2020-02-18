@@ -1,6 +1,7 @@
 package com.retar.go4lunch.ui.resturants
 
 import android.util.Log
+import com.retar.go4lunch.R
 import com.retar.go4lunch.manager.contentdata.ContentDataManager
 import com.retar.go4lunch.ui.MainViewPresenter
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -41,7 +42,7 @@ class RestaurantsViewPresenterImpl @Inject constructor(
                 },
 
                 onError = {
-                    ///todo handle error
+                    view.showToast(R.string.error_no_data)
                 }
             )
 

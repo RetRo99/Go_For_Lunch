@@ -1,7 +1,6 @@
 package com.retar.go4lunch.ui.restaurantdetail
 
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,12 +9,11 @@ import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.navArgs
 import com.retar.go4lunch.R
+import com.retar.go4lunch.base.model.User
 import com.retar.go4lunch.ui.restaurantdetail.adapter.PhotosAdapter
 import com.retar.go4lunch.ui.restaurantdetail.model.UiRestaurantDetailItem
 import com.retar.go4lunch.ui.users.adapter.UserAdapter
-import com.retar.go4lunch.base.model.User
 import dagger.android.support.DaggerFragment
-import kotlinx.android.synthetic.main.fragment_map_view.*
 import kotlinx.android.synthetic.main.fragment_restaurant_detail.*
 import javax.inject.Inject
 
@@ -26,7 +24,7 @@ class RestaurantDetailFragment : DaggerFragment(), RestaurantDetailView {
     @Inject
     lateinit var presenter: RestaurantDetailPresenter
 
-    private lateinit var adapter:UserAdapter
+    private lateinit var adapter: UserAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,7 +36,20 @@ class RestaurantDetailFragment : DaggerFragment(), RestaurantDetailView {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        adapter = UserAdapter(listOf())
+        callConstraint.setOnClickListener {
+            presenter.onCallClicked()
+        }
+
+        websiteConstraint.setOnClickListener {
+            presenter.onWebSiteClicked()
+        }
+
+        fab_pick_restaurant.setOnClickListener {
+            fab_pick_restaurant.isEnabled = false
+            presenter.onFabClick()
+        }
+
+        adapter = UserAdapter()
         details_recycler.adapter = adapter
 
         presenter.onActivityCreated(args.id)
@@ -47,35 +58,6 @@ class RestaurantDetailFragment : DaggerFragment(), RestaurantDetailView {
     override fun showData(data: UiRestaurantDetailItem) {
         locationTextView.text = data.address
         titleTextView.text = data.name
-        callConstraint.setOnClickListener {
-            if (!data.phoneNumber.isNullOrEmpty()) {
-                val intent = Intent(Intent.ACTION_DIAL)
-                intent.data = Uri.parse("tel:${data.phoneNumber}")
-                startActivity(intent)
-            } else {
-                //todo extract text
-                Toast.makeText(context, "Not available", Toast.LENGTH_LONG).show()
-            }
-
-        }
-
-        websiteConstraint.setOnClickListener {
-
-            if (!data.webPage.isNullOrEmpty()) {
-                val openURL = Intent(Intent.ACTION_VIEW)
-                openURL.data = Uri.parse(data.webPage)
-                startActivity(openURL)
-            } else {
-                //todo extract text
-                Toast.makeText(context, "Not available", Toast.LENGTH_LONG).show()
-            }
-
-        }
-
-        fab_pick_restaurant.setOnClickListener {
-            fab_pick_restaurant.isEnabled = false
-            presenter.onFabClick()
-        }
 
         imageViewPager.adapter = PhotosAdapter(context, data.photoReferences)
         indicator.setupWithViewPager(imageViewPager, true)
@@ -83,7 +65,14 @@ class RestaurantDetailFragment : DaggerFragment(), RestaurantDetailView {
         details_progress.visibility = View.GONE
         details_container.visibility = View.VISIBLE
 
+    }
 
+    override fun startActivity(intent: Intent) {
+        startActivity(intent)
+    }
+
+    override fun showToast(stringResource: Int) {
+        Toast.makeText(context, stringResource, Toast.LENGTH_SHORT).show()
     }
 
     override fun setFab(picked: Boolean) {

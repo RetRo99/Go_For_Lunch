@@ -1,6 +1,7 @@
 package com.retar.go4lunch.ui.map
 
 import android.util.Log
+import com.retar.go4lunch.R
 import com.retar.go4lunch.base.model.RestaurantEntity
 import com.retar.go4lunch.manager.contentdata.ContentDataManager
 import com.retar.go4lunch.manager.location.LocationManager
@@ -79,7 +80,7 @@ class MapViewPresenterImpl @Inject constructor(
                     view.addMarker(it)
                 },
                 onError = {
-                    ///todo handle error
+                    view.showToast(R.string.error_no_data)
                 }
             ))
 
