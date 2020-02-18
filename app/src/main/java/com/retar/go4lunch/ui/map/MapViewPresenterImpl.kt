@@ -74,7 +74,7 @@ class MapViewPresenterImpl @Inject constructor(
             .map {
                 mapRestaurantResponseToUi(it)
             }
-
+            .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
                 onNext = {
                     view.addMarker(it)
