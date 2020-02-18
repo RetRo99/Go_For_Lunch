@@ -1,7 +1,7 @@
 package com.retar.go4lunch.repository
 
-import com.retar.go4lunch.api.retrofit.RetrofitModule
-import com.retar.go4lunch.repository.restaurant.RestaurantsRepositoryModule
+import com.retar.go4lunch.repository.autocomplete.AutocompleteRepositoryModule
+import com.retar.go4lunch.repository.restaurants.RestaurantsRepositoryModule
 import com.retar.go4lunch.repository.restaurantdetail.RestaurantDetailRepositoryModule
 import com.retar.go4lunch.repository.users.UsersRepositoryModule
 import dagger.Module
@@ -10,7 +10,8 @@ import dagger.Module
     includes = [
         RestaurantsRepositoryModule::class,
         RestaurantDetailRepositoryModule::class,
-        UsersRepositoryModule::class
+        UsersRepositoryModule::class,
+        AutocompleteRepositoryModule::class
     ]
 )
 class RepositoryModule

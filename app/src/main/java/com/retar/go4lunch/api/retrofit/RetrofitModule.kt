@@ -56,7 +56,6 @@ class RetrofitModule {
 
             val url = originalHttpUrl.newBuilder()
                 .addQueryParameter("key", GOOGLE_KEY)
-                .addQueryParameter("type", "restaurant")
                 .build()
 
             val requestBuilder = original.newBuilder()

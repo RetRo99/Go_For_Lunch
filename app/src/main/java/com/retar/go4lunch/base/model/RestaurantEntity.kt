@@ -9,7 +9,7 @@ data class RestaurantEntity(
     val name: String,
     val id: String,
     val phoneNumber: String?,
-    val photoReferences: List<String>,
+    val photoReferences: List<String>?,
     val webPage: String?,
     private val distance: String,
     private val address: String,

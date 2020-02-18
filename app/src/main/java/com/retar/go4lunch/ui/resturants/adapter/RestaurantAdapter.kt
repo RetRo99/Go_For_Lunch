@@ -9,9 +9,16 @@ import com.retar.go4lunch.utils.inflate
 import com.retar.go4lunch.utils.loadRestaurantPhoto
 import kotlinx.android.synthetic.main.item_fragment_list.view.*
 
-class RestaurantAdapter(private val restaurants: List<RestaurantEntity>, private val action: (RestaurantEntity) -> Unit) :
+class RestaurantAdapter(private val action: (RestaurantEntity) -> Unit) :
     RecyclerView.Adapter<RestaurantAdapter.RestaurantHolder>() {
 
+
+    private var restaurants: List<RestaurantEntity> = listOf()
+
+    fun setData(data:List<RestaurantEntity>){
+        restaurants = data
+        this.notifyDataSetChanged()
+    }
 
     inner class RestaurantHolder(val view: View) : RecyclerView.ViewHolder(view) {
 

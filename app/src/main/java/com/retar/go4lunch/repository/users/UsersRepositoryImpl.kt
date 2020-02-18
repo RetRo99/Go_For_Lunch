@@ -5,7 +5,7 @@ import com.retar.go4lunch.base.model.User
 import io.reactivex.Observable
 import javax.inject.Inject
 
-class UsersRepositoryImpl @Inject constructor(
+class UsersRepositoryImpl (
     private val fireStoreManager: FireStoreManager
 
 ) : UsersRepository {

@@ -9,7 +9,7 @@ import com.retar.go4lunch.R
 import com.retar.go4lunch.utils.loadRestaurantPhoto
 import kotlinx.android.synthetic.main.view_restaurant_detail_photo.view.*
 
-class PhotosAdapter(context: Context?, private val photoReferences: List<String>) :
+class PhotosAdapter(context: Context?, private val photoReferences: List<String>?) :
     PagerAdapter() {
     private val inflater: LayoutInflater = LayoutInflater.from(context)
 
@@ -18,15 +18,14 @@ class PhotosAdapter(context: Context?, private val photoReferences: List<String>
     }
 
     override fun getCount(): Int {
-        return photoReferences.size
+        return photoReferences?.size ?: 0
     }
 
     override fun instantiateItem(view: ViewGroup, position: Int): Any {
         val imageLayout = inflater.inflate(R.layout.view_restaurant_detail_photo, view, false)!!
 
 
-
-        imageLayout.restaurantDetailPhoto.loadRestaurantPhoto(photoReferences[position])
+        imageLayout.restaurantDetailPhoto.loadRestaurantPhoto(photoReferences?.get(position))
 
         view.addView(imageLayout, 0)
 

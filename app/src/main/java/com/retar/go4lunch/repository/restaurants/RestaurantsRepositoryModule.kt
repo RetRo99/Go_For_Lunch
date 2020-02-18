@@ -1,7 +1,6 @@
-package com.retar.go4lunch.repository.restaurant
+package com.retar.go4lunch.repository.restaurants
 
 import com.retar.go4lunch.api.retrofit.GooglePlacesApi
-import com.retar.go4lunch.api.retrofit.RetrofitModule
 import com.retar.go4lunch.manager.firebase.firestore.FireStoreManager
 import dagger.Module
 import dagger.Provides

@@ -8,7 +8,7 @@ import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import javax.inject.Inject
 
-class RestaurantDetailRepositoryImpl @Inject constructor(
+class RestaurantDetailRepositoryImpl (
     private val googlePlacesApi: GooglePlacesApi,
     private val fireStoreManager: FireStoreManager
 ) :
@@ -32,7 +32,7 @@ class RestaurantDetailRepositoryImpl @Inject constructor(
     private fun mapToUi(it: RestaurantDetailResponse, isPicked: Boolean): UiRestaurantDetailItem {
         return UiRestaurantDetailItem(
             it.result.formatted_phone_number,
-            it.result.photos.map { it.photo_reference },
+            it.result.photos?.map { it.photo_reference },
             it.result.website,
             it.result.name,
             it.result.formatted_address.substringBefore(","),

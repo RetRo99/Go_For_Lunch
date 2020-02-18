@@ -30,7 +30,7 @@ class FireStoreManager(
     }
 
     fun getFireStoreUser(id: String) {
-        userRef.document(id).addSnapshotListener { documentSnapshot, firebaseFirestoreException ->
+        userRef.document(id).addSnapshotListener { documentSnapshot, _ ->
             currentUser = documentSnapshot?.toObject(User::class.java)!!
         }
     }
