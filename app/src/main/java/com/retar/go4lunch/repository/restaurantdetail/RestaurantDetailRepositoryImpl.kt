@@ -1,13 +1,11 @@
 package com.retar.go4lunch.repository.restaurantdetail
 
-import com.retar.go4lunch.api.response.restaurantdetails.RestaurantDetailResponse
 import com.retar.go4lunch.api.retrofit.GooglePlacesApi
 import com.retar.go4lunch.manager.firebase.firestore.FireStoreManager
 import com.retar.go4lunch.mapper.restaurantdetailui.RestaurantDetailUiMapper
 import com.retar.go4lunch.ui.restaurantdetail.model.UiRestaurantDetailItem
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
-import javax.inject.Inject
 
 class RestaurantDetailRepositoryImpl (
     private val googlePlacesApi: GooglePlacesApi,
@@ -27,8 +25,8 @@ class RestaurantDetailRepositoryImpl (
 
     }
 
-    override fun onRestaurantPicked(id: String): Single<String> {
-        return fireStoreManager.onRestaurantPicked(id)
+    override fun onRestaurantPicked(id: String, title: String): Single<String> {
+        return fireStoreManager.onRestaurantPicked(id, title)
     }
 
 }

@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import com.retar.go4lunch.R
 import com.retar.go4lunch.base.BaseAutoCompleteFragment
-import com.retar.go4lunch.ui.users.adapter.UserAdapter
+import com.retar.go4lunch.base.adapter.UserAdapter
 import com.retar.go4lunch.base.model.User
 import kotlinx.android.synthetic.main.fragment_users.*
 import javax.inject.Inject
