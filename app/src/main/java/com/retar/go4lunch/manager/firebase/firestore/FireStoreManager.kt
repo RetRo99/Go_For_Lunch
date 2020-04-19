@@ -31,7 +31,9 @@ class FireStoreManager(
 
     fun getFireStoreUser(id: String) {
         userRef.document(id).addSnapshotListener { documentSnapshot, _ ->
-            currentUser = documentSnapshot?.toObject(User::class.java)!!
+            documentSnapshot?.let {
+                currentUser = documentSnapshot.toObject(User::class.java)
+            }
         }
     }
 
@@ -56,19 +58,20 @@ class FireStoreManager(
     }
 
 
-    fun onRestaurantPicked(id: String): Single<String> {
+    fun onRestaurantPicked(id: String, title: String): Single<String> {
         return if (isCurrentPicked(id)) {
-            updatePickedRestaurant("")
+            updatePickedRestaurant("", "")
             Single.just(CURRENT_NOT_PICKED)
         } else {
-            updatePickedRestaurant(id)
+            updatePickedRestaurant(id, title)
             Single.just(CURRENT_PICKED)
         }
     }
 
 
-    private fun updatePickedRestaurant(id: String) {
+    private fun updatePickedRestaurant(id: String, title: String) {
         userRef.document(currentUser!!.id).update(PICKED_RESTAURANT, id)
+        userRef.document(currentUser!!.id).update(PICKED_RESTAURANT_TITLE, title)
     }
 
     fun checkIfPicked(id: String): Boolean {
@@ -85,6 +88,7 @@ class FireStoreManager(
         private const val VISITED_COLLECTION = "visitedRestaurants"
 
         private const val PICKED_RESTAURANT = "pickedRestaurant"
+        private const val PICKED_RESTAURANT_TITLE = "pickedRestaurantTitle"
         const val CURRENT_PICKED = "changed"
         const val CURRENT_NOT_PICKED = "deleted"
     }

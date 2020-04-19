@@ -1,6 +1,7 @@
 package com.retar.go4lunch.base.model
 
 import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
 import com.google.android.gms.maps.model.LatLng
 import com.retar.go4lunch.R
 
@@ -14,7 +15,7 @@ data class RestaurantEntity(
     private val distance: String,
     private val address: String,
     val photoUrl: String?,
-    val isOpenedNow: String,
+    val openedText: Pair<Int, String>,
     @DrawableRes var icon: Int = R.drawable.ic_restaurant_marker_orange
 ) {
 

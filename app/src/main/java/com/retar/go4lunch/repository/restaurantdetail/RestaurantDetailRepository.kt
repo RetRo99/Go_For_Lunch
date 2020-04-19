@@ -6,7 +6,6 @@ import io.reactivex.Single
 interface RestaurantDetailRepository {
 
     fun getRestaurant(id: String): Single<UiRestaurantDetailItem>
-    fun onRestaurantPicked(id: String): Single<String>
-
+    fun onRestaurantPicked(id: String, title: String): Single<String>
 
 }

@@ -1,6 +1,5 @@
 package com.retar.go4lunch.ui.map
 
-import android.util.Log
 import com.retar.go4lunch.R
 import com.retar.go4lunch.base.model.RestaurantEntity
 import com.retar.go4lunch.manager.contentdata.ContentDataManager
@@ -40,19 +39,31 @@ class MapViewPresenterImpl @Inject constructor(
                     view.deleteAllMarkers()
                     dataManager.searchAutoComplete(it, uniqueId)
                         .observeOn(AndroidSchedulers.mainThread())
-                        .flattenAsObservable { it }
-                        .map { restaurantEntity ->
-                            mapRestaurantResponseToUi(restaurantEntity)
+                        .map { restaurantList ->
+                            mapRestaurantResponseToUi(restaurantList)
                         }
                         .subscribeBy(
-                            onNext = { marker ->
-                                view.addMarker(marker)
+                            onSuccess = {
+                                displayOrShowNoResult(it)
+                            },
+                            onError = {
+                                view.showToast(R.string.no_result)
                             }
                         )
                 }
             )
         )
         view.getMapAsync()
+    }
+
+    private fun displayOrShowNoResult(markerList: List<UiMarkerModel>) {
+        if (markerList.isNotEmpty()){
+            markerList.forEach { marker ->
+                view.addMarker(marker)
+            }
+        }else {
+            view.showToast(R.string.no_result)
+        }
     }
 
     override fun onMapReady() {
@@ -68,16 +79,15 @@ class MapViewPresenterImpl @Inject constructor(
     private fun observerData() {
 
         compositeDisposable.add(dataManager.restaurants
-            .flatMap {
-                Observable.fromIterable(it)
-            }
             .map {
                 mapRestaurantResponseToUi(it)
             }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
                 onNext = {
-                    view.addMarker(it)
+                    it.forEach{ marker ->
+                        view.addMarker(marker)
+                    }
                 },
                 onError = {
                     view.showToast(R.string.error_no_data)
@@ -94,13 +104,15 @@ class MapViewPresenterImpl @Inject constructor(
     }
 
 
-    private fun mapRestaurantResponseToUi(restaurantEntity: RestaurantEntity): UiMarkerModel {
-        return UiMarkerModel(
-            restaurantEntity.latLng,
-            restaurantEntity.name,
-            restaurantEntity.id,
-            restaurantEntity.icon
-        )
+    private fun mapRestaurantResponseToUi(restaurantList: List<RestaurantEntity>): List<UiMarkerModel> {
+        return restaurantList.map { restaurantEntity ->
+            UiMarkerModel(
+                restaurantEntity.latLng,
+                restaurantEntity.name,
+                restaurantEntity.id,
+                restaurantEntity.icon
+            )
+        }
     }
 
     override fun onMarkerClicked(id: String, title: String) {

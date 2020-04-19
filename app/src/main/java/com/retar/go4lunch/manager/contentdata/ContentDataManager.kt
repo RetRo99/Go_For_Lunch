@@ -56,14 +56,14 @@ class ContentDataManager(
         return if (searchParam.isEmpty()) {
             Single.just(restaurants.value)
 
-        } else
+        } else {
             autocompleteRepository.getAutocompleteResult(
                 searchParam,
                 locationManager.location.value!!,
                 DEFAULT_DISTANCE,
                 uniqueId
             )
-
+        }
     }
 
     companion object {

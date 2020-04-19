@@ -43,5 +43,13 @@
     <string name="error_no_data">Something went wrong. Try refreshing the data.</string>
     <string name="error_no_user_data">Error getting the users. Please try again.</string>
     <string name="restaurant_detail_no_number">No phone number available.</string>
+    <string name="no_result">No results. Try with different parameteres</string>
+    <string name="is_joining">is joining!</string>
+    <string name="hasnt_decied_yet">hasn\'t decided yet</string>
+    <string name="is_eating_at">is eating at</string>
+    <string name="restaurant_closing_soon">Restaurant is closing soon</string>
+    <string name="restaurant_opened_until">Restaurant is opened until %s</string>
+    <string name="restaurant_no_information">We don\'t have any information</string>
+    <string name="restaurant_closed">Restaurant is closed</string>
 
 </resources>

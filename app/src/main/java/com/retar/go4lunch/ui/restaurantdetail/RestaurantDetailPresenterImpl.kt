@@ -84,7 +84,7 @@ class RestaurantDetailPresenterImpl @Inject constructor(
     }
 
     override fun onFabClick() {
-        compositeDisposable.add(repository.onRestaurantPicked(restaurantId)
+        compositeDisposable.add(repository.onRestaurantPicked(restaurantId, data.name)
             .subscribeBy(
                 onSuccess = {
                     when (it) {
