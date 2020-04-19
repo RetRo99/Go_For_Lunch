@@ -13,6 +13,7 @@ import com.firebase.ui.auth.AuthMethodPickerLayout
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.IdpResponse
 import com.google.android.material.navigation.NavigationView
+import com.jakewharton.threetenabp.AndroidThreeTen
 import com.retar.go4lunch.R
 import com.retar.go4lunch.base.LocationPermissionActivity
 import com.retar.go4lunch.base.model.User
@@ -31,6 +32,7 @@ class MainActivity : LocationPermissionActivity(), MainView,
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        AndroidThreeTen.init(this)
         setContentView(R.layout.activity_main)
 
         setSupportActionBar(toolbar)

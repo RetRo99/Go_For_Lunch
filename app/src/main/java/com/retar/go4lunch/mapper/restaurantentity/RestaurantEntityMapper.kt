@@ -8,6 +8,7 @@ interface RestaurantEntityMapper {
 
     fun mapToEntity(
         restaurantDetails: List<RestaurantDetailResponse>,
-        latLng: LatLng
+        currentLatLatLng: LatLng
     ): List<RestaurantEntity>
+
 }

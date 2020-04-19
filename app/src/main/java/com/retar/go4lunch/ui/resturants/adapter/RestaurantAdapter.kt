@@ -1,5 +1,11 @@
 package com.retar.go4lunch.ui.resturants.adapter
 
+import android.graphics.Color
+import android.graphics.Typeface
+import android.text.Spannable
+import android.text.SpannableString
+import android.text.style.ForegroundColorSpan
+import android.text.style.StyleSpan
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -23,15 +29,47 @@ class RestaurantAdapter(private val action: (RestaurantEntity) -> Unit) :
     inner class RestaurantHolder(val view: View) : RecyclerView.ViewHolder(view) {
 
         fun bindRestaurant(restaurant: RestaurantEntity) {
-            view.apply {
-                item_restaurant_name.text = restaurant.name
 
+
+            view.apply {
+
+                val openedText = when (restaurant.openedText.first) {
+                    TYPE_NO_INFORMATION -> context.getString(R.string.restaurant_no_information)
+                    TYPE_OPEN_UNTIL -> context.getString(
+                        R.string.restaurant_opened_until,
+                        restaurant.openedText.second
+                    )
+                    TYPE_CLOSING_SOON -> {
+                        SpannableString(context.getString(R.string.restaurant_closing_soon)).apply {
+                            setSpan(
+                                ForegroundColorSpan(Color.RED),
+                                0,
+                                this.length,
+                                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                            )
+                            setSpan(
+                                StyleSpan(Typeface.BOLD),
+                                0,
+                                this.length,
+                                Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+                            )
+
+                        }
+
+
+                    }
+
+                    TYPE_CLOSED -> context.getString(R.string.restaurant_closed)
+                    else -> throw Exception("unknown type")
+                }
+
+                item_restaurant_name.text = restaurant.name
                 item_restaurant_address.text = restaurant.address()
-                item_restaurant_distance.text = "${restaurant.distance()} m"
-                item_restaurant_hours.text = restaurant.isOpenedNow
+                item_restaurant_distance.text = restaurant.distance()
+                item_restaurant_hours.text = openedText
                 item_restaurant_photo.loadRestaurantPhoto(restaurant.photoUrl)
 
-                view.setOnClickListener{
+                view.setOnClickListener {
                     action(restaurant)
                 }
 
@@ -47,7 +85,7 @@ class RestaurantAdapter(private val action: (RestaurantEntity) -> Unit) :
         return RestaurantHolder(
             inflatedView
         )
-    }
+     }
 
     override fun getItemCount(): Int {
         return restaurants.size
@@ -56,6 +94,14 @@ class RestaurantAdapter(private val action: (RestaurantEntity) -> Unit) :
     override fun onBindViewHolder(holder: RestaurantHolder, position: Int) {
         val restaurant = restaurants[position]
         holder.bindRestaurant(restaurant)
+
+    }
+
+    companion object {
+        const val TYPE_NO_INFORMATION = 1
+        const val TYPE_CLOSING_SOON = 2
+        const val TYPE_OPEN_UNTIL = 3
+        const val TYPE_CLOSED = 4
 
     }
 }

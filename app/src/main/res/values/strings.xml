@@ -47,5 +47,9 @@
     <string name="is_joining">is joining!</string>
     <string name="hasnt_decied_yet">hasn\'t decided yet</string>
     <string name="is_eating_at">is eating at</string>
+    <string name="restaurant_closing_soon">Restaurant is closing soon</string>
+    <string name="restaurant_opened_until">Restaurant is opened until %s</string>
+    <string name="restaurant_no_information">We don\'t have any information</string>
+    <string name="restaurant_closed">Restaurant is closed</string>
 
 </resources>

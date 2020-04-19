@@ -1,70 +1,113 @@
 package com.retar.go4lunch.mapper.restaurantentity
 
 import android.location.Location
-import android.util.Log
 import com.google.android.gms.maps.model.LatLng
 import com.retar.go4lunch.api.response.restaurantdetails.RestaurantDetailResponse
+import com.retar.go4lunch.api.response.restaurantdetails.Result
 import com.retar.go4lunch.base.model.RestaurantEntity
+import com.retar.go4lunch.ui.resturants.adapter.RestaurantAdapter
+import org.threeten.bp.LocalDateTime
+import org.threeten.bp.LocalTime
+import org.threeten.bp.format.DateTimeFormatter
+import org.threeten.bp.format.FormatStyle
+import java.util.*
 
 class RestaurantEntityMapperImpl : RestaurantEntityMapper {
+
+    private lateinit var result: Result
+
     override fun mapToEntity(
         restaurantDetails: List<RestaurantDetailResponse>,
-        latLng: LatLng
+        currentLatLatLng: LatLng
     ): List<RestaurantEntity> {
-        val listRestaurantEntity = mutableListOf<RestaurantEntity>()
-        restaurantDetails.forEach {
-            val restaurantLatLng = it.result.geometry.location.getLatLng()
-            Log.d("čič", 2.toString())
 
-            val distanceToCurrent = getDistance(latLng, restaurantLatLng)
-            listRestaurantEntity.add(
-                RestaurantEntity(
-                    restaurantLatLng,
-                    it.result.name,
-                    it.result.place_id,
-                    it.result.formatted_phone_number,
-                    it.result.photos?.map { it.photo_reference },
-                    it.result.website,
-                    distanceToCurrent,
-                    it.result.vicinity,
-                    it.result.photos?.get(0)?.photo_reference,
-                    getOpenedString(it)
-                )
+        return restaurantDetails.map {
+            this.result = it.result
+
+            RestaurantEntity(
+                getRestaurantLatLang(),
+                result.name,
+                result.place_id,
+                result.formatted_phone_number,
+                result.photos?.map { it.photo_reference },
+                result.website,
+                getDistanceToCurrentLocation(currentLatLatLng),
+                result.vicinity,
+                result.photos?.get(0)?.photo_reference,
+                getOpenedString()
             )
+        }.apply {
+            sortedBy {
+                it.distance().toFloat()
+            }
         }
-        listRestaurantEntity.sortBy {
-            it.distance().toFloat()
-        }
-        return listRestaurantEntity
 
     }
 
-
-    private fun getOpenedString(restaurant: RestaurantDetailResponse): String {
-        var openedBoolean: Boolean? = null
-        restaurant.result.opening_hours?.open_now?.let {
-            openedBoolean = it
-        }
-        //todo extract strings
-        return if (openedBoolean != null) {
-            if (openedBoolean as Boolean) "Restaurant is open" else "Restaurant is closed"
-        } else {
-            "We don't have any information"
-        }
+    private fun getRestaurantLatLang(): LatLng {
+        return result.geometry.location.getLatLng()
     }
 
-    private fun getDistance(startLatLng: LatLng, endLatLng: LatLng): String {
+    private fun getDistanceToCurrentLocation(currentLatLatLng: LatLng): String {
         val locationStart = Location("").apply {
-            latitude = startLatLng.latitude
-            longitude = startLatLng.longitude
+            latitude = getRestaurantLatLang().latitude
+            longitude = getRestaurantLatLang().longitude
         }
 
         val locationEnd = Location("").apply {
-            latitude = endLatLng.latitude
-            longitude = endLatLng.longitude
+            latitude = currentLatLatLng.latitude
+            longitude = currentLatLatLng.longitude
         }
-        return locationStart.distanceTo(locationEnd).toString()
+        return locationStart.distanceTo(locationEnd).toString().plus(" m")
     }
 
+
+    private fun getOpenedString(): Pair<Int, String> {
+
+        val isOpened = getIsOpened()
+
+
+
+        return if (!isOpened) Pair(RestaurantAdapter.TYPE_CLOSED, "") else getOpenedText()
+    }
+
+    private fun getIsOpened(): Boolean {
+        return result.opening_hours?.open_now ?: true
+    }
+
+    private fun getOpenedText(): Pair<Int, String> {
+
+        val currentDay = LocalDateTime.now().dayOfWeek.toString()
+
+        val openedText = result.opening_hours?.weekday_text?.let {
+            it.find { openedStrings ->
+                openedStrings.contains(currentDay, true)
+            }
+        } ?: return Pair(RestaurantAdapter.TYPE_NO_INFORMATION, "")
+
+
+        val formattedOpenedString = openedText.substringAfter("– ")
+        val currentTimeInSeconds = LocalDateTime.now().toLocalTime().toSecondOfDay()
+
+
+        val openUntilInSeconds = (LocalTime.parse(
+            formattedOpenedString, DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT)
+                .withLocale(Locale.ENGLISH)
+        ).toSecondOfDay()
+                )
+
+        val remainingTimeOpened = openUntilInSeconds - currentTimeInSeconds
+
+        return if (remainingTimeOpened < THIRTY_MINUTES_IN_SECONDS) {
+            Pair(RestaurantAdapter.TYPE_CLOSING_SOON, "")
+        } else {
+            Pair(RestaurantAdapter.TYPE_OPEN_UNTIL, formattedOpenedString)
+        }
+
+    }
+
+    companion object {
+        private const val THIRTY_MINUTES_IN_SECONDS = 1800
+    }
 
 }

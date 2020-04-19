@@ -15,14 +15,17 @@ exports.removingPickedRestaurant = functions.pubsub.schedule('0 0 * * *')
         userRef.get().then(snapshot => {
 
             snapshot.forEach(doc => {
-                var newelement = {
+                var emptyRestaurant = {
                     "pickedRestaurant": ""
                 }
 
-                userRef.doc(doc.id).update(newelement)
+                var emptyTitle = {
+                    "pickedRestaurantTitle": ""
+                }
 
-                console.log("test")
-                console.log(doc.data().pickedRestaurant)
+                userRef.doc(doc.id).update(emptyRestaurant)
+                userRef.doc(doc.id).update(emptyTitle)
+
 
 
                 var restaurant = {
