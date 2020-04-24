@@ -1,5 +1,6 @@
 package com.retar.go4lunch.ui
 
+import androidx.annotation.StringRes
 import com.retar.go4lunch.base.model.User
 
 interface MainView {
@@ -9,4 +10,6 @@ interface MainView {
     fun setDrawerData(user: User)
     fun fromListToResturantDetail(id: String, title: String)
     fun showLogOutDialog()
+    fun showToast(@StringRes stringRes: Int)
+    fun fromDrawerToDetail(id: String, title: String)
 }

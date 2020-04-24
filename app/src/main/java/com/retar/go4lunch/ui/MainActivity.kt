@@ -3,6 +3,7 @@ package com.retar.go4lunch.ui
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -18,8 +19,12 @@ import com.jakewharton.threetenabp.AndroidThreeTen
 import com.retar.go4lunch.R
 import com.retar.go4lunch.base.LocationPermissionActivity
 import com.retar.go4lunch.base.model.User
+import com.retar.go4lunch.ui.map.MapFragment
 import com.retar.go4lunch.ui.map.MapFragmentDirections
+import com.retar.go4lunch.ui.resturants.RestaurantsFragment
 import com.retar.go4lunch.ui.resturants.RestaurantsFragmentDirections
+import com.retar.go4lunch.ui.users.UsersFragment
+import com.retar.go4lunch.ui.users.UsersFragmentDirections
 import com.retar.go4lunch.utils.loadRoundPhoto
 import com.stepstone.apprating.listener.RatingDialogListener
 import kotlinx.android.synthetic.main.activity_main.*
@@ -119,11 +124,23 @@ class MainActivity : LocationPermissionActivity(), MainView,
         )
     }
 
+    private fun fromMatesToResturantDetail(id: String, title: String) {
+        presenter.onNavigateToDetail(id)
+        getNavController().navigate(
+            UsersFragmentDirections.actionNavigationMatesToRestaurantDetailFragment(
+                title,
+                id
+            )
+        )
+    }
+
     override fun onNavigationItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.logout -> {
                 presenter.onLogoutClicked()
-                return true
+            }
+            R.id.your_lunch -> {
+                presenter.onYourLunchClicked()
             }
         }
         drawer_layout.closeDrawer(GravityCompat.START)
@@ -141,6 +158,25 @@ class MainActivity : LocationPermissionActivity(), MainView,
             .create()
             .show()
 
+    }
+
+    override fun showToast(stringRes: Int) {
+        Toast.makeText(this, stringRes, Toast.LENGTH_SHORT).show()
+    }
+
+    override fun fromDrawerToDetail(id: String, title: String) {
+        when (getNavController().currentDestination?.id) {
+          R.id.navigation_map -> fromMapToResturantDetail(id, title)
+          R.id.navigation_list -> fromListToResturantDetail(id, title)
+          R.id.navigation_mates -> fromMatesToResturantDetail(id, title)
+          R.id.restaurantDetailFragment -> fromDetailToDetail(id, title)
+        }
+
+    }
+
+    private fun fromDetailToDetail(id: String, title: String){
+        getNavController().popBackStack()
+        fromDrawerToDetail(id, title)
     }
 
     override fun onDestroy() {
@@ -162,7 +198,6 @@ class MainActivity : LocationPermissionActivity(), MainView,
             }
         }
     }
-
 
     override fun onNegativeButtonClicked() {
         // not needed to do anything

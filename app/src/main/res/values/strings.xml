@@ -56,5 +56,7 @@
     <string name="rate_cancel">Cancel</string>
     <string name="rate_rate">Rate this restaurant</string>
     <string name="rate_description">Please select some stars and give your feedback</string>
+    <string name="menu_your_lunch">Your lunch</string>
+    <string name="you_havent_decied">You haven\'t decide yet</string>
 
 </resources>

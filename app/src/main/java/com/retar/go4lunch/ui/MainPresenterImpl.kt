@@ -1,5 +1,6 @@
 package com.retar.go4lunch.ui
 
+import com.retar.go4lunch.R
 import com.retar.go4lunch.base.model.RateModel
 import com.retar.go4lunch.manager.contentdata.ContentDataManager
 import com.retar.go4lunch.manager.firebase.auth.FireAuthManager
@@ -9,7 +10,6 @@ import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
 import io.reactivex.rxkotlin.subscribeBy
 import javax.inject.Inject
-import kotlin.math.roundToInt
 
 class MainPresenterImpl @Inject constructor(
     private val view: MainView,
@@ -67,11 +67,21 @@ class MainPresenterImpl @Inject constructor(
     }
 
 
+    override fun onYourLunchClicked() {
+        val id = fireStoreManager.currentUser?.pickedRestaurant ?: ""
+        val title = fireStoreManager.currentUser?.pickedRestaurantTitle ?: ""
+
+        if(id.isEmpty()){
+            view.showToast(R.string.you_havent_decied)
+        }else {
+            view.fromDrawerToDetail(id, title)
+        }
+    }
+
     override fun onResume() {
         compositeDisposable.dispose()
         compositeDisposable = CompositeDisposable()
         authManager.getCurrentUser()
-
             .subscribeBy(
                 onError = {
                     view.requestLogin()

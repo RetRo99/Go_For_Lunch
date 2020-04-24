@@ -72,10 +72,6 @@ class MapViewPresenterImpl @Inject constructor(
         view.setDarkTheme()
     }
 
-    override fun onFabClick() {
-        locationManager.updateLocation()
-    }
-
     private fun observerData() {
 
         compositeDisposable.add(dataManager.restaurants

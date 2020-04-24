@@ -12,4 +12,5 @@ interface MainViewPresenter {
     fun requestLocation()
     fun onNavigateToDetail(id: String)
     fun onRestaurantRated(rate: Double)
+    fun onYourLunchClicked()
 }

@@ -20,7 +20,7 @@ class FireStoreManager(
     private val userRef: CollectionReference
     private val visitedRef: CollectionReference
     private val ratingRef: CollectionReference
-    private var currentUser: User? = null
+    var currentUser: User? = null
 
     init {
         userRef = db.collection(USERS_COLLECTION)

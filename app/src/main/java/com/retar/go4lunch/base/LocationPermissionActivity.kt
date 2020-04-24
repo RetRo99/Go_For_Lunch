@@ -24,12 +24,6 @@ abstract class LocationPermissionActivity : DaggerAppCompatActivity(), ProvideNa
         return findNavController(R.id.nav_host)
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        if (!permissionsGranted()) requestPermissions()
-
-    }
-
     private fun permissionsGranted(): Boolean {
         return (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED)
@@ -60,6 +54,7 @@ abstract class LocationPermissionActivity : DaggerAppCompatActivity(), ProvideNa
                     && grantResults[0] == PackageManager.PERMISSION_GRANTED
                 ) {
                     requestDialog?.dismiss()
+
                     requestLocation()
                 } else {
                     showRationaleForPermissions()
@@ -110,7 +105,8 @@ abstract class LocationPermissionActivity : DaggerAppCompatActivity(), ProvideNa
 
     override fun onStart() {
         super.onStart()
-        if (!permissionsGranted()) requestPermissions()
+        requestDialog?.dismiss()
+        if (!permissionsGranted()) requestPermissions() else requestLocation()
 
     }
 

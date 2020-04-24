@@ -36,5 +36,9 @@
         android:id="@+id/navigation_mates"
         android:name="com.retar.go4lunch.ui.users.UsersFragment"
         android:label="@string/title_friends_list"
-        tools:layout="@layout/fragment_users" />
+        tools:layout="@layout/fragment_users" >
+        <action
+            android:id="@+id/action_navigation_mates_to_restaurantDetailFragment"
+            app:destination="@id/restaurantDetailFragment" />
+    </fragment>
 </navigation>
