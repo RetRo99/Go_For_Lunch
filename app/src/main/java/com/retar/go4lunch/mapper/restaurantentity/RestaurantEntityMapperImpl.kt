@@ -1,6 +1,7 @@
 package com.retar.go4lunch.mapper.restaurantentity
 
 import android.location.Location
+import android.util.Log
 import com.google.android.gms.maps.model.LatLng
 import com.retar.go4lunch.api.response.restaurantdetails.RestaurantDetailResponse
 import com.retar.go4lunch.api.response.restaurantdetails.Result
@@ -76,7 +77,6 @@ class RestaurantEntityMapperImpl : RestaurantEntityMapper {
     }
 
     private fun getOpenedText(): Pair<Int, String> {
-
         val currentDay = LocalDateTime.now().dayOfWeek.toString()
 
         val openedText = result.opening_hours?.weekday_text?.let {
@@ -91,11 +91,9 @@ class RestaurantEntityMapperImpl : RestaurantEntityMapper {
         val currentTimeInSeconds = LocalDateTime.now().toLocalTime().toSecondOfDay()
 
 
-        val openUntilInSeconds = (LocalTime.parse(
-            formattedOpenedString, DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT)
-                .withLocale(Locale.ENGLISH)
-        ).toSecondOfDay()
-                )
+        val openUntilInSeconds = getOpenedUntilInSeconds(formattedOpenedString)
+            ?: return Pair(RestaurantAdapter.TYPE_NO_INFORMATION, "")
+
 
         val remainingTimeOpened = openUntilInSeconds - currentTimeInSeconds
 
@@ -107,8 +105,54 @@ class RestaurantEntityMapperImpl : RestaurantEntityMapper {
 
     }
 
+    private fun getOpenedUntilInSeconds(formattedOpenedString: String): Int? {
+        var openedInSeconds: Int? = try {
+            (LocalTime.parse(
+                formattedOpenedString, DateTimeFormatter.ofPattern("hh:mm a")
+            ).toSecondOfDay()
+                    )
+
+        } catch (e: Exception) {
+            ERROR_TIME_REMAINING
+        }
+
+        if (openedInSeconds == ERROR_TIME_REMAINING) {
+            openedInSeconds =
+                try {
+                    (LocalTime.parse(
+                        formattedOpenedString, DateTimeFormatter.ofPattern("h:mm a")
+                    ).toSecondOfDay()
+                            )
+
+                } catch (e: Exception) {
+                    ERROR_TIME_REMAINING
+                }
+        }
+
+        if (openedInSeconds == ERROR_TIME_REMAINING) {
+            openedInSeconds =
+                try {
+                    (LocalTime.parse(
+                        formattedOpenedString, DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT)
+                            .withLocale(Locale.getDefault())
+                    ).toSecondOfDay()
+                            )
+
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                    Log.d("čič", "test")
+                    null
+                }
+        }
+
+        return openedInSeconds
+
+
+    }
+
     companion object {
         private const val THIRTY_MINUTES_IN_SECONDS = 1800
+        private const val ERROR_TIME_REMAINING = -69
     }
 
 }
