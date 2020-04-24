@@ -37,11 +37,10 @@ class RestaurantAdapter(private val action: (RestaurantEntity) -> Unit) :
 
                 item_restaurant_name.text = restaurant.name
                 item_restaurant_address.text = restaurant.address()
-                item_restaurant_distance.text = restaurant.distance()
+                item_restaurant_distance.text = restaurant.distance
                 item_restaurant_hours.text = openedText
                 item_restaurant_photo.loadRestaurantPhoto(restaurant.photoUrl)
-                item_restaurant_ratingBar.numStars = 3
-                item_restaurant_ratingBar.rating = 2.1f
+
                 item_resturant_people_visiting.run {
                     if (restaurant.timesPicked != 0) {
                         text = restaurant.peopleVisiting()
@@ -51,6 +50,18 @@ class RestaurantAdapter(private val action: (RestaurantEntity) -> Unit) :
                         visibility = View.GONE
                     }
                 }
+
+                item_restaurant_ratingBar.run{
+                    if (restaurant.rating != null) {
+                        visibility = View.VISIBLE
+
+                        rating = restaurant.rating as Float
+                    }else {
+                        visibility = View.GONE
+                    }
+                }
+
+
                 view.setOnClickListener {
                     action(restaurant)
                 }

@@ -40,7 +40,7 @@ class RestaurantEntityMapperImpl : RestaurantEntityMapper {
         }
 
         return entityList.sortedBy {
-            it.distance().substringBefore(" ").toFloat()
+            it.distance.substringBefore(" ").toFloat()
         }
     }
 
@@ -59,15 +59,12 @@ class RestaurantEntityMapperImpl : RestaurantEntityMapper {
             latitude = currentLatLatLng.latitude
             longitude = currentLatLatLng.longitude
         }
-        return locationStart.distanceTo(locationEnd).toString().plus(" m")
+        return locationStart.distanceTo(locationEnd).toInt().toString().plus(" m")
     }
 
 
     private fun getOpenedString(): Pair<Int, String> {
-
         val isOpened = getIsOpened()
-
-
 
         return if (!isOpened) Pair(RestaurantAdapter.TYPE_CLOSED, "") else getOpenedText()
     }

@@ -1,5 +1,6 @@
 package com.retar.go4lunch.manager.contentdata
 
+import com.retar.go4lunch.manager.firebase.firestore.FireStoreManager
 import com.retar.go4lunch.manager.location.LocationManager
 import com.retar.go4lunch.repository.autocomplete.AutocompleteRepository
 import com.retar.go4lunch.repository.restaurants.RestaurantsRepository
@@ -17,13 +18,15 @@ class ContentDataManagerModule {
         restaurantsRepository: RestaurantsRepository,
         autocompleteRepository: AutocompleteRepository,
         usersRepository: UsersRepository,
-        locationManager: LocationManager
+        locationManager: LocationManager,
+        fireStoreManager: FireStoreManager
     ): ContentDataManager {
         return ContentDataManager(
             restaurantsRepository,
             autocompleteRepository,
             usersRepository,
-            locationManager
+            locationManager,
+            fireStoreManager
         )
     }
 }

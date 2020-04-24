@@ -1,8 +1,10 @@
 package com.retar.go4lunch.manager.contentdata
 
 import android.location.Location
+import com.retar.go4lunch.base.model.RateModel
 import com.retar.go4lunch.base.model.RestaurantEntity
 import com.retar.go4lunch.base.model.User
+import com.retar.go4lunch.manager.firebase.firestore.FireStoreManager
 import com.retar.go4lunch.manager.location.LocationManager
 import com.retar.go4lunch.repository.autocomplete.AutocompleteRepository
 import com.retar.go4lunch.repository.restaurants.RestaurantsRepository
@@ -16,7 +18,8 @@ class ContentDataManager(
     private val restaurantRepo: RestaurantsRepository,
     private val autocompleteRepository: AutocompleteRepository,
     private val userRepo: UsersRepository,
-    private val locationManager: LocationManager
+    private val locationManager: LocationManager,
+    private val fireStoreManager: FireStoreManager
 ) {
 
     private var compositeDisposable = CompositeDisposable()
@@ -35,13 +38,32 @@ class ContentDataManager(
             ))
 
         compositeDisposable.add(userRepo.getUsers().subscribeBy {
-            mapWithRestaurants(it)
+            mapUsersWithRestaurants(it)
+        }
+        )
+
+        compositeDisposable.add(fireStoreManager.getRatings().subscribeBy {
+            mapRatingWithRestaurants(it)
         }
         )
 
     }
 
-    private fun mapWithRestaurants(users: List<User>) {
+    private fun mapRatingWithRestaurants(ratings: List<RateModel>) {
+        restaurantsHolder?.let {
+            restaurants.onNext(it.map { restaurant ->
+                val rateModel = ratings.find { rateModel ->
+                    rateModel.id == restaurant.id
+                }
+
+                restaurant.rating = rateModel?.rating
+                restaurant
+
+                })
+        }
+    }
+
+    private fun mapUsersWithRestaurants(users: List<User>) {
         restaurantsHolder?.let {
             restaurants.onNext(it.map { restaurant ->
                 val listOfPicked = users.filter { user ->

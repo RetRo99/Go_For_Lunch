@@ -12,17 +12,14 @@ data class RestaurantEntity(
     val phoneNumber: String?,
     val photoReferences: List<String>?,
     val webPage: String?,
-    private val distance: String,
+    val distance: String,
     private val address: String,
     val photoUrl: String?,
     val openedText: Pair<Int, String>,
     @DrawableRes var icon: Int = R.drawable.ic_restaurant_marker_orange,
-     var timesPicked: Int = 0
+     var timesPicked: Int = 0,
+     var rating: Float? = 0F
 ) {
-
-    fun distance(): String {
-        return distance.substringBefore(".")
-    }
 
     fun address(): String {
         return address.substringBefore(",")

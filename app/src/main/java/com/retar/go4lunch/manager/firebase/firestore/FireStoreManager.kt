@@ -45,6 +45,10 @@ class FireStoreManager(
         return userRef.getObservable()
     }
 
+    fun getRatings(): Observable<List<RateModel>> {
+        return ratingRef.getObservable()
+    }
+
     fun mapWithVisitedRestaurantsAndRating(restaurantsEntity: List<RestaurantEntity>): Single<List<RestaurantEntity>> {
         return visitedRef.getSingle<FireStoreRestaurant>()
             .map { visitedRestaurants ->
@@ -77,10 +81,15 @@ class FireStoreManager(
     }
 
     private fun mapWithRating(ratings: List<RateModel>, restaurants: List<RestaurantEntity>): List<RestaurantEntity> {
-        restaurants.map {
+      return  restaurants.map {restaurant ->
+           val rateModel = ratings.find {rateModel ->
+              rateModel.id == restaurant.id
+          }
 
-        }
+          restaurant.rating = rateModel?.rating
+          restaurant
 
+      }
     }
 
     private fun mapWithSelectedRestaurants(
@@ -141,8 +150,6 @@ class FireStoreManager(
 
         private const val PICKED_RESTAURANT = "pickedRestaurant"
         private const val PICKED_RESTAURANT_TITLE = "pickedRestaurantTitle"
-        private const val TIMES_RATED = "timesRated"
-        private const val RATING = "rating"
         const val CURRENT_PICKED = "changed"
         const val CURRENT_NOT_PICKED = "deleted"
     }
