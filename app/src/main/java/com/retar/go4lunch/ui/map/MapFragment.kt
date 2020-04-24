@@ -1,6 +1,7 @@
 package com.retar.go4lunch.ui.map
 
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -68,9 +69,10 @@ class MapFragment : BaseAutoCompleteFragment(), MapView,
     }
 
     override fun showToast(stringResource: Int) {
-        Toast.makeText(context, stringResource, Toast.LENGTH_LONG).show()
+        Toast.makeText(context, stringResource, Toast.LENGTH_SHORT).show()
     }
 
+    @SuppressLint("MissingPermission")
     override fun moveToLocation(latLng: LatLng) {
         googleMap.moveCamera(
             CameraUpdateFactory.newLatLngZoom(

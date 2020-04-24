@@ -9,10 +9,12 @@ import com.retar.go4lunch.manager.location.LocationManager
 import com.retar.go4lunch.repository.autocomplete.AutocompleteRepository
 import com.retar.go4lunch.repository.restaurants.RestaurantsRepository
 import com.retar.go4lunch.repository.users.UsersRepository
+import io.reactivex.Observable
 import io.reactivex.Single
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.subjects.BehaviorSubject
+import java.util.concurrent.TimeUnit
 
 class ContentDataManager(
     private val restaurantRepo: RestaurantsRepository,
@@ -28,14 +30,38 @@ class ContentDataManager(
 
     private var restaurantsHolder: List<RestaurantEntity>? = null
 
+    private var lastLocation: Location? = null
+
 
     init {
-        compositeDisposable.add(locationManager.location
-            .subscribeBy(
-                onNext = {
-                    loadNearbyRestaurants(it)
-                }
-            ))
+        compositeDisposable.add(
+            locationManager.location
+                .subscribeBy(
+                    onNext = {
+                        when {
+                            lastLocation == null -> {
+                                loadNearbyRestaurants(it)
+                                lastLocation = it
+                            }
+
+                            restaurantsHolder == null -> loadNearbyRestaurants(it)
+
+                            else -> {
+                                val distance = lastLocation!!.distanceTo(it)
+
+                                if (distance > MAX_DISTANCE_BETWEEN_LOCATION) {
+                                    loadNearbyRestaurants(it)
+                                    lastLocation = it
+
+
+                                }
+
+
+                            }
+
+                        }
+                    })
+        )
 
         compositeDisposable.add(userRepo.getUsers().subscribeBy {
             mapUsersWithRestaurants(it)
@@ -47,7 +73,15 @@ class ContentDataManager(
         }
         )
 
+        compositeDisposable.add(
+            Observable.interval(0, 20, TimeUnit.SECONDS)
+                .subscribeBy {
+                    locationManager.updateLocation()
+                }
+
+        )
     }
+
 
     private fun mapRatingWithRestaurants(ratings: List<RateModel>) {
         restaurantsHolder?.let {
@@ -85,7 +119,6 @@ class ContentDataManager(
                         restaurants.onNext(it)
                     },
                 onError = {
-                    restaurants.onError(it)
                 }
             ))
     }
@@ -96,7 +129,7 @@ class ContentDataManager(
 
     fun searchAutoComplete(searchParam: String, uniqueId: String): Single<List<RestaurantEntity>> {
         return if (searchParam.isEmpty()) {
-            Single.just(restaurants.value)
+            Single.just(restaurantsHolder ?: listOf())
 
         } else {
             autocompleteRepository.getAutocompleteResult(
@@ -111,6 +144,7 @@ class ContentDataManager(
     companion object {
 
         private const val DEFAULT_DISTANCE = "5000"
+        private const val MAX_DISTANCE_BETWEEN_LOCATION = 200f
 
     }
 

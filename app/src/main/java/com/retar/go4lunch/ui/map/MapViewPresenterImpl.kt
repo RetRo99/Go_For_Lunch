@@ -7,7 +7,6 @@ import com.retar.go4lunch.manager.location.LocationManager
 import com.retar.go4lunch.ui.MainViewPresenter
 import com.retar.go4lunch.ui.map.model.UiMarkerModel
 import com.retar.go4lunch.utils.getLatLng
-import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.subscribeBy
@@ -31,7 +30,7 @@ class MapViewPresenterImpl @Inject constructor(
 
     override fun onActivityCreated() {
         compositeDisposable.add(searchText
-            .debounce(750, TimeUnit.MILLISECONDS)
+            .debounce(DEFAULT_DEBOUNCE_TIME, TimeUnit.MILLISECONDS)
             .distinctUntilChanged()
             .observeOn(AndroidSchedulers.mainThread())
             .subscribeBy(
@@ -126,6 +125,7 @@ class MapViewPresenterImpl @Inject constructor(
 
     companion object{
         private var uniqueId = UUID.randomUUID().toString()
+        private const val DEFAULT_DEBOUNCE_TIME: Long = 750
     }
 
 }

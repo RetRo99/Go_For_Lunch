@@ -14,10 +14,6 @@ class LocationManager(
 
     val location: BehaviorSubject<Location> = BehaviorSubject.create()
 
-    init {
-        updateLocation()
-    }
-
     @SuppressLint("MissingPermission")
     fun updateLocation() {
         fusedLocationClient.lastLocation
