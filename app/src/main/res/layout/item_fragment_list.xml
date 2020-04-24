@@ -20,7 +20,6 @@
             android:id="@+id/item_restaurant_name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:maxLines="1"
             android:textStyle="bold"
             app:layout_constraintEnd_toStartOf="@id/item_restaurant_distance"
             app:layout_constraintStart_toStartOf="parent"
@@ -43,14 +42,24 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:maxLines="1"
             android:textStyle="italic"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/item_restaurant_photo"
+            app:layout_constraintEnd_toStartOf="@+id/item_restaurant_ratingBar"
             android:layout_marginEnd="16dp"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintTop_toBottomOf="@id/item_restaurant_address"
             tools:text="never" />
+
+        <me.zhanghai.android.materialratingbar.MaterialRatingBar
+            android:id="@+id/item_restaurant_ratingBar"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            style="@style/Widget.MaterialRatingBar.RatingBar.Indicator.Small"
+            app:layout_constraintTop_toTopOf="@+id/item_restaurant_hours"
+            app:layout_constraintBottom_toBottomOf="@+id/item_restaurant_hours"
+            app:layout_constraintEnd_toStartOf="@id/item_restaurant_photo"
+            app:layout_constraintStart_toEndOf="@id/item_restaurant_hours"
+            android:numStars="3" />
 
         <ImageView
             android:id="@+id/item_restaurant_photo"
@@ -66,7 +75,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
-            android:maxLines="1"
             app:layout_constraintEnd_toStartOf="@id/item_restaurant_photo"
             app:layout_constraintTop_toTopOf="parent"
             tools:text="800m" />
@@ -80,7 +88,6 @@
             android:visibility="gone"
             android:drawableStart="@drawable/ic_person_visiting"
             android:ellipsize="end"
-            android:maxLines="1"
             app:layout_constraintEnd_toStartOf="@id/item_restaurant_photo"
             app:layout_constraintTop_toBottomOf="@id/item_restaurant_distance"
             tools:visibility="visible"

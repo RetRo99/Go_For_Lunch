@@ -40,7 +40,8 @@ class RestaurantAdapter(private val action: (RestaurantEntity) -> Unit) :
                 item_restaurant_distance.text = restaurant.distance()
                 item_restaurant_hours.text = openedText
                 item_restaurant_photo.loadRestaurantPhoto(restaurant.photoUrl)
-
+                item_restaurant_ratingBar.numStars = 3
+                item_restaurant_ratingBar.rating = 2.1f
                 item_resturant_people_visiting.run {
                     if (restaurant.timesPicked != 0) {
                         text = restaurant.peopleVisiting()

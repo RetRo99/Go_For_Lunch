@@ -10,6 +10,6 @@ interface RestaurantDetailView {
     fun showData(data: UiRestaurantDetailItem)
     fun setFab(picked: Boolean)
     fun showUsers(users: List<User>)
-    fun startActivity(intent: Intent)
+    fun openActivity(intent: Intent)
     fun showToast(@StringRes stringResource: Int)
 }

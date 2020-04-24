@@ -7,12 +7,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import com.retar.go4lunch.R
 import com.retar.go4lunch.base.model.User
 import com.retar.go4lunch.ui.restaurantdetail.adapter.PhotosAdapter
 import com.retar.go4lunch.ui.restaurantdetail.model.UiRestaurantDetailItem
 import com.retar.go4lunch.base.adapter.UserAdapter
+import com.stepstone.apprating.AppRatingDialog
+import com.stepstone.apprating.listener.RatingDialogListener
 import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.fragment_restaurant_detail.*
 import javax.inject.Inject
@@ -49,6 +52,19 @@ class RestaurantDetailFragment : DaggerFragment(), RestaurantDetailView {
             presenter.onFabClick()
         }
 
+        likeConstraint.setOnClickListener {
+            AppRatingDialog.Builder()
+                .setPositiveButtonText(R.string.rate_submit)
+                .setNegativeButtonText(R.string.rate_cancel)
+                .setDefaultRating(2)
+                .setTitle(R.string.rate_rate)
+                .setDescription(R.string.rate_description)
+                .setCommentInputEnabled(false)
+                .setNumberOfStars(3)
+                .create(requireActivity())
+                .show()
+        }
+
         adapter = UserAdapter(true)
         details_recycler.adapter = adapter
 
@@ -67,7 +83,7 @@ class RestaurantDetailFragment : DaggerFragment(), RestaurantDetailView {
 
     }
 
-    override fun startActivity(intent: Intent) {
+    override fun openActivity(intent: Intent) {
         startActivity(intent)
     }
 

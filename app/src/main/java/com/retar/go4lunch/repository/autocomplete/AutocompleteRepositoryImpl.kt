@@ -40,7 +40,7 @@ class AutocompleteRepositoryImpl(
 
             }
             .flatMap {
-                firestoreManager.mapWithVisitedRestaurants(it)
+                firestoreManager.mapWithVisitedRestaurantsAndRating(it)
             }
     }
 

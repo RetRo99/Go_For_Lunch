@@ -37,7 +37,7 @@ class RestaurantsRepositoryImpl(
                 restaurantDetailMapper.mapToEntity(it, location.getLatLng())
             }
             .flatMap {
-                firestoreManager.mapWithVisitedRestaurants(it)
+                firestoreManager.mapWithVisitedRestaurantsAndRating(it)
             }
     }
 

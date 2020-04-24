@@ -52,5 +52,9 @@
     <string name="restaurant_no_information">Unknown timetable</string>
     <string name="restaurant_closed">Restaurant is closed</string>
     <string name="open_247">Open 24/7</string>
+    <string name="rate_submit">Submit</string>
+    <string name="rate_cancel">Cancel</string>
+    <string name="rate_rate">Rate this restaurant</string>
+    <string name="rate_description">Please select some stars and give your feedback</string>
 
 </resources>

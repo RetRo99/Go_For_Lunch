@@ -10,4 +10,6 @@ interface MainViewPresenter {
     fun onLogoutClicked()
     fun onLogoutConfirmed()
     fun requestLocation()
+    fun onNavigateToDetail(id: String)
+    fun onRestaurantRated(rate: Double)
 }

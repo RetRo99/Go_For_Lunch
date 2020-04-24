@@ -62,7 +62,7 @@ class RestaurantDetailPresenterImpl @Inject constructor(
         if (!data.phoneNumber.isNullOrEmpty()) {
             val intent = Intent(Intent.ACTION_DIAL)
             intent.data = Uri.parse("tel:${data.phoneNumber}")
-            view.startActivity(intent)
+            view.openActivity(intent)
         } else {
             view.showToast(R.string.restaurant_detail_no_number)
 
@@ -73,7 +73,7 @@ class RestaurantDetailPresenterImpl @Inject constructor(
         if (!data.webPage.isNullOrEmpty()) {
             val intent = Intent(Intent.ACTION_VIEW)
             intent.data = Uri.parse(data.webPage)
-            view.startActivity(intent)
+            view.openActivity(intent)
         } else {
             view.showToast(R.string.restaurant_detail_not_available)
         }

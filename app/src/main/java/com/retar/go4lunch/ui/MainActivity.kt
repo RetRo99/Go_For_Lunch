@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.GravityCompat
 import androidx.navigation.ui.AppBarConfiguration
@@ -20,12 +21,13 @@ import com.retar.go4lunch.base.model.User
 import com.retar.go4lunch.ui.map.MapFragmentDirections
 import com.retar.go4lunch.ui.resturants.RestaurantsFragmentDirections
 import com.retar.go4lunch.utils.loadRoundPhoto
+import com.stepstone.apprating.listener.RatingDialogListener
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.nav_header.view.*
 import javax.inject.Inject
 
 class MainActivity : LocationPermissionActivity(), MainView,
-    NavigationView.OnNavigationItemSelectedListener {
+    NavigationView.OnNavigationItemSelectedListener, RatingDialogListener {
 
     @Inject
     lateinit var presenter: MainViewPresenter
@@ -98,6 +100,7 @@ class MainActivity : LocationPermissionActivity(), MainView,
     }
 
     override fun fromMapToResturantDetail(id: String, title: String) {
+        presenter.onNavigateToDetail(id)
         getNavController().navigate(
             MapFragmentDirections.actionMapToDetail(
                 title,
@@ -107,6 +110,7 @@ class MainActivity : LocationPermissionActivity(), MainView,
     }
 
     override fun fromListToResturantDetail(id: String, title: String) {
+        presenter.onNavigateToDetail(id)
         getNavController().navigate(
             RestaurantsFragmentDirections.actionListToDetail(
                 title,
@@ -158,6 +162,21 @@ class MainActivity : LocationPermissionActivity(), MainView,
             }
         }
     }
+
+
+    override fun onNegativeButtonClicked() {
+        // not needed to do anything
+    }
+
+    override fun onNeutralButtonClicked() {
+        // not needed to do anything
+    }
+
+    override fun onPositiveButtonClicked(rate: Int, comment: String) {
+        Toast.makeText(this, "works", Toast.LENGTH_SHORT).show()
+        presenter.onRestaurantRated(rate.toDouble())
+    }
+
 }
 
 
