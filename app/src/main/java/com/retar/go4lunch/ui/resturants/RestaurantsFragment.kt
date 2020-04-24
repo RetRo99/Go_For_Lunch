@@ -34,8 +34,6 @@ class RestaurantsFragment : BaseAutoCompleteFragment(), RestaurantsView {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        val linearLayoutManager = LinearLayoutManager(context)
-        recyclerView.layoutManager = linearLayoutManager
         adapter = RestaurantAdapter() {
             presenter.onListItemClick(
                 it.id,

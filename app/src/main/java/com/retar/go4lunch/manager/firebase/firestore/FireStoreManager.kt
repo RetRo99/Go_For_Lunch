@@ -75,7 +75,7 @@ class FireStoreManager(
             val listOfPicked = users.filter {
                 it.pickedRestaurant == restaurant.id
             }
-            restaurant.timesPicked = listOfPicked.size.toString()
+            restaurant.timesPicked = listOfPicked.size
             restaurant
         }
     }

@@ -47,7 +47,7 @@ class ContentDataManager(
                 val listOfPicked = users.filter { user ->
                     user.pickedRestaurant == restaurant.id
                 }
-                restaurant.timesPicked = "(${listOfPicked.size})"
+                restaurant.timesPicked = listOfPicked.size
                 restaurant
             })
         }
@@ -63,7 +63,7 @@ class ContentDataManager(
                         restaurants.onNext(it)
                     },
                 onError = {
-                   // restaurants.onError(it)
+                    restaurants.onError(it)
                 }
             ))
     }

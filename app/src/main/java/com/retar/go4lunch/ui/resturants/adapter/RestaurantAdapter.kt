@@ -9,7 +9,6 @@ import android.text.style.ForegroundColorSpan
 import android.text.style.StyleSpan
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import com.retar.go4lunch.R
 import com.retar.go4lunch.base.model.RestaurantEntity
@@ -33,7 +32,7 @@ class RestaurantAdapter(private val action: (RestaurantEntity) -> Unit) :
         fun bindRestaurant(restaurant: RestaurantEntity) {
 
             view.apply {
-
+                item_resturant_people_visiting.visibility = View.GONE
                 val openedText = getOpenedText(restaurant.openedText, context)
 
                 item_restaurant_name.text = restaurant.name
@@ -42,15 +41,15 @@ class RestaurantAdapter(private val action: (RestaurantEntity) -> Unit) :
                 item_restaurant_hours.text = openedText
                 item_restaurant_photo.loadRestaurantPhoto(restaurant.photoUrl)
 
-                if(restaurant.timesPicked != "(0)"){
-                    item_resturant_people_visiting.run {
-                        isVisible = true
-                        text = restaurant.timesPicked
+                item_resturant_people_visiting.run {
+                    if (restaurant.timesPicked != 0) {
+                        text = restaurant.peopleVisiting()
+                        visibility = View.VISIBLE
+                    } else {
+
+                        visibility = View.GONE
                     }
-
                 }
-                item_resturant_people_visiting.text = restaurant.timesPicked
-
                 view.setOnClickListener {
                     action(restaurant)
                 }
