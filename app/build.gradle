@@ -15,11 +15,13 @@ android {
     }
     defaultConfig {
         applicationId "com.retar.go4lunch"
-        minSdkVersion 23
+        minSdkVersion 19
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
+
     }
     buildTypes {
         release {
@@ -108,7 +110,8 @@ dependencies {
     //for time managment
     implementation 'com.jakewharton.threetenabp:threetenabp:1.2.3'
 
-
+    //dex
+    implementation 'com.android.support:multidex:1.0.3'
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"

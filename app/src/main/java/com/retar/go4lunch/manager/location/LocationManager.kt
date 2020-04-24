@@ -1,7 +1,10 @@
 package com.retar.go4lunch.manager.location
 
+import android.Manifest
 import android.annotation.SuppressLint
+import android.content.pm.PackageManager
 import android.location.Location
+import androidx.core.app.ActivityCompat
 import com.google.android.gms.location.FusedLocationProviderClient
 import io.reactivex.subjects.BehaviorSubject
 

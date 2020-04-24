@@ -46,6 +46,7 @@ abstract class LocationPermissionActivity : DaggerAppCompatActivity(), ProvideNa
         )
     }
 
+    abstract fun requestLocation()
 
     override fun onRequestPermissionsResult(
         requestCode: Int,
@@ -59,6 +60,7 @@ abstract class LocationPermissionActivity : DaggerAppCompatActivity(), ProvideNa
                     && grantResults[0] == PackageManager.PERMISSION_GRANTED
                 ) {
                     requestDialog?.dismiss()
+                    requestLocation()
                 } else {
                     showRationaleForPermissions()
                 }

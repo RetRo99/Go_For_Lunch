@@ -16,7 +16,8 @@ data class RestaurantEntity(
     private val address: String,
     val photoUrl: String?,
     val openedText: Pair<Int, String>,
-    @DrawableRes var icon: Int = R.drawable.ic_restaurant_marker_orange
+    @DrawableRes var icon: Int = R.drawable.ic_restaurant_marker_orange,
+     var timesPicked: String = "0"
 ) {
 
     fun distance(): String {

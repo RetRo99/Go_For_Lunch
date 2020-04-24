@@ -1,8 +1,8 @@
 package com.retar.go4lunch.ui
 
-import android.util.Log
 import com.retar.go4lunch.manager.contentdata.ContentDataManager
 import com.retar.go4lunch.manager.firebase.auth.FireAuthManager
+import com.retar.go4lunch.manager.location.LocationManager
 import io.reactivex.disposables.Disposable
 import io.reactivex.rxkotlin.subscribeBy
 import javax.inject.Inject
@@ -10,9 +10,14 @@ import javax.inject.Inject
 class MainPresenterImpl @Inject constructor(
     private val view: MainView,
     private val authManager: FireAuthManager,
-    private val dataManagerModule: ContentDataManager
+    private val dataManagerModule: ContentDataManager,
+    private val locationManager: LocationManager
+
 
 ) : MainViewPresenter {
+    override fun requestLocation() {
+        locationManager.updateLocation()
+    }
 
     private var disposable: Disposable? = null
 

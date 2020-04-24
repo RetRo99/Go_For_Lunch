@@ -21,7 +21,7 @@ class RestaurantEntityMapperImpl : RestaurantEntityMapper {
         currentLatLatLng: LatLng
     ): List<RestaurantEntity> {
 
-        return restaurantDetails.map {
+        val entityList = restaurantDetails.map {
             this.result = it.result
 
             RestaurantEntity(
@@ -36,13 +36,13 @@ class RestaurantEntityMapperImpl : RestaurantEntityMapper {
                 result.photos?.get(0)?.photo_reference,
                 getOpenedString()
             )
-        }.apply {
-            sortedBy {
-                it.distance().toFloat()
-            }
         }
 
+        return entityList.sortedBy {
+            it.distance().substringBefore(" ").toFloat()
+        }
     }
+
 
     private fun getRestaurantLatLang(): LatLng {
         return result.geometry.location.getLatLng()
@@ -85,6 +85,7 @@ class RestaurantEntityMapperImpl : RestaurantEntityMapper {
             }
         } ?: return Pair(RestaurantAdapter.TYPE_NO_INFORMATION, "")
 
+        if ("Open 24 hours" in openedText) return Pair(RestaurantAdapter.TYPE_OPEN_24, "")
 
         val formattedOpenedString = openedText.substringAfter("– ")
         val currentTimeInSeconds = LocalDateTime.now().toLocalTime().toSecondOfDay()

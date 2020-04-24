@@ -9,4 +9,5 @@ interface MainViewPresenter {
     fun onSignIn(isNewUser: Boolean?)
     fun onLogoutClicked()
     fun onLogoutConfirmed()
+    fun requestLocation()
 }

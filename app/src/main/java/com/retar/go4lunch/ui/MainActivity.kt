@@ -52,6 +52,10 @@ class MainActivity : LocationPermissionActivity(), MainView,
         NavigationUI.setupWithNavController(bottomNavigationView, getNavController())
     }
 
+    override fun requestLocation() {
+        presenter.requestLocation()
+    }
+
     override fun onResume() {
         presenter.onResume()
         super.onResume()

@@ -39,6 +39,7 @@ class RestaurantAdapter(private val action: (RestaurantEntity) -> Unit) :
                         R.string.restaurant_opened_until,
                         restaurant.openedText.second
                     )
+                    TYPE_OPEN_24 -> "Open 24/7"
                     TYPE_CLOSING_SOON -> {
                         SpannableString(context.getString(R.string.restaurant_closing_soon)).apply {
                             setSpan(
@@ -68,6 +69,7 @@ class RestaurantAdapter(private val action: (RestaurantEntity) -> Unit) :
                 item_restaurant_distance.text = restaurant.distance()
                 item_restaurant_hours.text = openedText
                 item_restaurant_photo.loadRestaurantPhoto(restaurant.photoUrl)
+                item_resturant_votes.text = restaurant.timesPicked
 
                 view.setOnClickListener {
                     action(restaurant)
@@ -102,6 +104,8 @@ class RestaurantAdapter(private val action: (RestaurantEntity) -> Unit) :
         const val TYPE_CLOSING_SOON = 2
         const val TYPE_OPEN_UNTIL = 3
         const val TYPE_CLOSED = 4
+        const val TYPE_OPEN_24 = 5
+
 
     }
 }

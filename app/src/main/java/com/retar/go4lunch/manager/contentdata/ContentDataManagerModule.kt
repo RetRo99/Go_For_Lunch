@@ -3,6 +3,7 @@ package com.retar.go4lunch.manager.contentdata
 import com.retar.go4lunch.manager.location.LocationManager
 import com.retar.go4lunch.repository.autocomplete.AutocompleteRepository
 import com.retar.go4lunch.repository.restaurants.RestaurantsRepository
+import com.retar.go4lunch.repository.users.UsersRepository
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton
@@ -15,8 +16,14 @@ class ContentDataManagerModule {
     fun provideContentDataManager(
         restaurantsRepository: RestaurantsRepository,
         autocompleteRepository: AutocompleteRepository,
+        usersRepository: UsersRepository,
         locationManager: LocationManager
     ): ContentDataManager {
-        return ContentDataManager(restaurantsRepository, autocompleteRepository, locationManager)
+        return ContentDataManager(
+            restaurantsRepository,
+            autocompleteRepository,
+            usersRepository,
+            locationManager
+        )
     }
 }

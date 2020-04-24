@@ -6,6 +6,7 @@ import com.retar.go4lunch.R
 import com.retar.go4lunch.base.model.RestaurantEntity
 import com.retar.go4lunch.base.model.User
 import com.retar.go4lunch.manager.firebase.firestore.model.FireStoreRestaurant
+import de.aaronoe.rxfirestore.getCompletable
 import de.aaronoe.rxfirestore.getObservable
 import de.aaronoe.rxfirestore.getSingle
 import io.reactivex.Observable
@@ -14,7 +15,6 @@ import io.reactivex.Single
 class FireStoreManager(
     db: FirebaseFirestore
 ) {
-
 
     private val userRef: CollectionReference
     private val visitedRef: CollectionReference
@@ -55,6 +55,29 @@ class FireStoreManager(
                     it
                 }
             }
+            .flatMap { restaurant ->
+                userRef.getSingle<User>()
+                    .map {
+                        mapWithSelectedRestaurants(it, restaurant)
+                    }
+
+
+            }
+
+
+    }
+
+    private fun mapWithSelectedRestaurants(
+        users: List<User>,
+        restaurants: List<RestaurantEntity>
+    ): List<RestaurantEntity> {
+        return restaurants.map { restaurant ->
+            val listOfPicked = users.filter {
+                it.pickedRestaurant == restaurant.id
+            }
+            restaurant.timesPicked = listOfPicked.size.toString()
+            restaurant
+        }
     }
 
 
@@ -70,7 +93,8 @@ class FireStoreManager(
 
 
     private fun updatePickedRestaurant(id: String, title: String) {
-        userRef.document(currentUser!!.id).update(PICKED_RESTAURANT, id)
+        // todo get completable
+        userRef.document(currentUser!!.id).update(PICKED_RESTAURANT, id).getCompletable()
         userRef.document(currentUser!!.id).update(PICKED_RESTAURANT_TITLE, title)
     }
 
