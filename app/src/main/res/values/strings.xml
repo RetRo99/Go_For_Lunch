@@ -58,5 +58,10 @@
     <string name="rate_description">Please select some stars and give your feedback</string>
     <string name="menu_your_lunch">Your lunch</string>
     <string name="you_havent_decied">You haven\'t decide yet</string>
+    <string name="channel_name">Reminder</string>
+    <string name="channel_description">Reminds you at noon which restaurant you picked</string>
+    <string name="channel_id" translatable="false">notificaitochannelid</string>
+    <string name="notification_title">Don\'t forget</string>
+    <string name="notification_subtitle">You are eating at %s</string>
 
 </resources>

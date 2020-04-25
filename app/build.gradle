@@ -41,7 +41,7 @@ def retrofitVersion = '2.8.1'
 
 def daggerVersion = "2.27"
 
-def nav_version = "2.2.2"
+def nav_version = "2.3.0-alpha05"
 
 
 dependencies {
@@ -55,6 +55,9 @@ dependencies {
 
     //firestore
     implementation 'com.google.firebase:firebase-firestore:21.4.2'
+
+    //SDK for Firebase Cloud Messaging
+    implementation 'com.google.firebase:firebase-messaging:20.1.6'
 
     // facebook login
     implementation 'com.facebook.android:facebook-android-sdk:5.13.0'

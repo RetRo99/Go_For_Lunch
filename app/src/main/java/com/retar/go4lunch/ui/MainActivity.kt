@@ -1,7 +1,10 @@
 package com.retar.go4lunch.ui
 
 import android.app.Activity
+import android.app.NotificationChannel
+import android.app.NotificationManager
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
@@ -14,16 +17,15 @@ import androidx.navigation.ui.setupWithNavController
 import com.firebase.ui.auth.AuthMethodPickerLayout
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.IdpResponse
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.material.navigation.NavigationView
+import com.google.firebase.iid.FirebaseInstanceId
 import com.jakewharton.threetenabp.AndroidThreeTen
 import com.retar.go4lunch.R
 import com.retar.go4lunch.base.LocationPermissionActivity
 import com.retar.go4lunch.base.model.User
-import com.retar.go4lunch.ui.map.MapFragment
 import com.retar.go4lunch.ui.map.MapFragmentDirections
-import com.retar.go4lunch.ui.resturants.RestaurantsFragment
 import com.retar.go4lunch.ui.resturants.RestaurantsFragmentDirections
-import com.retar.go4lunch.ui.users.UsersFragment
 import com.retar.go4lunch.ui.users.UsersFragmentDirections
 import com.retar.go4lunch.utils.loadRoundPhoto
 import com.stepstone.apprating.listener.RatingDialogListener
@@ -184,10 +186,6 @@ class MainActivity : LocationPermissionActivity(), MainView,
         super.onDestroy()
     }
 
-    companion object {
-        private const val RC_SIGN_IN = 12
-    }
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
@@ -210,6 +208,10 @@ class MainActivity : LocationPermissionActivity(), MainView,
     override fun onPositiveButtonClicked(rate: Int, comment: String) {
         Toast.makeText(this, "works", Toast.LENGTH_SHORT).show()
         presenter.onRestaurantRated(rate.toDouble())
+    }
+
+    companion object {
+        private const val RC_SIGN_IN = 12
     }
 
 }

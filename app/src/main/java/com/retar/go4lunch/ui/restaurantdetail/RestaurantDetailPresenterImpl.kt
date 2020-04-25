@@ -35,6 +35,9 @@ class RestaurantDetailPresenterImpl @Inject constructor(
                     data = it
                     view.showData(it)
                     view.setFab(it.isPicked)
+                },
+                onError = {
+                    view.showToast(R.string.error_no_data)
                 }
             ))
 

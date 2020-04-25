@@ -1,33 +1,30 @@
-package com.retar.go4lunch.base.notificaitonHelper
+package com.retar.go4lunch.manager.notificationManager
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.Context
 import android.os.Build
+import android.os.Bundle
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import androidx.navigation.NavDeepLinkBuilder
 import com.retar.go4lunch.R
+import com.retar.go4lunch.ui.MainActivity
 import dagger.android.support.DaggerAppCompatActivity
 
-class NotificationHelper(val context: Context) {
+class NotificationHelper(private val context: Context) {
 
-    fun createNotification() {
+    fun createNotification(title:String, id:String) {
 
         createNotificationChannel()
-
-//        val mainActivityIntent = Intent(context, MainActivity::class.java).apply {
-//            putExtra(MainActivity.EXTRA_IS_NOTIFICATION, true)
-//        }
-
-//        val pendingMainActivityIntent = PendingIntent.getActivity(context, 0, mainActivityIntent, 0)
-
 
         val builder = NotificationCompat.Builder(context, context.getString(R.string.channel_id))
             .setSmallIcon(R.drawable.ic_restaurant_menu)
             .setContentTitle(context.getString(R.string.notification_title))
-            .setContentText(context.getString(R.string.notification_subtitle, "test"))
+            .setContentText(context.getString(R.string.notification_subtitle, title))
             .setPriority(NotificationCompat.PRIORITY_HIGH)
-//            .setContentIntent(pendingMainActivityIntent)
+            .setContentIntent(getPendingIntent(title, id))
             .setAutoCancel(true)
 
         with(NotificationManagerCompat.from(context)) {
@@ -36,6 +33,20 @@ class NotificationHelper(val context: Context) {
 
         }
 
+    }
+
+
+    private fun getPendingIntent(title:String, id:String) : PendingIntent {
+
+        val bundle = Bundle().apply {
+            putString("id", id)
+            putString("title", title)
+        }
+        return NavDeepLinkBuilder(context)
+            .setGraph(R.navigation.navigation_graph)
+            .setDestination(R.id.restaurantDetailFragment)
+            .setArguments(bundle)
+            .createPendingIntent()
     }
 
 
