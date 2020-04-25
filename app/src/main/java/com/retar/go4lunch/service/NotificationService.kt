@@ -19,7 +19,9 @@ class NotificationService : FirebaseMessagingService() {
     override fun onMessageReceived(message: RemoteMessage) {
         super.onMessageReceived(message)
         val user = firestoneManager.currentUser
-        notificationHelper.createNotification(user!!.pickedRestaurantTitle, user.pickedRestaurant)
+        user?.let {
+            if(user.pickedRestaurant.isNotEmpty())  notificationHelper.createNotification(user.pickedRestaurantTitle, user.pickedRestaurant)
+        }
     }
 
     override fun onCreate() {

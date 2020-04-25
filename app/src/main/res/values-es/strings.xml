@@ -1,2 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources></resources>
+<resources>
+    <string name="app_name">Go 4 Lunch</string>
+
+    <string name="tab_label1">Vista del mapa</string>
+    <string name="tab_label2">Vista de la lista</string>
+    <string name="tab_label3">Compañeros de trabajo</string>
+
+    <string name="login_sign_in_with_twitter">Registrate con Twitter</string>
+    <string name="login_sign_in_with_facebook">Iniciar sesión usando Facebook</string>
+    <string name="login_sign_in_with_google">Inicia sesión con Google</string>
+
+    <string name="login_app_description">¡Encuentra un buen restaurante e invita a tus compañeros de trabajo a almorzar!</string>
+
+
+    <string name="twitter_consumer_key" translatable="false">SZmEgyeFYoO6RroGL0kQUclzI</string>
+    <string name="twitter_consumer_secret" translatable="false">t9snZvRnZyEfR1WLgEYps7uxpyIX7EABRRamr1ZMzRHc7K03RF</string>
+
+
+    <string name="facebook_app_id">201198084356317</string>
+    <string name="fb_login_protocol_scheme">fb201198084356317</string>
+
+    <string name="facebook_application_id" translatable="false">201198084356317</string>
+
+    <string name="title_friends_list">Lista de amigos</string>
+    <string name="menu_search">Buscar</string>
+    <string name="menu_settings">Configuraciones</string>
+    <string name="menu_logout">Cerrar sesión</string>
+    <string name="menu_map">Mapa</string>
+    <string name="menu_list">Lista</string>
+    <string name="menu_friends">Amigos</string>
+    <string name="restaurant_detail_call">LLAMADA</string>
+    <string name="restaurant_detail_like">ME GUSTA</string>
+    <string name="restaurant_detail_website">SITIO WEB</string>
+    <string name="dialog_yes">si</string>
+    <string name="dialog_no">No</string>
+    <string name="dialog_logout_title">¿Estás seguro de que quieres cerrar sesión?</string>
+    <string name="restaurant_detail_not_available">No disponible</string>
+    <string name="dialog_permission_title">Se necesita permiso para acceder a la ubicación para que la aplicación funcione.</string>
+    <string name="dialog_permission_previous_denied">Previamente negó el permiso de ubicación. Haga clic en Aceptar para abrir la configuración para habilitarla.</string>
+    <string name="dialog_permission_required">Permiso requerido</string>
+    <string name="dialog_ok">Okay</string>
+    <string name="dialog_exit">SALIDA</string>
+    <string name="error_no_data">Algo salió mal. Intenta actualizar los datos.</string>
+    <string name="error_no_user_data">Error al obtener los usuarios. Inténtalo de nuevo.</string>
+    <string name="restaurant_detail_no_number">No hay número de teléfono disponible.</string>
+    <string name="no_result">No hay resultados. Probar con diferentes parámetros</string>
+    <string name="is_joining">se une!</string>
+    <string name="hasnt_decied_yet">no ha decidido todavía</string>
+    <string name="is_eating_at">está comiendo a</string>
+    <string name="restaurant_closing_soon">El restaurante cerrará pronto</string>
+    <string name="restaurant_opened_until">Abierto hasta %s</string>
+    <string name="restaurant_no_information">Horario desconocido</string>
+    <string name="restaurant_closed">El restaurante esta cerrado</string>
+    <string name="open_247">Abierto 24/7</string>
+    <string name="rate_submit">Enviar</string>
+    <string name="rate_cancel">Cancelar</string>
+    <string name="rate_rate">Califica este restaurante</string>
+    <string name="rate_description">Selecciona algunas estrellas y da tu opinión</string>
+    <string name="menu_your_lunch">Tu almuerzo</string>
+    <string name="you_havent_decied">Aún no has decidido</string>
+    <string name="channel_name">Recordatorio</string>
+    <string name="channel_description">Te recuerda al mediodía qué restaurante elegiste</string>
+    <string name="channel_id" translatable="false">notificaitochannelid</string>
+    <string name="notification_title">No te olvides</string>
+    <string name="notification_subtitle">Estás comiendo en %s</string>
+</resources>
