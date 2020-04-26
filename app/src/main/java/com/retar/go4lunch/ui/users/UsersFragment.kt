@@ -31,6 +31,10 @@ class UsersFragment : BaseAutoCompleteFragment(), UsersView {
         adapter = UserAdapter()
         recyclerView.adapter = adapter
 
+        autoSearch.doOnTextChanged { text, _, _, _ ->
+            presenter.onSearchChanged(text)
+        }
+
         presenter.onActivityCreated()
     }
 

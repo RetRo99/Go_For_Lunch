@@ -20,7 +20,7 @@ class NotificationService : FirebaseMessagingService() {
         super.onMessageReceived(message)
         val user = firestoneManager.currentUser
         user?.let {
-            if(user.pickedRestaurant.isNotEmpty())  notificationHelper.createNotification(user.pickedRestaurantTitle, user.pickedRestaurant)
+            if(user.pickedRestaurant.isNotEmpty())  notificationHelper.createNotification(user.pickedRestaurantTitle!!, user.pickedRestaurant)
         }
     }
 

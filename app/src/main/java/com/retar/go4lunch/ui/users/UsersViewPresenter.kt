@@ -4,5 +4,6 @@ interface UsersViewPresenter {
 
     fun onActivityCreated()
     fun onDestroy()
+    fun onSearchChanged(text: CharSequence?)
 
 }

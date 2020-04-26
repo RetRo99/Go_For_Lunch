@@ -7,7 +7,7 @@ data class User(
     val email: String? = null,
     val phone: String? = "null",
     val pickedRestaurant: String = "",
-    val pickedRestaurantTitle: String = "null"
+    val pickedRestaurantTitle: String? = "null"
 ){
     val firstName:String?
         get() {

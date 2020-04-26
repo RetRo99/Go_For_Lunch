@@ -206,7 +206,6 @@ class MainActivity : LocationPermissionActivity(), MainView,
     }
 
     override fun onPositiveButtonClicked(rate: Int, comment: String) {
-        Toast.makeText(this, "works", Toast.LENGTH_SHORT).show()
         presenter.onRestaurantRated(rate.toDouble())
     }
 
