@@ -49,7 +49,7 @@ class FireStoreManager(
         return ratingRef.getObservable()
     }
 
-    fun mapWithVisitedRestaurantsAndRating(restaurantsEntity: List<RestaurantEntity>): Single<List<RestaurantEntity>> {
+    fun mapWithVisitedRestaurantsAndRating(restaurantsEntity: List<RestaurantEntity>): Observable<List<RestaurantEntity>> {
         return visitedRef.getSingle<FireStoreRestaurant>()
             .map { visitedRestaurants ->
                 visitedRestaurants.map { visitedRestaurant ->
@@ -70,26 +70,48 @@ class FireStoreManager(
 
 
             }
-            .flatMap {restaurants ->
-                ratingRef.getSingle<RateModel>()
+            .flatMapObservable { restaurants ->
+                getRatings()
                     .map {
                         mapWithRating(it, restaurants)
+                    }
+            }
+            .flatMap { restaurants ->
+                getUsers()
+                    .map {
+                        mapUsersWithRestaurants(it, restaurants)
                     }
             }
 
 
     }
 
-    private fun mapWithRating(ratings: List<RateModel>, restaurants: List<RestaurantEntity>): List<RestaurantEntity> {
-      return  restaurants.map {restaurant ->
-           val rateModel = ratings.find {rateModel ->
-              rateModel.id == restaurant.id
-          }
+    private fun mapUsersWithRestaurants(
+        users: List<User>,
+        restaurants: List<RestaurantEntity>
+    ): List<RestaurantEntity> {
+        return restaurants.map { restaurant ->
+            val listOfPicked = users.filter { user ->
+                user.pickedRestaurant == restaurant.id
+            }
+            restaurant.timesPicked = listOfPicked.size
+            restaurant
+        }
+    }
 
-          restaurant.rating = rateModel?.rating
-          restaurant
+    private fun mapWithRating(
+        ratings: List<RateModel>,
+        restaurants: List<RestaurantEntity>
+    ): List<RestaurantEntity> {
+        return restaurants.map { restaurant ->
+            val rateModel = ratings.find { rateModel ->
+                rateModel.id == restaurant.id
+            }
 
-      }
+            restaurant.rating = rateModel?.rating
+            restaurant
+
+        }
     }
 
     private fun mapWithSelectedRestaurants(

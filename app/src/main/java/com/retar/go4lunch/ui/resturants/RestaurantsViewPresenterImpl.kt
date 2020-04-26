@@ -54,7 +54,7 @@ class RestaurantsViewPresenterImpl @Inject constructor(
                     dataManager.searchAutoComplete(it, uniqueId)
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribeBy(
-                            onSuccess = { restaurants ->
+                            onNext = { restaurants ->
                                 view.setData(restaurants)
                             }
                         )

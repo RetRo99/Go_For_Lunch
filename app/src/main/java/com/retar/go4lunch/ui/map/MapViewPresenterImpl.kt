@@ -42,7 +42,7 @@ class MapViewPresenterImpl @Inject constructor(
                             mapRestaurantResponseToUi(restaurantList)
                         }
                         .subscribeBy(
-                            onSuccess = {
+                            onNext = {
                                 displayOrShowNoResult(it)
                             },
                             onError = {

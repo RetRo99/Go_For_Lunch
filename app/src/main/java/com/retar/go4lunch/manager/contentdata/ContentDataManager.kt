@@ -19,9 +19,7 @@ import java.util.concurrent.TimeUnit
 class ContentDataManager(
     private val restaurantRepo: RestaurantsRepository,
     private val autocompleteRepository: AutocompleteRepository,
-    private val userRepo: UsersRepository,
-    private val locationManager: LocationManager,
-    private val fireStoreManager: FireStoreManager
+    private val locationManager: LocationManager
 ) {
 
     private var compositeDisposable = CompositeDisposable()
@@ -34,45 +32,12 @@ class ContentDataManager(
 
 
     init {
-        compositeDisposable.add(
-            locationManager.location
-                .subscribeBy(
-                    onNext = {
-                        when {
-                            lastLocation == null -> {
-                                loadNearbyRestaurants(it)
-                                lastLocation = it
-                            }
+        addLocationObserver()
 
-                            restaurantsHolder == null -> loadNearbyRestaurants(it)
+        createLocationInterval()
+    }
 
-                            else -> {
-                                val distance = lastLocation!!.distanceTo(it)
-
-                                if (distance > MAX_DISTANCE_BETWEEN_LOCATION) {
-                                    loadNearbyRestaurants(it)
-                                    lastLocation = it
-
-
-                                }
-
-
-                            }
-
-                        }
-                    })
-        )
-
-        compositeDisposable.add(userRepo.getUsers().subscribeBy {
-            mapUsersWithRestaurants(it)
-        }
-        )
-
-        compositeDisposable.add(fireStoreManager.getRatings().subscribeBy {
-            mapRatingWithRestaurants(it)
-        }
-        )
-
+    private fun createLocationInterval() {
         compositeDisposable.add(
             Observable.interval(0, 20, TimeUnit.SECONDS)
                 .subscribeBy {
@@ -82,30 +47,38 @@ class ContentDataManager(
         )
     }
 
-
-    private fun mapRatingWithRestaurants(ratings: List<RateModel>) {
-        restaurantsHolder?.let {
-            restaurants.onNext(it.map { restaurant ->
-                val rateModel = ratings.find { rateModel ->
-                    rateModel.id == restaurant.id
-                }
-
-                restaurant.rating = rateModel?.rating
-                restaurant
-
-                })
-        }
+    private fun addLocationObserver() {
+        compositeDisposable.add(
+            locationManager.location
+                .subscribeBy(
+                    onNext = {
+                        handleNewLocation(it)
+                    })
+        )
     }
 
-    private fun mapUsersWithRestaurants(users: List<User>) {
-        restaurantsHolder?.let {
-            restaurants.onNext(it.map { restaurant ->
-                val listOfPicked = users.filter { user ->
-                    user.pickedRestaurant == restaurant.id
+    private fun handleNewLocation(location: Location) {
+
+        when {
+            lastLocation == null -> {
+                loadNearbyRestaurants(location)
+                lastLocation = location
+            }
+
+            restaurantsHolder == null -> loadNearbyRestaurants(location)
+
+            else -> {
+                val distance = lastLocation!!.distanceTo(location)
+
+                if (distance > MAX_DISTANCE_BETWEEN_LOCATION) {
+                    loadNearbyRestaurants(location)
+                    lastLocation = location
+
                 }
-                restaurant.timesPicked = listOfPicked.size
-                restaurant
-            })
+
+
+            }
+
         }
     }
 
@@ -114,7 +87,7 @@ class ContentDataManager(
         compositeDisposable.add(
             restaurantRepo.getRestaurants(location, DEFAULT_DISTANCE)
                 .subscribeBy(
-                    onSuccess = {
+                    onNext = {
                         restaurantsHolder = it
                         restaurants.onNext(it)
                     },
@@ -127,9 +100,9 @@ class ContentDataManager(
         compositeDisposable.dispose()
     }
 
-    fun searchAutoComplete(searchParam: String, uniqueId: String): Single<List<RestaurantEntity>> {
+    fun searchAutoComplete(searchParam: String, uniqueId: String): Observable<List<RestaurantEntity>> {
         return if (searchParam.isEmpty()) {
-            Single.just(restaurantsHolder ?: listOf())
+            Observable.fromArray(restaurantsHolder ?: listOf())
 
         } else {
             autocompleteRepository.getAutocompleteResult(

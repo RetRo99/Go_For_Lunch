@@ -12,6 +12,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.gms.maps.model.LatLng
 import com.retar.go4lunch.R
+import com.retar.go4lunch.base.Constants.GOOGLE_KEY
 
 
 fun Location.getApiString(): String {
@@ -28,7 +29,7 @@ fun ViewGroup.inflate(@LayoutRes layoutRes: Int, attachToRoot: Boolean = false):
 
 fun ImageView.loadRestaurantPhoto(photoReference: String?) {
     Glide.with(this)
-        .load("https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=$photoReference&key=AIzaSyB6JuG-GiQgQG2RixaTKyhqBlhT9Uklr6Y\n")
+        .load("https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=$photoReference&key=$GOOGLE_KEY")
         .placeholder(R.drawable.ic_restaurant)
         .error(R.drawable.ic_restaurant)
         .into(this)

@@ -7,6 +7,7 @@ import com.retar.go4lunch.manager.firebase.firestore.FireStoreManager
 import com.retar.go4lunch.mapper.restaurantentity.RestaurantEntityMapper
 import com.retar.go4lunch.utils.getApiString
 import com.retar.go4lunch.utils.getLatLng
+import io.reactivex.Observable
 import io.reactivex.Single
 
 class AutocompleteRepositoryImpl(
@@ -20,7 +21,7 @@ class AutocompleteRepositoryImpl(
         location: Location,
         radius: String,
         uniqueId: String
-    ): Single<List<RestaurantEntity>> {
+    ): Observable<List<RestaurantEntity>> {
         return googlePlacesApi.getAutocomplete(
             searchParam,
             location.getApiString(),
@@ -39,7 +40,7 @@ class AutocompleteRepositoryImpl(
                 restaurantDetailMapper.mapToEntity(it, location.getLatLng())
 
             }
-            .flatMap {
+            .flatMapObservable {
                 firestoreManager.mapWithVisitedRestaurantsAndRating(it)
             }
     }

@@ -17,16 +17,12 @@ class ContentDataManagerModule {
     fun provideContentDataManager(
         restaurantsRepository: RestaurantsRepository,
         autocompleteRepository: AutocompleteRepository,
-        usersRepository: UsersRepository,
-        locationManager: LocationManager,
-        fireStoreManager: FireStoreManager
+        locationManager: LocationManager
     ): ContentDataManager {
         return ContentDataManager(
             restaurantsRepository,
             autocompleteRepository,
-            usersRepository,
-            locationManager,
-            fireStoreManager
+            locationManager
         )
     }
 }
