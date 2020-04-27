@@ -13,7 +13,7 @@ import de.aaronoe.rxfirestore.getSingle
 import io.reactivex.Observable
 import io.reactivex.Single
 
-class FireStoreManager(
+class FireStoreManagerImpl(
     db: FirebaseFirestore
 ) {
 
@@ -45,7 +45,7 @@ class FireStoreManager(
         return userRef.getObservable()
     }
 
-    fun getRatings(): Observable<List<RateModel>> {
+    private fun getRatings(): Observable<List<RateModel>> {
         return ratingRef.getObservable()
     }
 
@@ -140,8 +140,10 @@ class FireStoreManager(
 
 
     private fun updatePickedRestaurant(id: String, title: String) {
-        // todo get completable
-        userRef.document(currentUser!!.id).update(mapOf(PICKED_RESTAURANT to id, PICKED_RESTAURANT_TITLE to title)).getCompletable()
+        currentUser?.let {
+            userRef.document(it.id).update(mapOf(PICKED_RESTAURANT to id, PICKED_RESTAURANT_TITLE to title))
+
+        }
     }
 
     fun checkIfPicked(id: String): Boolean {
@@ -149,7 +151,7 @@ class FireStoreManager(
     }
 
     private fun isCurrentPicked(id: String): Boolean {
-        return (id == currentUser?.pickedRestaurant)
+        return (id == currentUser?.pickedRestaurant ?: false)
     }
 
     fun getCurrentRating(): Single<List<RateModel>> {

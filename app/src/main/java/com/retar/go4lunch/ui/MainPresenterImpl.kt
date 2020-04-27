@@ -4,7 +4,7 @@ import com.retar.go4lunch.R
 import com.retar.go4lunch.base.model.RateModel
 import com.retar.go4lunch.manager.contentdata.ContentDataManager
 import com.retar.go4lunch.manager.firebase.auth.FireAuthManager
-import com.retar.go4lunch.manager.firebase.firestore.FireStoreManager
+import com.retar.go4lunch.manager.firebase.firestore.FireStoreManagerImpl
 import com.retar.go4lunch.manager.location.LocationManager
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.addTo
@@ -16,7 +16,7 @@ class MainPresenterImpl @Inject constructor(
     private val authManager: FireAuthManager,
     private val dataManagerModule: ContentDataManager,
     private val locationManager: LocationManager,
-    private val fireStoreManager: FireStoreManager
+    private val fireStoreManager: FireStoreManagerImpl
 
 
 ) : MainViewPresenter {

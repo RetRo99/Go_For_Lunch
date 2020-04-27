@@ -11,4 +11,11 @@ interface RestaurantEntityMapper {
         currentLatLatLng: LatLng
     ): List<RestaurantEntity>
 
+    fun getOpenedText(): Pair<Int, String>
+    fun getIsOpened(): Boolean
+    fun getOpenedString(): Pair<Int, String>
+    fun getRestaurantLatLang(): LatLng
+    fun getDistanceToCurrentLocation(currentLatLatLng: LatLng): String
+    fun getOpenedUntilInSeconds(formattedOpenedString: String): Int?
+    fun getCurrentDay(): String
 }

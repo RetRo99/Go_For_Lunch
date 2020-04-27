@@ -3,16 +3,15 @@ package com.retar.go4lunch.repository.autocomplete
 import android.location.Location
 import com.retar.go4lunch.api.retrofit.GooglePlacesApi
 import com.retar.go4lunch.base.model.RestaurantEntity
-import com.retar.go4lunch.manager.firebase.firestore.FireStoreManager
+import com.retar.go4lunch.manager.firebase.firestore.FireStoreManagerImpl
 import com.retar.go4lunch.mapper.restaurantentity.RestaurantEntityMapper
 import com.retar.go4lunch.utils.getApiString
 import com.retar.go4lunch.utils.getLatLng
 import io.reactivex.Observable
-import io.reactivex.Single
 
 class AutocompleteRepositoryImpl(
     private val googlePlacesApi: GooglePlacesApi,
-    private val firestoreManager: FireStoreManager,
+    private val firestoreManager: FireStoreManagerImpl,
     private val restaurantDetailMapper: RestaurantEntityMapper
 ) : AutocompleteRepository {
 

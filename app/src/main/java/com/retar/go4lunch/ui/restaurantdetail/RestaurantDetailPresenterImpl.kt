@@ -3,7 +3,7 @@ package com.retar.go4lunch.ui.restaurantdetail
 import android.content.Intent
 import android.net.Uri
 import com.retar.go4lunch.R
-import com.retar.go4lunch.manager.firebase.firestore.FireStoreManager
+import com.retar.go4lunch.manager.firebase.firestore.FireStoreManagerImpl
 import com.retar.go4lunch.repository.restaurantdetail.RestaurantDetailRepository
 import com.retar.go4lunch.repository.users.UsersRepository
 import com.retar.go4lunch.ui.restaurantdetail.model.UiRestaurantDetailItem
@@ -91,8 +91,8 @@ class RestaurantDetailPresenterImpl @Inject constructor(
             .subscribeBy(
                 onSuccess = {
                     when (it) {
-                        FireStoreManager.CURRENT_NOT_PICKED -> view.setFab(false)
-                        FireStoreManager.CURRENT_PICKED -> view.setFab(true)
+                        FireStoreManagerImpl.CURRENT_NOT_PICKED -> view.setFab(false)
+                        FireStoreManagerImpl.CURRENT_PICKED -> view.setFab(true)
                     }
                 }
             ))

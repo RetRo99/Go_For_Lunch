@@ -45,11 +45,11 @@ class RestaurantEntityMapperImpl : RestaurantEntityMapper {
     }
 
 
-    private fun getRestaurantLatLang(): LatLng {
+    override fun getRestaurantLatLang(): LatLng {
         return result.geometry.location.getLatLng()
     }
 
-    private fun getDistanceToCurrentLocation(currentLatLatLng: LatLng): String {
+    override fun getDistanceToCurrentLocation(currentLatLatLng: LatLng): String {
         val locationStart = Location("").apply {
             latitude = getRestaurantLatLang().latitude
             longitude = getRestaurantLatLang().longitude
@@ -63,18 +63,18 @@ class RestaurantEntityMapperImpl : RestaurantEntityMapper {
     }
 
 
-    private fun getOpenedString(): Pair<Int, String> {
+    override fun getOpenedString(): Pair<Int, String> {
         val isOpened = getIsOpened()
 
         return if (!isOpened) Pair(RestaurantAdapter.TYPE_CLOSED, "") else getOpenedText()
     }
 
-    private fun getIsOpened(): Boolean {
+    override fun getIsOpened(): Boolean {
         return result.opening_hours?.open_now ?: true
     }
 
-    private fun getOpenedText(): Pair<Int, String> {
-        val currentDay = LocalDateTime.now().dayOfWeek.toString()
+    override fun getOpenedText(): Pair<Int, String> {
+        val currentDay = getCurrentDay()
 
         val openedText = result.opening_hours?.weekday_text?.let {
             it.find { openedStrings ->
@@ -102,7 +102,11 @@ class RestaurantEntityMapperImpl : RestaurantEntityMapper {
 
     }
 
-    private fun getOpenedUntilInSeconds(formattedOpenedString: String): Int? {
+    override fun getCurrentDay(): String {
+        return LocalDateTime.now().dayOfWeek.toString()
+    }
+
+    override fun getOpenedUntilInSeconds(formattedOpenedString: String): Int? {
         var openedInSeconds: Int? = try {
             (LocalTime.parse(
                 formattedOpenedString, DateTimeFormatter.ofPattern("hh:mm a")
@@ -130,14 +134,13 @@ class RestaurantEntityMapperImpl : RestaurantEntityMapper {
             openedInSeconds =
                 try {
                     (LocalTime.parse(
-                        formattedOpenedString, DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT)
-                            .withLocale(Locale.getDefault())
+                        formattedOpenedString.toUpperCase(), DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT)
+
                     ).toSecondOfDay()
                             )
 
                 } catch (e: Exception) {
                     e.printStackTrace()
-                    Log.d("čič", "test")
                     null
                 }
         }

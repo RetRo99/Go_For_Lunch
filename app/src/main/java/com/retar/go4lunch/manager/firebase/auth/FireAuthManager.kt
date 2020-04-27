@@ -2,12 +2,12 @@ package com.retar.go4lunch.manager.firebase.auth
 
 import com.google.firebase.auth.FirebaseAuth
 import com.retar.go4lunch.base.model.User
-import com.retar.go4lunch.manager.firebase.firestore.FireStoreManager
+import com.retar.go4lunch.manager.firebase.firestore.FireStoreManagerImpl
 import io.reactivex.Maybe
 
 class FireAuthManager(
     private val auth: FirebaseAuth,
-    private val fireStoreManager: FireStoreManager
+    private val fireStoreManager: FireStoreManagerImpl
 ) {
 
 

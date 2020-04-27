@@ -1,16 +1,11 @@
 package com.retar.go4lunch.manager.contentdata
 
 import android.location.Location
-import com.retar.go4lunch.base.model.RateModel
 import com.retar.go4lunch.base.model.RestaurantEntity
-import com.retar.go4lunch.base.model.User
-import com.retar.go4lunch.manager.firebase.firestore.FireStoreManager
 import com.retar.go4lunch.manager.location.LocationManager
 import com.retar.go4lunch.repository.autocomplete.AutocompleteRepository
 import com.retar.go4lunch.repository.restaurants.RestaurantsRepository
-import com.retar.go4lunch.repository.users.UsersRepository
 import io.reactivex.Observable
-import io.reactivex.Single
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.rxkotlin.subscribeBy
 import io.reactivex.subjects.BehaviorSubject
