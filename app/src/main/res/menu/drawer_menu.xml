@@ -2,13 +2,13 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/logout"
-        android:icon="@drawable/ic_logout"
-        android:title="@string/menu_logout" />
-
-    <item
         android:id="@+id/your_lunch"
         android:icon="@drawable/ic_restaurant_menu"
         android:title="@string/menu_your_lunch" />
+
+    <item
+        android:id="@+id/logout"
+        android:icon="@drawable/ic_logout"
+        android:title="@string/menu_logout" />
 
 </menu>
