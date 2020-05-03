@@ -14,19 +14,22 @@ import com.google.android.gms.maps.model.LatLng
 import com.retar.go4lunch.R
 import com.retar.go4lunch.base.Constants.GOOGLE_KEY
 
-
+// gets the location string we need to make an api call
 fun Location.getApiString(): String {
     return "${this.latitude},${this.longitude}"
 }
 
+//easier getting of the LatLang Component
 fun Location.getLatLng(): LatLng {
     return LatLng(this.latitude, this.longitude)
 }
 
+//for easier inflating
 fun ViewGroup.inflate(@LayoutRes layoutRes: Int, attachToRoot: Boolean = false): View {
     return LayoutInflater.from(context).inflate(layoutRes, this, attachToRoot)
 }
 
+//to load the photo into ImageView
 fun ImageView.loadRestaurantPhoto(photoReference: String?) {
     Glide.with(this)
         .load("https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=$photoReference&key=$GOOGLE_KEY")
