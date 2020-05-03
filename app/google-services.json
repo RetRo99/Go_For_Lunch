@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "388925241868-osjvtkavug0bb4th2gbqf0n7sk3op2d3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.retar.go4lunch",
+            "certificate_hash": "a843b79324cee5bd779dc7e144bcc4dbb9ab34a8"
+          }
+        },
+        {
           "client_id": "388925241868-03birjgip6ll63f8cgssr1n1cvq1lqs1.apps.googleusercontent.com",
           "client_type": 3
         }

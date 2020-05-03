@@ -74,13 +74,11 @@ class RestaurantDetailFragment : DaggerFragment(), RestaurantDetailView {
     override fun showData(data: UiRestaurantDetailItem) {
         locationTextView.text = data.address
         titleTextView.text = data.name
-
         imageViewPager.adapter = PhotosAdapter(context, data.photoReferences)
         indicator.setupWithViewPager(imageViewPager, true)
 
         details_progress.visibility = View.GONE
         details_container.visibility = View.VISIBLE
-
     }
 
     override fun openActivity(intent: Intent) {
